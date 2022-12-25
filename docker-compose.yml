@@ -1,20 +1,19 @@
 version: '3.8'
 services:
-  gateway:
+  client:
     build: ./client
-    image: newnrg-client
+    image: image-client
     container_name: client-container
     ports:
       - "8080:8080"
     depends_on:
       - server
-      - db
     environment:
       - NEWNRG_SERVER_URL=http://server:9090
 
   server:
     build: ./server
-    image: newnrg-server
+    image: image-server
     container_name: server-container
     ports:
       - "9090:9090"

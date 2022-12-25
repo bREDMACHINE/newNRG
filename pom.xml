@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>newNRG</name>
+	<name>NewNRG</name>
 	<description>This project solves the problem of automation of maintenance and repair of electrical equipment of power plants</description>
 
 	<properties>
