@@ -45,18 +45,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Optional<User> user = userRepository.findByEmail(username);
-
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return user.get();
-    }
-
-    @Override
     public UserDto updateUser(long userId, UserDto userDto) {
         User updateUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует"));
         if (userDto.getEmail() != null) {

@@ -32,8 +32,8 @@ public class UserClient extends BaseClient {
         return patch("/" + userId, userDto);
     }
 
-    public ResponseEntity<Object> getUser(long userId) {
-        return get("/" + userId);
+    public ResponseEntity<Object> getUser(String userLogin, String userPassword) {
+        return get("/" + userLogin);
     }
 
     public ResponseEntity<Object> findAllUsers() {

@@ -14,8 +14,7 @@ public class UserDto {
     private long id;
     private String email;
     @Size(min=5, message = "Не меньше 5 знаков")
-    String password;
-    private String passwordConfirm;
+    private String password;
     private Role role;
 
     public UserDto(Long id, String email, String email1) {

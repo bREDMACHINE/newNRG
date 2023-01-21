@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/users")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Slf4j
 public class UserController {
@@ -19,26 +20,24 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new UserDto());
-
-        return "account/register";
+    public String registration() {
+        return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid UserDto userForm, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("registrationForm", userForm);
-            return "account/register";
-        }
-        try {
-            userService.addUser(userForm);
-        } catch (NotFoundException e){
-            bindingResult.rejectValue("email", "userData.email","An account already exists for this email.");
-            model.addAttribute("registrationForm", userForm);
-            return "account/register";
-        }
+    public String addUser(@Valid UserDto userDto) {
+        userService.addUser(userDto);
         return "/starter";
+    }
+
+    @GetMapping("/login")
+    public String Login() {
+        return "login";
+    }
+
+    @GetMapping("/success")
+    public String getSuccessPage() {
+        return "success";
     }
 
     @PatchMapping("/{userId}")
