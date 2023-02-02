@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.users;
 
+import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
+        Optional<User> userInDataBase = userRepository.findByEmail(userDto.getEmail());
+        if (userInDataBase.isPresent()) {
+            throw new BadRequestException("Указанный email уже используется");
+        }
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));

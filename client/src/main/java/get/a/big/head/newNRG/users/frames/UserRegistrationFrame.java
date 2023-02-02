@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.frames;
 
 import javax.swing.*;
 import java.awt.*;

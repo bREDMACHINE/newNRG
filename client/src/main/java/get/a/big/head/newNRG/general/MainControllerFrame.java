@@ -1,7 +1,7 @@
 package get.a.big.head.newNRG.general;
 
-import get.a.big.head.newNRG.users.UserControllerAuthorizationFrame;
-import get.a.big.head.newNRG.users.UserControllerRegistrationFrame;
+import get.a.big.head.newNRG.users.controllers.UserControllerAuthorizationFrame;
+import get.a.big.head.newNRG.users.controllers.UserControllerRegistrationFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

@@ -1,35 +1,37 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.controllers;
 
+import get.a.big.head.newNRG.general.MessageFromServer;
+import get.a.big.head.newNRG.users.UserClient;
+import get.a.big.head.newNRG.users.UserDto;
+import get.a.big.head.newNRG.users.UserMapper;
+import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 @Lazy
 @Controller
 @Slf4j
-public class UserControllerAuthorizationFrame {
+public class UserControllerRegistrationFrame {
 
     private final UserClient userClient;
-    private UserAuthorizationFrame frame;
+    private UserRegistrationFrame frame;
     private boolean closeFrame = true;
 
     @Autowired
-    public UserControllerAuthorizationFrame(UserClient userClient) {
+    public UserControllerRegistrationFrame(UserClient userClient) {
         this.userClient = userClient;
     }
 
-    public void UserAuthorization() {
+    public void UserRegistration() {
         if (closeFrame) {
-            frame = new UserAuthorizationFrame();
+            frame = new UserRegistrationFrame();
             closeFrame = false;
         }
         frame.addWindowListener(new WindowAdapter() {
@@ -38,7 +40,6 @@ public class UserControllerAuthorizationFrame {
                 super.windowClosing(e);
                 e.getWindow().dispose();
                 closeFrame = true;
-                System.out.println("A is closing");
             }
         });
         frame.getButton().addActionListener(e -> {
@@ -46,10 +47,14 @@ public class UserControllerAuthorizationFrame {
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get userLogin {}, userPassword {}", userLogin, userPassword);
             UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
-            ResponseEntity<Object> login = userClient.userAuthorization(userDto);
-            if (login != null) {
-                System.out.println(login.getBody());
-            }
+            ResponseEntity<Object> registrationAnswer = userClient.userRegistration(userDto);
+//            if (registrationAnswer != null) {
+//                if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
+//                    frame.dispose();
+//                    JFrame dialog = new MessageFromServer(registrationAnswer.getBody().toString());
+//                }
+//            }
+
         });
     }
 }

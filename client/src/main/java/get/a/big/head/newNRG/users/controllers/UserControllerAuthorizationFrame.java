@@ -1,5 +1,9 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.controllers;
 
+import get.a.big.head.newNRG.users.UserClient;
+import get.a.big.head.newNRG.users.UserDto;
+import get.a.big.head.newNRG.users.UserMapper;
+import get.a.big.head.newNRG.users.frames.UserAuthorizationFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,20 +16,20 @@ import java.awt.event.WindowEvent;
 @Lazy
 @Controller
 @Slf4j
-public class UserControllerRegistrationFrame {
+public class UserControllerAuthorizationFrame {
 
     private final UserClient userClient;
-    private UserRegistrationFrame frame;
+    private UserAuthorizationFrame frame;
     private boolean closeFrame = true;
 
     @Autowired
-    public UserControllerRegistrationFrame(UserClient userClient) {
+    public UserControllerAuthorizationFrame(UserClient userClient) {
         this.userClient = userClient;
     }
 
-    public void UserRegistration() {
+    public void UserAuthorization() {
         if (closeFrame) {
-            frame = new UserRegistrationFrame();
+            frame = new UserAuthorizationFrame();
             closeFrame = false;
         }
         frame.addWindowListener(new WindowAdapter() {
@@ -34,6 +38,7 @@ public class UserControllerRegistrationFrame {
                 super.windowClosing(e);
                 e.getWindow().dispose();
                 closeFrame = true;
+                System.out.println("A is closing");
             }
         });
         frame.getButton().addActionListener(e -> {
@@ -41,7 +46,7 @@ public class UserControllerRegistrationFrame {
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get userLogin {}, userPassword {}", userLogin, userPassword);
             UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
-            ResponseEntity<Object> login = userClient.userRegistration(userDto);
+            ResponseEntity<Object> login = userClient.userAuthorization(userDto);
             if (login != null) {
                 System.out.println(login.getBody());
             }

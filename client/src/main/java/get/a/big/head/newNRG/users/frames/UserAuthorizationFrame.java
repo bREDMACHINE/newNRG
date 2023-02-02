@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.frames;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class UserAuthorizationFrame extends JFrame {
 
     public UserAuthorizationFrame() {
         frame = new JFrame("Авторизация");
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 300);
 
         labelLogin = new JLabel("Введите почту");
