@@ -17,7 +17,7 @@ public class UserRegistrationFrame extends JFrame {
     public UserRegistrationFrame() {
         frame = new JFrame("Регистрация");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(320, 240);
 
         labelLogin = new JLabel("Введите почту");
         textFieldLogin = new JTextField(15);

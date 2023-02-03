@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG.users.controllers;
 
-import get.a.big.head.newNRG.general.MessageFromServer;
+import get.a.big.head.newNRG.general.MessageFromServerFrameController;
 import get.a.big.head.newNRG.users.UserClient;
 import get.a.big.head.newNRG.users.UserDto;
 import get.a.big.head.newNRG.users.UserMapper;
@@ -48,13 +48,12 @@ public class UserControllerRegistrationFrame {
             log.info("Get userLogin {}, userPassword {}", userLogin, userPassword);
             UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
             ResponseEntity<Object> registrationAnswer = userClient.userRegistration(userDto);
-//            if (registrationAnswer != null) {
-//                if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
-//                    frame.dispose();
-//                    JFrame dialog = new MessageFromServer(registrationAnswer.getBody().toString());
-//                }
-//            }
-
+            if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
+                frame.getFrame().dispose();
+                JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь успешно зарегистрирован");
+            } else {
+                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody().toString());
+            }
         });
     }
 }

@@ -36,8 +36,7 @@ public class UserController {
     @PostMapping("/users/registration")
     public ResponseEntity<Object> registration(@RequestBody UserDto userDto) {
         log.info("Registration request user={}", userDto);
-        UserDto userOutDto = userService.addUser(userDto);
-        return new ResponseEntity<>(userOutDto.getEmail() + "успешно зарегистрирован", HttpStatus.OK);
+        return new ResponseEntity<>(userService.addUser(userDto), HttpStatus.OK);
     }
 
     @PostMapping("/users/authorization")
