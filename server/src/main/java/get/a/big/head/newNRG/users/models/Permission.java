@@ -1,8 +1,8 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.models;
 
 public enum Permission {
-    ENGINEERS_READ("engineers:read"),
-    ENGINEERS_WRITE("engineers:write");
+    READ("read"),
+    WRITE("write");
 
     private final String permission;
 

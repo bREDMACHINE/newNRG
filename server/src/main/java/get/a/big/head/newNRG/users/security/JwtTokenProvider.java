@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.security;
 
 import get.a.big.head.newNRG.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;

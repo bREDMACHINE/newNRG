@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.models;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -6,8 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    USER(Set.of(Permission.ENGINEERS_READ)),
-    ADMIN(Set.of(Permission.ENGINEERS_READ, Permission.ENGINEERS_WRITE));
+    USER(Set.of(Permission.READ)),
+    MODERATOR(Set.of(Permission.READ, Permission.WRITE)),
+    ADMIN(Set.of(Permission.READ, Permission.WRITE));
 
     private final Set<Permission> permissions;
 

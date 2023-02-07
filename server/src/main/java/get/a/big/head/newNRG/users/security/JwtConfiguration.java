@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

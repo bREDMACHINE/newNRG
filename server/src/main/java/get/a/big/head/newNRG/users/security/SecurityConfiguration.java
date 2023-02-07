@@ -1,5 +1,6 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.security;
 
+import get.a.big.head.newNRG.users.models.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/users/all").permitAll()
-                .antMatchers("/users/registration").permitAll()
-                .antMatchers("/users/authorization").permitAll()
+                .antMatchers("/authorization/**").permitAll()
+                .antMatchers("/equipment/**").hasAnyRole(Role.USER.name(), Role.MODERATOR.name(), Role.ADMIN.name())
+                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

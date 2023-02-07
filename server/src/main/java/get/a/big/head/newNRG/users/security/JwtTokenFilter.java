@@ -1,8 +1,7 @@
-package get.a.big.head.newNRG.users;
+package get.a.big.head.newNRG.users.security;
 
 import get.a.big.head.newNRG.exception.JwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

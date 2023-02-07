@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice("get.a.big.head.newNRG")
@@ -12,7 +13,10 @@ public class ErrorHandler {
 
     @ExceptionHandler
     public ResponseEntity<Map<String, String>> handleBadRequestException(final BadRequestException e) {
-        return new ResponseEntity<>(Map.of("Bad Request", e.getMessage()), HttpStatus.BAD_REQUEST);
+        Map<String, String> error = new HashMap<>();
+        error.put("Error", e.getMessage());
+        error.put("Status", HttpStatus.BAD_REQUEST.toString());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler

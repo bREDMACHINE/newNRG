@@ -1,8 +1,8 @@
 package get.a.big.head.newNRG.users.controllers;
 
-import get.a.big.head.newNRG.general.MessageFromServerFrameController;
 import get.a.big.head.newNRG.users.UserClient;
-import get.a.big.head.newNRG.users.UserDto;
+import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.dtos.UserDto;
 import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
 import lombok.extern.slf4j.Slf4j;
@@ -18,30 +18,26 @@ import java.awt.event.WindowEvent;
 @Lazy
 @Controller
 @Slf4j
-public class UserControllerRegistrationFrame {
+public class UserRegistrationFrameController {
 
     private final UserClient userClient;
     private UserRegistrationFrame frame;
-    private boolean closeFrame = true;
 
     @Autowired
-    public UserControllerRegistrationFrame(UserClient userClient) {
+    public UserRegistrationFrameController(UserClient userClient) {
         this.userClient = userClient;
     }
 
     public void UserRegistration() {
-        if (closeFrame) {
-            frame = new UserRegistrationFrame();
-            closeFrame = false;
-        }
-        frame.addWindowListener(new WindowAdapter() {
+        frame = new UserRegistrationFrame();
+        frame.getFrame().addWindowFocusListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                e.getWindow().dispose();
-                closeFrame = true;
+            public void windowLostFocus(WindowEvent e) {
+                e.getWindow().toFront();
+                e.getWindow().requestFocus();
             }
         });
+
         frame.getButton().addActionListener(e -> {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
@@ -49,10 +45,11 @@ public class UserControllerRegistrationFrame {
             UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
             ResponseEntity<Object> registrationAnswer = userClient.userRegistration(userDto);
             if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
+                User user = UserMapper.toUserShortDto(registrationAnswer.getBody(), userLogin);
                 frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь успешно зарегистрирован");
+                JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь " + user.getEmail() + " успешно зарегистрирован");
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody().toString());
+                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
