@@ -5,6 +5,7 @@ import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
 import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,27 +15,32 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 @Lazy
 @Controller
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserRegistrationFrameController {
 
     private final UserClient userClient;
     private UserRegistrationFrame frame;
-
-    @Autowired
-    public UserRegistrationFrameController(UserClient userClient) {
-        this.userClient = userClient;
-    }
+    private final List<JFrame> windows = new ArrayList<>();
 
     public void UserRegistration() {
-        frame = new UserRegistrationFrame();
-        frame.getFrame().addWindowFocusListener(new WindowAdapter() {
+        if (windows.size() == 0) {
+            frame = new UserRegistrationFrame();
+            windows.add(frame);
+        } else {
+            frame.getFrame().toFront();
+            frame.getFrame().requestFocus();
+        }
+
+        frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
-            public void windowLostFocus(WindowEvent e) {
-                e.getWindow().toFront();
-                e.getWindow().requestFocus();
+            public void windowClosing(WindowEvent e) {
+                windows.clear();
             }
         });
 

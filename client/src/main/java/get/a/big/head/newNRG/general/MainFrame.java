@@ -10,8 +10,9 @@ public class MainFrame extends JFrame {
     private JMenu menuMain;
     private JMenu menuOptions;
     private JMenu menuUserLogin;
-    private JMenuItem menuItemAuthorization;
-    private JMenuItem menuItemRegistration;
+    private JMenuItem menuItemLogin;
+    private JMenuItem menuItemAccount;
+    private JMenuItem menuItemLogout;
     private JPanel panel;
     private JLabel label;
     private JTextField textField;
@@ -26,16 +27,19 @@ public class MainFrame extends JFrame {
         menuBar = new JMenuBar();
         menuMain = new JMenu("Основное");
         menuOptions = new JMenu("Настройки");
-        menuUserLogin = new JMenu("Войти");
+        menuUserLogin = new JMenu("Личный кабинет");
         menuBar.add(menuMain);
         menuBar.add(menuOptions);
         menuBar.add(menuUserLogin);
         frame.getContentPane().add(BorderLayout.BEFORE_FIRST_LINE, menuBar);
 
-        menuItemAuthorization = new JMenuItem("Авторизация");
-        menuItemRegistration = new JMenuItem("Регистрация");
-        menuUserLogin.add(menuItemAuthorization);
-        menuUserLogin.add(menuItemRegistration);
+        menuItemLogin = new JMenuItem("Войти");
+        menuItemAccount = new JMenuItem("Личный кабинет");
+        menuItemLogout = new JMenuItem("Выйти");
+
+        menuUserLogin.add(menuItemLogin);
+        menuUserLogin.add(menuItemAccount);
+        menuUserLogin.add(menuItemLogout);
 
         panel = new JPanel();
         textField = new JTextField(10);
@@ -66,14 +70,6 @@ public class MainFrame extends JFrame {
 
     public JMenu getMenuUserLogin() {
         return menuUserLogin;
-    }
-
-    public JMenuItem getMenuItemAuthorization() {
-        return menuItemAuthorization;
-    }
-
-    public JMenuItem getMenuItemRegistration() {
-        return menuItemRegistration;
     }
 
     public JPanel getPanel() {
@@ -112,14 +108,6 @@ public class MainFrame extends JFrame {
         this.menuUserLogin = menuUserLogin;
     }
 
-    public void setMenuItemAuthorization(JMenuItem menuItemAuthorization) {
-        this.menuItemAuthorization = menuItemAuthorization;
-    }
-
-    public void setMenuItemRegistration(JMenuItem menuItemRegistration) {
-        this.menuItemRegistration = menuItemRegistration;
-    }
-
     public void setPanel(JPanel panel) {
         this.panel = panel;
     }
@@ -134,5 +122,29 @@ public class MainFrame extends JFrame {
 
     public void setButtonFind(JButton buttonFind) {
         this.buttonFind = buttonFind;
+    }
+
+    public JMenuItem getMenuItemLogin() {
+        return menuItemLogin;
+    }
+
+    public void setMenuItemLogin(JMenuItem menuItemLogin) {
+        this.menuItemLogin = menuItemLogin;
+    }
+
+    public JMenuItem getMenuItemAccount() {
+        return menuItemAccount;
+    }
+
+    public void setMenuItemAccount(JMenuItem menuItemAccount) {
+        this.menuItemAccount = menuItemAccount;
+    }
+
+    public JMenuItem getMenuItemLogout() {
+        return menuItemLogout;
+    }
+
+    public void setMenuItemLogout(JMenuItem menuItemLogout) {
+        this.menuItemLogout = menuItemLogout;
     }
 }

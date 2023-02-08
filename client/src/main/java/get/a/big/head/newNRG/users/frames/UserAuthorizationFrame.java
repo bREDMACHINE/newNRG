@@ -41,7 +41,6 @@ public class UserAuthorizationFrame extends JFrame {
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         buttonRegistration = new JButton("Регистрация");
-        buttonRegistration.setActionCommand("Registration");
         JPanel jPanel = new JPanel();
         jPanel.add(buttonRegistration);
         jPanel.add(buttonOk);

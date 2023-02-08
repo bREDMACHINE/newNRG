@@ -1,10 +1,11 @@
 package get.a.big.head.newNRG.users.controllers;
 
 import get.a.big.head.newNRG.users.UserClient;
+import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
-import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.frames.UserAuthorizationFrame;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,31 +15,34 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 @Lazy
 @Controller
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserAuthorizationFrameController {
 
     private final UserClient userClient;
+    private final UserRegistrationFrameController registrationFrameController;
     private UserAuthorizationFrame frame;
-
-    @Autowired
-    public UserAuthorizationFrameController(UserClient userClient) {
-        this.userClient = userClient;
-    }
+    private final List<JFrame> windows = new ArrayList<>();
 
     public void UserAuthorization() {
-        frame = new UserAuthorizationFrame();
+        if (windows.size() == 0) {
+            frame = new UserAuthorizationFrame();
+            windows.add(frame);
+        } else {
+            frame.getFrame().toFront();
+            frame.getFrame().requestFocus();
+        }
 
-        frame.getFrame().addWindowFocusListener(new WindowAdapter() {
-                                              @Override
-                                              public void windowLostFocus(WindowEvent e) {
-                                                  if (!frame.getButtonRegistration().getActionCommand().equals("Registration")) {
-                                                      e.getWindow().toFront();
-                                                      e.getWindow().requestFocus();
-                                                  }
-                                              }
+        frame.getFrame().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                windows.clear();
+            }
         });
 
         frame.getButtonOk().addActionListener(e -> {
@@ -56,7 +60,7 @@ public class UserAuthorizationFrameController {
             }
         });
 
-        frame.getButtonRegistration().addActionListener(e -> new UserRegistrationFrameController(userClient).UserRegistration());
+        frame.getButtonRegistration().addActionListener(e -> registrationFrameController.UserRegistration());
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
