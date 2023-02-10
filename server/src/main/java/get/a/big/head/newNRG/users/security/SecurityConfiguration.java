@@ -1,6 +1,8 @@
 package get.a.big.head.newNRG.users.security;
 
 import get.a.big.head.newNRG.users.models.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +20,10 @@ import org.springframework.security
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    public SecurityConfiguration(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final JwtConfiguration jwtConfiguration;
 
     @Bean
     protected BCryptPasswordEncoder passwordEncoder() {
@@ -46,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .apply(new JwtConfiguration(new JwtTokenFilter(jwtTokenProvider)));
+                .apply(jwtConfiguration);
     }
 
     @Bean

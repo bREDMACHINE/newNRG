@@ -44,19 +44,25 @@ public class UserRegistrationFrameController {
             }
         });
 
-        frame.getButton().addActionListener(e -> {
+        frame.getButtonOk().addActionListener(e -> {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get userLogin {}, userPassword {}", userLogin, userPassword);
             UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
             ResponseEntity<Object> registrationAnswer = userClient.userRegistration(userDto);
             if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
-                User user = UserMapper.toUserShortDto(registrationAnswer.getBody(), userLogin);
+                User user = UserMapper.toUser(registrationAnswer.getBody(), userLogin);
                 frame.getFrame().dispose();
+                windows.clear();
                 JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь " + user.getEmail() + " успешно зарегистрирован");
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+        });
+
+        frame.getButtonCancel().addActionListener(e -> {
+            frame.getFrame().dispose();
+            windows.clear();
         });
     }
 }

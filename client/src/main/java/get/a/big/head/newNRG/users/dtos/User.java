@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
     private String email;
-    private String token;
+    private String userId;
     private String role;
     private String status;
 }

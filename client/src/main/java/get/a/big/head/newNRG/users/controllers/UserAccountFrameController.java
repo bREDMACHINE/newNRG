@@ -20,10 +20,12 @@ import java.util.List;
 public class UserAccountFrameController {
 
     private UserAccountFrame frame;
+    private final UserAuthorizationFrameController authorizationFrameController;
     private final List<JFrame> windows = new ArrayList<>();
     public void UserAccount() {
         if (windows.size() == 0) {
-            frame = new UserAccountFrame();
+            frame = new UserAccountFrame(authorizationFrameController.getUser().getEmail(),
+                    authorizationFrameController.getUser().getRole());
             windows.add(frame);
         } else {
             frame.getFrame().toFront();
@@ -37,10 +39,9 @@ public class UserAccountFrameController {
             }
         });
 
-        frame.getButtonOk().addActionListener(e -> {
-            log.info("Get userLogin , userPassword ");
+        frame.getButtonCancel().addActionListener(e -> {
+            frame.getFrame().dispose();
+            windows.clear();
         });
-
-        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 }

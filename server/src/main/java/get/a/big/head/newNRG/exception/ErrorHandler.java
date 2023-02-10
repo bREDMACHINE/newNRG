@@ -23,4 +23,9 @@ public class ErrorHandler {
     public ResponseEntity<Map<String, String>> handleNotFoundException(final NotFoundException e) {
         return new ResponseEntity<>(Map.of("NotFound Error", e.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> handleJwtAuthenticationException(final JwtAuthenticationException e) {
+        return new ResponseEntity<>(Map.of("Authentication Error", e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
 }

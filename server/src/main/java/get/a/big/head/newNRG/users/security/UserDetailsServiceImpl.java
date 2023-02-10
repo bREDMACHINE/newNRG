@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users.services;
+package get.a.big.head.newNRG.users.security;
 
 import get.a.big.head.newNRG.exception.NotFoundException;
 import get.a.big.head.newNRG.users.UserMapper;

@@ -11,10 +11,8 @@ public class UserAuthorizationFrame extends JFrame {
     private JFrame frame;
     private JLabel labelLogin;
     private JTextField textFieldLogin;
-    private JPanel panelLogin;
     private JLabel labelPassword;
     private JPasswordField passwordField;
-    private JPanel panelPassword;
     private JButton buttonOk;
     private JButton buttonCancel;
     private JButton buttonRegistration;
@@ -26,14 +24,14 @@ public class UserAuthorizationFrame extends JFrame {
 
         labelLogin = new JLabel("Введите почту");
         textFieldLogin = new JTextField(15);
-        panelLogin = new JPanel();
+        JPanel panelLogin = new JPanel();
         panelLogin.add(labelLogin);
         panelLogin.add(textFieldLogin);
         frame.getContentPane().add(BorderLayout.NORTH, panelLogin);
 
         labelPassword = new JLabel("Введите пароль");
         passwordField = new JPasswordField(10);
-        panelPassword = new JPanel();
+        JPanel panelPassword = new JPanel();
         panelPassword.add(labelPassword);
         panelPassword.add(passwordField);
         frame.getContentPane().add(BorderLayout.CENTER, panelPassword);
@@ -41,11 +39,11 @@ public class UserAuthorizationFrame extends JFrame {
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         buttonRegistration = new JButton("Регистрация");
-        JPanel jPanel = new JPanel();
-        jPanel.add(buttonRegistration);
-        jPanel.add(buttonOk);
-        jPanel.add(buttonCancel);
-        frame.getContentPane().add(BorderLayout.SOUTH, jPanel);
+        JPanel panelButtons = new JPanel();
+        panelButtons.add(buttonRegistration);
+        panelButtons.add(buttonOk);
+        panelButtons.add(buttonCancel);
+        frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
         frame.setVisible(true);
     }
 }

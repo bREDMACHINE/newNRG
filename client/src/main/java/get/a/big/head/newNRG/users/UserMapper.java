@@ -11,13 +11,13 @@ public class UserMapper {
         return new UserDto(userLogin, userPassword);
     }
 
-    public static User toUserShortDto(Object object, String email) {
+    public static User toUser(Object object, String email) {
         Map<String, String> map = (LinkedHashMap<String, String>) object;
         User user = new User();
         user.setEmail(email);
         user.setRole(map.get("role"));
         if (map.get("token") != null) {
-            user.setToken(map.get("token"));
+            user.setUserId(map.get("token"));
         }
         if (map.get("status") != null) {
             user.setStatus(map.get("status"));

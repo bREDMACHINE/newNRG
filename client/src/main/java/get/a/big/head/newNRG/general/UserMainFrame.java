@@ -3,7 +3,7 @@ package get.a.big.head.newNRG.general;
 import java.awt.*;
 import javax.swing.*;
 
-public class MainFrame extends JFrame {
+public class UserMainFrame extends JFrame {
 
     private JFrame frame;
     private JMenuBar menuBar;
@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
     private JTextField textField;
     private JButton buttonFind;
 
-    public MainFrame() {
+    public UserMainFrame() {
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Основное окно");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

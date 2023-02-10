@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
-@ControllerAdvice("ru.practicum.shareit")
+@ControllerAdvice("get.a.big.head.newNRG")
 public class ErrorHandler {
 
     @ExceptionHandler

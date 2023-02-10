@@ -9,6 +9,7 @@ import get.a.big.head.newNRG.users.models.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -47,7 +48,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserShortDto authenticateUser(UserDto userDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException("Указан неверный пароль");
+        }
         User user = userRepository.findByEmail(userDto.getEmail()).orElseThrow(() -> new NotFoundException("Пользователь не зарегистрирован"));
         UserShortDto userShortDto = UserMapper.toUserOutDto(user);
         userShortDto.setToken(jwtTokenProvider.createToken(user.getEmail(), user.getRole().name()));

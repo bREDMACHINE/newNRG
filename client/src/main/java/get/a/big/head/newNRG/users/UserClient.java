@@ -37,6 +37,11 @@ public class UserClient extends BaseClient {
         return post("/authorization", userDto);
     }
 
+    public ResponseEntity<Object> logout(String userId) {
+        log.info("Logout user {}",  userId);
+        return post("/authorization/logout", userId);
+    }
+
     public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
         return patch("/" + userId, userDto);
     }
@@ -47,8 +52,5 @@ public class UserClient extends BaseClient {
 
     public ResponseEntity<Object> deleteUser(long userId) {
         return delete("/" + userId);
-    }
-
-    public void logout() {
     }
 }
