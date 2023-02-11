@@ -39,7 +39,7 @@ public class UserRegistrationFrameController {
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
                 windows.clear();
             }
         });
@@ -53,16 +53,12 @@ public class UserRegistrationFrameController {
             if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
                 User user = UserMapper.toUser(registrationAnswer.getBody(), userLogin);
                 frame.getFrame().dispose();
-                windows.clear();
                 JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь " + user.getEmail() + " успешно зарегистрирован");
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        frame.getButtonCancel().addActionListener(e -> {
-            frame.getFrame().dispose();
-            windows.clear();
-        });
+        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 }

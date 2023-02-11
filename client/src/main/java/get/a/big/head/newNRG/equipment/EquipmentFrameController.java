@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users.controllers;
+package get.a.big.head.newNRG.equipment;
 
 import get.a.big.head.newNRG.users.frames.UserAccountFrame;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +17,14 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserAccountFrameController {
+public class EquipmentFrameController {
 
-    private UserAccountFrame frame;
-    private final UserAuthorizationFrameController authorizationFrameController;
+    private EquipmentFrame frame;
     private final List<JFrame> windows = new ArrayList<>();
-    public void userAccount() {
+
+    public void initEquipmentController() {
         if (windows.size() == 0) {
-            frame = new UserAccountFrame(authorizationFrameController.getUser().getEmail(),
-                    authorizationFrameController.getUser().getRole());
+            frame = new EquipmentFrame();
             windows.add(frame);
         } else {
             frame.getFrame().toFront();

@@ -10,7 +10,6 @@ public class UserMainFrame extends JFrame {
     private JMenu menuMain;
     private JMenu menuOptions;
     private JMenu menuUserLogin;
-    private JMenuItem menuItemLogin;
     private JMenuItem menuItemAccount;
     private JMenuItem menuItemLogout;
     private JPanel panel;
@@ -33,11 +32,8 @@ public class UserMainFrame extends JFrame {
         menuBar.add(menuUserLogin);
         frame.getContentPane().add(BorderLayout.BEFORE_FIRST_LINE, menuBar);
 
-        menuItemLogin = new JMenuItem("Войти");
         menuItemAccount = new JMenuItem("Личный кабинет");
         menuItemLogout = new JMenuItem("Выйти");
-
-        menuUserLogin.add(menuItemLogin);
         menuUserLogin.add(menuItemAccount);
         menuUserLogin.add(menuItemLogout);
 
@@ -122,14 +118,6 @@ public class UserMainFrame extends JFrame {
 
     public void setButtonFind(JButton buttonFind) {
         this.buttonFind = buttonFind;
-    }
-
-    public JMenuItem getMenuItemLogin() {
-        return menuItemLogin;
-    }
-
-    public void setMenuItemLogin(JMenuItem menuItemLogin) {
-        this.menuItemLogin = menuItemLogin;
     }
 
     public JMenuItem getMenuItemAccount() {
