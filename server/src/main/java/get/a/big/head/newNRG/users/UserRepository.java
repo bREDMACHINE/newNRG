@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.users;
 
+import get.a.big.head.newNRG.users.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

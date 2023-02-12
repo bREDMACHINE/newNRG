@@ -1,6 +1,7 @@
 package get.a.big.head.newNRG.users;
 
 import get.a.big.head.newNRG.httpclients.BaseClient;
+import get.a.big.head.newNRG.users.dtos.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +15,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Slf4j
 public class UserClient extends BaseClient {
 
-    private static final String API_PREFIX = "/users";
+    private static final String API_PREFIX = "";
 
     @Autowired
     public UserClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -28,16 +29,21 @@ public class UserClient extends BaseClient {
 
     public ResponseEntity<Object> userRegistration(UserDto userDto) {
         log.info("Registration user {}",  userDto);
-        return post("/registration", userDto);
-    }
-
-    public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
-        return patch("/" + userId, userDto);
+        return post("/authorization/registration", userDto);
     }
 
     public ResponseEntity<Object> userAuthorization(UserDto userDto) {
         log.info("Authorization user {}",  userDto);
         return post("/authorization", userDto);
+    }
+
+    public ResponseEntity<Object> logout(String userId) {
+        log.info("Logout user {}",  userId);
+        return post("/authorization/logout", userId);
+    }
+
+    public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
+        return patch("/" + userId, userDto);
     }
 
     public ResponseEntity<Object> findAllUsers() {
