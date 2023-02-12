@@ -1,6 +1,5 @@
 package get.a.big.head.newNRG.general;
 
-import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import get.a.big.head.newNRG.users.dtos.Role;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,10 @@ import java.awt.event.WindowEvent;
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class MainFrameController {
-
-    private UserMainFrame frame;
+public class FrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
-    private final UserAccountFrameController accountFrameController;
+    private final UserMainFrameController userMainFrameController;
+    private final ModeratorMainFrameController moderatorMainFrameController;
 
     public void initControllerFrame() {
         if (authorizationFrameController.getUser() == null) {
@@ -31,24 +29,20 @@ public class MainFrameController {
             public void windowClosed(WindowEvent e) {
                 if (authorizationFrameController.getUser() != null) {
                     if (authorizationFrameController.getUser().getRole().equals(Role.USER.name())) {
-                        frame = new UserMainFrame();
-                        chooseMainFrame();
+                        userMainFrameController.initUserControllerFrame();
                     } else if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
-                        frame = new ModeratorMainFrame();
+                        moderatorMainFrameController.initModeratorControllerFrame();
                     } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
-                        frame = new AdminMainFrame();
+
                     }
                 }
             }
         });
-    }
 
-    private void chooseMainFrame() {
-        frame.getMenuItemLogout().addActionListener(e -> {
+        userMainFrameController.getFrame().getMenuItemLogout().addActionListener(e -> {
             authorizationFrameController.logout();
-            frame.getFrame().dispose();
+            userMainFrameController.getFrame().getFrame().dispose();
             initControllerFrame();
         });
-        frame.getMenuItemAccount().addActionListener(e -> accountFrameController.userAccount());
     }
 }

@@ -1,10 +1,10 @@
 package get.a.big.head.newNRG.equipment;
 
-import get.a.big.head.newNRG.users.frames.UserAccountFrame;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
@@ -21,10 +21,11 @@ public class EquipmentFrameController {
 
     private EquipmentFrame frame;
     private final List<JFrame> windows = new ArrayList<>();
+    private final EquipmentClient equipmentClient;
 
-    public void initEquipmentController() {
+    public void initEquipmentController(Equipment equipment) {
         if (windows.size() == 0) {
-            frame = new EquipmentFrame();
+            frame = new EquipmentFrame(equipment);
             windows.add(frame);
         } else {
             frame.getFrame().toFront();
@@ -38,8 +39,16 @@ public class EquipmentFrameController {
             }
         });
 
-        frame.getButtonCancel().addActionListener(e -> {
-            frame.getFrame().dispose();
-        });
+        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+    }
+
+    public Equipment getEquipment(String text, String userId) {
+        ResponseEntity<Object> equipmentAnswer = equipmentClient.findEquipment(text, userId);
+        if (equipmentAnswer.getStatusCode().is2xxSuccessful()) {
+            return EquipmentMapper.toEquipment(equipmentAnswer.getBody());
+        } else {
+            JOptionPane.showMessageDialog(frame.getFrame(), equipmentAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
     }
 }

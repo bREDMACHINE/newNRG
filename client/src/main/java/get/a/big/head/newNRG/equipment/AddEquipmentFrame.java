@@ -6,28 +6,37 @@ import javax.swing.*;
 import java.awt.*;
 
 @Data
-public class EquipmentFrame extends JFrame {
+public class AddEquipmentFrame extends JFrame {
 
     private JFrame frame;
     private JLabel labelOperationalName;
+    private JTextField textOperationalName;
     private JLabel labelRatedCurrent;
+    private JTextField textRatedCurrent;
     private JLabel labelRatedVoltage;
+    private JTextField textRatedVoltage;
     private JButton buttonOk;
     private JButton buttonCancel;
 
-    public EquipmentFrame(Equipment equipment) {
+    public AddEquipmentFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(300, 800);
 
         JPanel panelLabels = new JPanel();
-        labelOperationalName = new JLabel(equipment.getOperationalName());
-        labelRatedCurrent = new JLabel(equipment.getRatedCurrent());
-        labelRatedVoltage = new JLabel(equipment.getRatedVoltage());
+        labelOperationalName = new JLabel("Оперативное наименование");
+        labelRatedCurrent = new JLabel("Номинальный ток");
+        labelRatedVoltage = new JLabel("Номинальное напряжение");
+        textOperationalName = new JTextField(15);
+        textRatedCurrent = new JTextField(15);
+        textRatedVoltage = new JTextField(15);
 
         panelLabels.add(labelOperationalName);
+        panelLabels.add(textOperationalName);
         panelLabels.add(labelRatedCurrent);
+        panelLabels.add(textRatedCurrent);
         panelLabels.add(labelRatedVoltage);
+        panelLabels.add(textRatedVoltage);
         frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
 
         buttonOk = new JButton("OK");

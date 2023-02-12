@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users.models;
+package get.a.big.head.newNRG.equipment;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -7,33 +7,31 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "equipment", schema = "public")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "equipment_id")
     private Long id;
-    @Column(name = "user_password")
-    private String password;
-    private String email;
-    @Column(name = "user_role")
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
-    @Enumerated(value = EnumType.STRING)
-    private Status status;
+    @Column(name = "operational_name")
+    private String operationalName;
+    @Column(name = "rated_current")
+    private String ratedCurrent;
+    @Column(name = "rated_voltage")
+    private String ratedVoltage;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        Equipment equipment = (Equipment) o;
+        return id != null && Objects.equals(id, equipment.id);
     }
 
     @Override
