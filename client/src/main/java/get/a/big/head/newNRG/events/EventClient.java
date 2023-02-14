@@ -29,4 +29,8 @@ public class EventClient extends BaseClient {
     public ResponseEntity<Object> getEvent(String userId) {
         return get("",userId);
     }
+
+    public ResponseEntity<Object> addEvent(EventDto eventDto, String userId) {
+        return post("",  userId, eventDto);
+    }
 }

@@ -22,7 +22,7 @@ public class EventFrame extends JFrame {
         frame.setSize(300, 300);
 
         JPanel panelLabels = new JPanel();
-        createEvent = new JLabel(event.getCreateEvent().toString());
+        createEvent = new JLabel(event.getCreateEvent());
         eventName = new JLabel(event.getName());
         description = new JLabel(event.getDescription());
         file = new JLabel(event.getFile().getName());

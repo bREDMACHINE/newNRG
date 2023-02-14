@@ -15,4 +15,12 @@ public class EventMapper {
         event.setFile(new File(map.get("file")));
         return event;
     }
+
+    public static EventDto toEventDto(String createEvent, String nameEvent, String description) {
+        EventDto eventDto = new EventDto();
+        eventDto.setCreateEvent(createEvent);
+        eventDto.setName(nameEvent);
+        eventDto.setDescription(description);
+        return eventDto;
+    }
 }

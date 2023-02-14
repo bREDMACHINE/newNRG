@@ -21,7 +21,7 @@ public class AddEquipmentFrameController {
     private final EquipmentClient equipmentClient;
     private AddEquipmentFrame frame;
 
-    public void addEquipmentController(String role) {
+    public void addEquipmentController(String userId) {
         if (windows.size() == 0) {
             frame = new AddEquipmentFrame();
             windows.add(frame);
@@ -43,7 +43,7 @@ public class AddEquipmentFrameController {
             log.info("Add equipment  with operationalName {}, ratedCurrent {}, ratedVoltage {}",
                     operationalName, ratedCurrent, ratedVoltage);
             EquipmentDto equipmentDto = EquipmentMapper.toEquipmentDto(operationalName, ratedCurrent, ratedVoltage);
-            ResponseEntity<Object> addEquipmentAnswer = equipmentClient.addEquipment(equipmentDto, role);
+            ResponseEntity<Object> addEquipmentAnswer = equipmentClient.addEquipment(equipmentDto, userId);
 
             if (addEquipmentAnswer.getStatusCode().is2xxSuccessful()) {
                 Equipment equipment = EquipmentMapper.toEquipment(addEquipmentAnswer.getBody());
