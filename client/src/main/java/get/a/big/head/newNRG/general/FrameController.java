@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@Lazy
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -30,6 +29,12 @@ public class FrameController {
                 if (authorizationFrameController.getUser() != null) {
                     if (authorizationFrameController.getUser().getRole().equals(Role.USER.name())) {
                         userMainFrameController.initUserControllerFrame();
+
+                        userMainFrameController.getFrame().getFrame().addWindowListener(new WindowAdapter() {
+                            public void windowClosed(WindowEvent e) {
+                                initControllerFrame();
+                            }
+                        });
                     } else if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
                         moderatorMainFrameController.initModeratorControllerFrame();
                     } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
@@ -37,12 +42,6 @@ public class FrameController {
                     }
                 }
             }
-        });
-
-        userMainFrameController.getFrame().getMenuItemLogout().addActionListener(e -> {
-            authorizationFrameController.logout();
-            userMainFrameController.getFrame().getFrame().dispose();
-            initControllerFrame();
         });
     }
 }
