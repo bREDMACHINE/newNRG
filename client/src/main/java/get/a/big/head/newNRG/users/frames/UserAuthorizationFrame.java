@@ -18,8 +18,9 @@ public class UserAuthorizationFrame extends JFrame {
     private JButton buttonRegistration;
 
     public UserAuthorizationFrame() {
+        JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame();
-        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);
 
         labelLogin = new JLabel("Введите почту");

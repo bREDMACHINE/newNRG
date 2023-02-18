@@ -33,11 +33,6 @@ public class UserMainFrameController {
             );
             equipmentFrameController.initEquipmentController(equipment);
         });
-
-        frame.getMenuItemLogout().addActionListener(e -> {
-            authorizationFrameController.logout();
-            frame.getFrame().dispose();
-        });
     }
 
     public UserMainFrame getFrame() {

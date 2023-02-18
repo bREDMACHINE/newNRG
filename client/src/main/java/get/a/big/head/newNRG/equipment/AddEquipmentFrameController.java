@@ -21,7 +21,7 @@ public class AddEquipmentFrameController {
     private final EquipmentClient equipmentClient;
     private AddEquipmentFrame frame;
 
-    public void addEquipmentController(String userId) {
+    public void initAddEquipmentFrame(String userId) {
         if (windows.size() == 0) {
             frame = new AddEquipmentFrame();
             windows.add(frame);
