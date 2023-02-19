@@ -12,7 +12,7 @@ public class EquipmentController {
 
     private final EquipmentService equipmentService;
 
-    @PostMapping("/equipment")
+    @PostMapping("/equipment/moderator")
     public EquipmentDto addEquipment(@RequestBody EquipmentDto equipmentDto) {
         log.info("Получен Post запрос к эндпоинту /equipment, equipment={}", equipmentDto);
         return equipmentService.addEquipment(equipmentDto);

@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.equipment;
 
+import get.a.big.head.newNRG.general.ModeratorMainFrameController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,9 @@ public class EquipmentFrameController {
             JOptionPane.showMessageDialog(frame.getFrame(), equipmentAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return null;
+    }
+
+    public EquipmentFrame getFrame() {
+        return frame;
     }
 }

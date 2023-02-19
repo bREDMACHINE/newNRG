@@ -57,4 +57,8 @@ public class AddEquipmentFrameController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
+
+    public AddEquipmentFrame getFrame() {
+        return frame;
+    }
 }

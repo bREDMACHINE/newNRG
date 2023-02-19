@@ -61,4 +61,8 @@ public class UserRegistrationFrameController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
+
+    public UserRegistrationFrame getFrame() {
+        return frame;
+    }
 }

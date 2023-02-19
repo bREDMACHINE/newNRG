@@ -21,16 +21,14 @@ public class AddEquipmentFrame extends JFrame {
     public AddEquipmentFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 800);
 
-        JPanel panelLabels = new JPanel();
+        JPanel panelLabels = new JPanel(new GridLayout(3, 2, 5, 0));
         labelOperationalName = new JLabel("Оперативное наименование");
         labelRatedCurrent = new JLabel("Номинальный ток");
         labelRatedVoltage = new JLabel("Номинальное напряжение");
         textOperationalName = new JTextField(15);
         textRatedCurrent = new JTextField(15);
         textRatedVoltage = new JTextField(15);
-
         panelLabels.add(labelOperationalName);
         panelLabels.add(textOperationalName);
         panelLabels.add(labelRatedCurrent);
@@ -45,6 +43,7 @@ public class AddEquipmentFrame extends JFrame {
         panelButtons.add(buttonOk);
         panelButtons.add(buttonCancel);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+        frame.pack();
         frame.setVisible(true);
     }
 }

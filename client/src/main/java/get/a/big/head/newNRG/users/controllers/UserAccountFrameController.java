@@ -43,4 +43,8 @@ public class UserAccountFrameController {
             frame.getFrame().dispose();
         });
     }
+
+    public UserAccountFrame getFrame() {
+        return frame;
+    }
 }
