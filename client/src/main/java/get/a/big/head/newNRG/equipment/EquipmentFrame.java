@@ -12,6 +12,7 @@ public class EquipmentFrame extends JFrame {
     private JLabel labelOperationalName;
     private JLabel labelRatedCurrent;
     private JLabel labelRatedVoltage;
+    private JButton buttonAddEvent;
     private JButton buttonOk;
     private JButton buttonCancel;
 
@@ -30,9 +31,11 @@ public class EquipmentFrame extends JFrame {
         panelLabels.add(labelRatedVoltage);
         frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
 
+        buttonAddEvent = new JButton("Добавить событие");
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         JPanel panelButtons = new JPanel();
+        panelButtons.add(buttonAddEvent);
         panelButtons.add(buttonOk);
         panelButtons.add(buttonCancel);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);

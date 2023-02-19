@@ -16,9 +16,9 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public EquipmentDto addEquipment(EquipmentDto equipmentDto) {
         Equipment equipment = new Equipment();
+        equipment.setOperationalName(equipmentDto.getOperationalName());
         equipment.setRatedCurrent(equipmentDto.getRatedCurrent());
-        equipment.setRatedVoltage(equipment.getRatedVoltage());
-        equipment.setOperationalName(equipment.getOperationalName());
+        equipment.setRatedVoltage(equipmentDto.getRatedVoltage());
         return EquipmentMapper.toEquipmentDto(equipmentRepository.save(equipment));
     }
 

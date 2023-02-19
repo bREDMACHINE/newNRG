@@ -7,8 +7,13 @@ import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+@Lazy
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -30,6 +35,17 @@ public class UserMainFrameController {
                     authorizationFrameController.getUser().getUserId()
             );
             equipmentFrameController.initEquipmentController(equipment);
+        });
+
+        frame.getFrame().addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+                if (accountFrameController.getFrame() !=null) {
+                    accountFrameController.getFrame().getFrame().dispose();
+                }
+                if (equipmentFrameController.getFrame() !=null) {
+                    equipmentFrameController.getFrame().getFrame().dispose();
+                }
+            }
         });
     }
 

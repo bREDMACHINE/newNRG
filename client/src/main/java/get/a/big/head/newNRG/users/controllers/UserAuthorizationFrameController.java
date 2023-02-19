@@ -40,6 +40,9 @@ public class UserAuthorizationFrameController {
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 windows.clear();
+                if (registrationFrameController.getFrame() !=null) {
+                    registrationFrameController.getFrame().getFrame().dispose();
+                }
             }
         });
 

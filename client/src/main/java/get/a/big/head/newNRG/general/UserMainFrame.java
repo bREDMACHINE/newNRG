@@ -8,18 +8,17 @@ import javax.swing.*;
 @Data
 public class UserMainFrame extends JFrame {
 
-    private JFrame frame;
-    private JMenu menuMain;
-    private JMenu menuOptions;
-    private JMenu menuUserLogin;
-    private JMenuItem menuItemAccount;
-    private JMenuItem menuItemLogout;
-    private JLabel label;
-    private JTextField textField;
-    private JButton buttonFind;
+    protected JFrame frame;
+    protected JMenu menuMain;
+    protected JMenu menuOptions;
+    protected JMenu menuUserLogin;
+    protected JMenuItem menuItemAccount;
+    protected JMenuItem menuItemLogout;
+    protected JLabel label;
+    protected JTextField textField;
+    protected JButton buttonFind;
 
     public UserMainFrame() {
-        JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Основное окно");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);

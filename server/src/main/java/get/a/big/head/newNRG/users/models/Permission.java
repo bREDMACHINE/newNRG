@@ -1,8 +1,9 @@
 package get.a.big.head.newNRG.users.models;
 
 public enum Permission {
-    READ("read"),
-    WRITE("write");
+    READ("READ"),
+    WRITE("WRITE"),
+    GOD("GOD");
 
     private final String permission;
 

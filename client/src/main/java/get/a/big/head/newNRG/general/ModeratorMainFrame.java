@@ -9,16 +9,13 @@ import java.awt.*;
 public class ModeratorMainFrame extends UserMainFrame {
 
     JButton buttonAddEquipment;
-    JButton buttonAddEvent;
 
     public ModeratorMainFrame() {
-        JPanel panel = new JPanel(new GridLayout(1, 2, 5, 0));
+        JPanel panel = new JPanel();
         buttonAddEquipment = new JButton("Добавить оборудование");
-        buttonAddEvent = new JButton("Добавить событие");
         panel.add(buttonAddEquipment);
-        panel.add(buttonAddEvent);
-        JPanel flow = new JPanel(new FlowLayout( FlowLayout.RIGHT ));
+        JPanel flow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         flow.add(panel);
-        getFrame().getContentPane().add(BorderLayout.SOUTH, panel);
+        getFrame().getContentPane().add(BorderLayout.SOUTH, flow);
     }
 }

@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.events;
 
 import get.a.big.head.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +12,12 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Service
 @Slf4j
-public class EquipmentClient extends BaseClient {
-    private static final String API_PREFIX = "/equipment";
+public class EventClient extends BaseClient {
+
+    private static final String API_PREFIX = "/equipment/event";
 
     @Autowired
-    public EquipmentClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public EventClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
@@ -25,11 +26,11 @@ public class EquipmentClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> findEquipment(String text, String userId) {
-        return get("?text=" + text, userId);
+    public ResponseEntity<Object> getEvent(String userId) {
+        return get("",userId);
     }
 
-    public ResponseEntity<Object> addEquipment(EquipmentDto equipmentDto, String userId) {
-        return post("/moderator", userId, equipmentDto);
+    public ResponseEntity<Object> addEvent(EventDto eventDto, String userId) {
+        return post("",  userId, eventDto);
     }
 }

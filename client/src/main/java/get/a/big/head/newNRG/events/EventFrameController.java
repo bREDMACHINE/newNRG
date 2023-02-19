@@ -1,6 +1,9 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.events;
 
-import get.a.big.head.newNRG.general.ModeratorMainFrameController;
+import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.EquipmentClient;
+import get.a.big.head.newNRG.equipment.EquipmentFrame;
+import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +21,15 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class EquipmentFrameController {
+public class EventFrameController {
 
-    private EquipmentFrame frame;
+    private EventFrame frame;
     private final List<JFrame> windows = new ArrayList<>();
-    private final EquipmentClient equipmentClient;
+    private final EventClient eventClient;
 
-    public void initEquipmentController(Equipment equipment) {
+    public void initEventController(Event event) {
         if (windows.size() == 0) {
-            frame = new EquipmentFrame(equipment);
+            frame = new EventFrame(event);
             windows.add(frame);
         } else {
             frame.getFrame().toFront();
@@ -43,17 +46,13 @@ public class EquipmentFrameController {
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 
-    public Equipment getEquipment(String text, String userId) {
-        ResponseEntity<Object> equipmentAnswer = equipmentClient.findEquipment(text, userId);
-        if (equipmentAnswer.getStatusCode().is2xxSuccessful()) {
-            return EquipmentMapper.toEquipment(equipmentAnswer.getBody());
+    public Event getEvent(String userId) {
+        ResponseEntity<Object> eventAnswer = eventClient.getEvent(userId);
+        if (eventAnswer.getStatusCode().is2xxSuccessful()) {
+            return EventMapper.toEvent(eventAnswer.getBody());
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), equipmentAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame.getFrame(), eventAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return null;
-    }
-
-    public EquipmentFrame getFrame() {
-        return frame;
     }
 }
