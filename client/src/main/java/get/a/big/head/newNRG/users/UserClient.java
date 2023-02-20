@@ -42,6 +42,11 @@ public class UserClient extends BaseClient {
         return post("/authorization/logout", userId);
     }
 
+    public ResponseEntity<Object> getUser(String userName, String userId) {
+        log.info("Get user {}",  userName);
+        return get("/admin/user?username=" + userName, userId);
+    }
+
     public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
         return patch("/" + userId, userDto);
     }

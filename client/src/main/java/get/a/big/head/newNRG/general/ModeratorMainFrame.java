@@ -8,14 +8,15 @@ import java.awt.*;
 @Data
 public class ModeratorMainFrame extends UserMainFrame {
 
-    JButton buttonAddEquipment;
+    private JButton buttonAddEquipment;
+    protected JPanel panelButtons;
 
     public ModeratorMainFrame() {
-        JPanel panel = new JPanel();
+        panelButtons = new JPanel();
         buttonAddEquipment = new JButton("Добавить оборудование");
-        panel.add(buttonAddEquipment);
+        panelButtons.add(buttonAddEquipment);
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        flow.add(panel);
-        getFrame().getContentPane().add(BorderLayout.SOUTH, flow);
+        flow.add(panelButtons);
+        frame.getContentPane().add(BorderLayout.SOUTH, flow);
     }
 }

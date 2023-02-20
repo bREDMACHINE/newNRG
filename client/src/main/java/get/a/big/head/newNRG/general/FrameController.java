@@ -17,6 +17,7 @@ public class FrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private final UserMainFrameController userMainFrameController;
     private final ModeratorMainFrameController moderatorMainFrameController;
+    private final AdminMainFrameController adminMainFrameController;
 
     public void initControllerFrame() {
         if (authorizationFrameController.getUser() == null) {
@@ -41,7 +42,12 @@ public class FrameController {
                             initControllerFrame();
                         });
                     } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
-
+                        adminMainFrameController.initAdminControllerFrame();
+                        adminMainFrameController.getFrame().getMenuItemLogout().addActionListener(event -> {
+                            authorizationFrameController.logout();
+                            adminMainFrameController.getFrame().getFrame().dispose();
+                            initControllerFrame();
+                        });
                     }
                 }
             }
