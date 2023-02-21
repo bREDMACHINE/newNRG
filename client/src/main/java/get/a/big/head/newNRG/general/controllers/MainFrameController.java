@@ -1,33 +1,58 @@
-package get.a.big.head.newNRG.general;
+package get.a.big.head.newNRG.general.controllers;
 
 import get.a.big.head.newNRG.equipment.AddEquipmentFrameController;
 import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.equipment.EquipmentFrameController;
+import get.a.big.head.newNRG.general.frames.AdminMainFrame;
+import get.a.big.head.newNRG.general.frames.ModeratorMainFrame;
+import get.a.big.head.newNRG.general.frames.UserMainFrame;
 import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import get.a.big.head.newNRG.users.controllers.UserManagerFrameController;
+import get.a.big.head.newNRG.users.dtos.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+@Lazy
 @Controller
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AdminMainFrameController {
+public class MainFrameController {
 
-    private final AddEquipmentFrameController addEquipmentFrameController;
-    private final UserAuthorizationFrameController authorizationFrameController;
     private final UserAccountFrameController accountFrameController;
     private final EquipmentFrameController equipmentFrameController;
+    private final UserAuthorizationFrameController authorizationFrameController;
+    private final AddEquipmentFrameController addEquipmentFrameController;
     private final UserManagerFrameController userManagerFrameController;
-    private AdminMainFrame frame;
+    private UserMainFrame frame;
 
-    public void initAdminControllerFrame() {
-        frame = new AdminMainFrame();
+    public void initMainFrameController() {
+
+        if (authorizationFrameController.getUser().getRole().equals(Role.USER.name())) {
+            frame = new UserMainFrame();
+            frame.getMenuItemLogout().addActionListener(event -> {
+                authorizationFrameController.logout();
+                frame.getFrame().dispose();
+            });
+        } else if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
+            frame = new ModeratorMainFrame();
+            frame.getMenuItemLogout().addActionListener(event -> {
+                authorizationFrameController.logout();
+                frame.getFrame().dispose();
+            });
+        } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
+            frame = new AdminMainFrame();
+            frame.getMenuItemLogout().addActionListener(event -> {
+                authorizationFrameController.logout();
+                frame.getFrame().dispose();
+            });
+        }
 
         frame.getMenuItemAccount().addActionListener(e -> accountFrameController.userAccount());
 
@@ -58,11 +83,14 @@ public class AdminMainFrameController {
                 if (addEquipmentFrameController.getFrame() !=null) {
                     addEquipmentFrameController.getFrame().getFrame().dispose();
                 }
+                if (userManagerFrameController.getFrame() != null) {
+                    userManagerFrameController.getFrame().getFrame().dispose();
+                }
             }
         });
     }
 
-    public AdminMainFrame getFrame() {
+    public UserMainFrame getFrame() {
         return frame;
     }
 }

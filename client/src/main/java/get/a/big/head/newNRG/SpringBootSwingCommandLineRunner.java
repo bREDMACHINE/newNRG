@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG;
 
-import get.a.big.head.newNRG.general.FrameController;
+import get.a.big.head.newNRG.general.controllers.FrameController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

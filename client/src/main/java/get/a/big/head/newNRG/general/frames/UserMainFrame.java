@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.general;
+package get.a.big.head.newNRG.general.frames;
 
 import lombok.Data;
 
@@ -9,14 +9,17 @@ import javax.swing.*;
 public class UserMainFrame extends JFrame {
 
     protected JFrame frame;
-    protected JMenu menuMain;
-    protected JMenu menuOptions;
-    protected JMenu menuUserLogin;
-    protected JMenuItem menuItemAccount;
-    protected JMenuItem menuItemLogout;
-    protected JLabel label;
-    protected JTextField textField;
-    protected JButton buttonFind;
+    private JMenu menuMain;
+    private JMenu menuOptions;
+    private JMenu menuUserLogin;
+    private JMenuItem menuItemAccount;
+    private JMenuItem menuItemLogout;
+    private JLabel label;
+    private JTextField textField;
+    private JButton buttonFind;
+    protected JButton buttonAddEquipment;
+    protected JButton userManager;
+    protected JPanel panelButtons;
 
     public UserMainFrame() {
         frame = new JFrame("Основное окно");
@@ -47,6 +50,13 @@ public class UserMainFrame extends JFrame {
         label = new JLabel("Введите оперативное наименование");
         panel1.add(label);
         panel1.add(panel);
+
+        panelButtons = new JPanel();
+        buttonAddEquipment = new JButton("Добавить оборудование");
+        userManager = new JButton("Управление пользователями");
+        JPanel flow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        flow.add(panelButtons);
+        frame.getContentPane().add(BorderLayout.SOUTH, flow);
 
         frame.getContentPane().add(BorderLayout.CENTER, panel1);
         frame.setVisible(true);
