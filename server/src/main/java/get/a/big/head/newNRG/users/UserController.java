@@ -46,10 +46,10 @@ public class UserController {
         return userService.updateUser(userId, userDto);
     }
 
-    @GetMapping("/admin/{userId}")
-    public UserFullDto getUser(@PathVariable long userId) {
-        log.info("Получен Get запрос к эндпоинту /admin/{}", userId);
-        return userService.getUser(userId);
+    @GetMapping("/admin/{userName}")
+    public UserFullDto getUser(@PathVariable String userName) {
+        log.info("Получен Get запрос к эндпоинту /admin/{}", userName);
+        return userService.getUser(userName);
     }
 
     @GetMapping("/admin/users")
@@ -58,9 +58,9 @@ public class UserController {
         return userService.findAllUsers();
     }
 
-    @DeleteMapping("/admin/{userId}")
-    public void deleteUser(@PathVariable long userId) {
-        log.info("Получен Delete запрос к эндпоинту /admin/{}", userId);
-        userService.deleteUser(userId);
+    @DeleteMapping("/admin/{userName}")
+    public void deleteUser(@PathVariable String userName) {
+        log.info("Получен Delete запрос к эндпоинту /admin/{}", userName);
+        userService.deleteUser(userName);
     }
 }

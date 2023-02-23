@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserFullDto getUser(long userId) {
-        return UserMapper.toUserFullDto(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует")));
+    public UserFullDto getUser(String userName) {
+        return UserMapper.toUserFullDto(userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("Указанный email не существует")));
     }
 
     @Override
@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует"));
+    public void deleteUser(String userName) {
+        User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
         userRepository.delete(user);
     }
 }

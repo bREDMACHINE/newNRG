@@ -1,8 +1,9 @@
 package get.a.big.head.newNRG.events;
 
 import get.a.big.head.newNRG.equipment.Equipment;
-import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.equipment.EquipmentMapper;
+import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +14,23 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Lazy
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddEventFrameController {
 
     private AddEventFrame frame;
-    private final List<JFrame> windows = new ArrayList<>();
+    private boolean close = true;
     private final EventClient eventClient;
+    private final UserAuthorizationFrameController authorizationFrameController;
 
-    public void initAddEventController(String role) {
-        if (windows.size() == 0) {
+    public void initAddEventFrameController() {
+        if (close) {
             frame = new AddEventFrame();
-            windows.add(frame);
+            close = false;
         } else {
             frame.getFrame().toFront();
             frame.getFrame().requestFocus();
@@ -38,7 +39,7 @@ public class AddEventFrameController {
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                windows.clear();
+                close = true;
             }
         });
 
@@ -49,7 +50,10 @@ public class AddEventFrameController {
             log.info("Add event  with createEvent {}, nameEvent {}, description {}",
                     createEvent, nameEvent, description);
             EventDto eventDto = EventMapper.toEventDto(createEvent, nameEvent, description);
-            ResponseEntity<Object> addEventAnswer = eventClient.addEvent(eventDto, role);
+            ResponseEntity<Object> addEventAnswer = eventClient.addEvent(
+                    eventDto,
+                    authorizationFrameController.getUser().getUserId()
+            );
 
             if (addEventAnswer.getStatusCode().is2xxSuccessful()) {
                 Equipment equipment = EquipmentMapper.toEquipment(addEventAnswer.getBody());

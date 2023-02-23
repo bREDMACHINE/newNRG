@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Lazy
 @Controller
@@ -20,13 +18,13 @@ import java.util.List;
 public class EquipmentFrameController {
 
     private EquipmentFrame frame;
-    private final List<JFrame> windows = new ArrayList<>();
+    private boolean close = true;
     private final EquipmentClient equipmentClient;
 
-    public void initEquipmentController(Equipment equipment) {
-        if (windows.size() == 0) {
+    public void initEquipmentFrameController(Equipment equipment) {
+        if (close) {
             frame = new EquipmentFrame(equipment);
-            windows.add(frame);
+            close = false;
         } else {
             frame.getFrame().toFront();
             frame.getFrame().requestFocus();
@@ -35,7 +33,7 @@ public class EquipmentFrameController {
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                windows.clear();
+                close = true;
             }
         });
 

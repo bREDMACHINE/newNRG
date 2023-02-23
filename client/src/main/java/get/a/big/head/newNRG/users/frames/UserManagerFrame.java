@@ -1,18 +1,18 @@
 package get.a.big.head.newNRG.users.frames;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Data
+@Getter
+@Setter
 public class UserManagerFrame extends JFrame {
     private JFrame frame;
-    private JLabel labelFinder;
+    private JButton buttonFind;
     private JTextField textFieldFinder;
     private JButton buttonAllUsers;
-    private JPasswordField passwordField;
-    private JButton buttonOk;
     private JButton buttonCancel;
 
     public UserManagerFrame() {
@@ -20,10 +20,10 @@ public class UserManagerFrame extends JFrame {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(320, 240);
 
-        labelFinder = new JLabel("Найти пользователя");
+        buttonFind = new JButton("Найти пользователя");
         textFieldFinder = new JTextField(15);
         JPanel panelFindUser = new JPanel();
-        panelFindUser.add(labelFinder);
+        panelFindUser.add(buttonFind);
         panelFindUser.add(textFieldFinder);
         frame.getContentPane().add(BorderLayout.NORTH, panelFindUser);
 
@@ -32,10 +32,8 @@ public class UserManagerFrame extends JFrame {
         panelAllUsers.add(buttonAllUsers);
         frame.getContentPane().add(BorderLayout.CENTER, panelAllUsers);
 
-        buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonOk);
         panelButtons.add(buttonCancel);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
         frame.setVisible(true);

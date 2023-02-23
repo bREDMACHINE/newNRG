@@ -3,7 +3,9 @@ package get.a.big.head.newNRG.users;
 import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserMapper {
@@ -23,5 +25,12 @@ public class UserMapper {
             user.setStatus(map.get("status"));
         }
         return user;
+    }
+
+    public static List<User> toUsers(Object object) {
+        Map<String, String> map = (LinkedHashMap<String, String>) object;
+        System.out.println(map);
+        List<User> users = new ArrayList<>();
+        return users;
     }
 }

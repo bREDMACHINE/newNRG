@@ -10,8 +10,8 @@ import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import get.a.big.head.newNRG.users.controllers.UserManagerFrameController;
 import get.a.big.head.newNRG.users.dtos.Role;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import java.awt.event.WindowEvent;
 
 @Lazy
 @Controller
-@Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MainFrameController {
 
@@ -54,22 +54,23 @@ public class MainFrameController {
             });
         }
 
-        frame.getMenuItemAccount().addActionListener(e -> accountFrameController.userAccount());
+        frame.getMenuItemAccount().addActionListener(e -> accountFrameController
+                .initUserAccountFrameController(authorizationFrameController.getUser()));
 
         frame.getButtonFind().addActionListener(e -> {
             Equipment equipment = equipmentFrameController.getEquipment(
                     frame.getTextField().getText(),
                     authorizationFrameController.getUser().getUserId()
             );
-            equipmentFrameController.initEquipmentController(equipment);
+            equipmentFrameController.initEquipmentFrameController(equipment);
         });
 
         frame.getButtonAddEquipment().addActionListener(
-                e -> addEquipmentFrameController.initAddEquipmentFrame(authorizationFrameController.getUser().getUserId())
+                e -> addEquipmentFrameController.initAddEquipmentFrameController()
         );
 
         frame.getUserManager().addActionListener(
-                e -> userManagerFrameController.initUserManagerFrame(authorizationFrameController.getUser().getUserId())
+                e -> userManagerFrameController.initUserManagerFrameController()
         );
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -88,9 +89,5 @@ public class MainFrameController {
                 }
             }
         });
-    }
-
-    public UserMainFrame getFrame() {
-        return frame;
     }
 }

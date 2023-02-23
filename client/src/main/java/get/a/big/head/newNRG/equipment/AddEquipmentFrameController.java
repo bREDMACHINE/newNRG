@@ -1,5 +1,7 @@
 package get.a.big.head.newNRG.equipment;
 
+import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,22 +11,22 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddEquipmentFrameController {
 
-    private final List<JFrame> windows = new ArrayList<>();
+    private boolean close = true;
     private final EquipmentClient equipmentClient;
+    private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
 
-    public void initAddEquipmentFrame(String userId) {
-        if (windows.size() == 0) {
+    public void initAddEquipmentFrameController() {
+        if (close) {
             frame = new AddEquipmentFrame();
-            windows.add(frame);
+            close = false;
         } else {
             frame.getFrame().toFront();
             frame.getFrame().requestFocus();
@@ -32,7 +34,7 @@ public class AddEquipmentFrameController {
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                windows.clear();
+                close = true;
             }
         });
 
@@ -43,7 +45,10 @@ public class AddEquipmentFrameController {
             log.info("Add equipment  with operationalName {}, ratedCurrent {}, ratedVoltage {}",
                     operationalName, ratedCurrent, ratedVoltage);
             EquipmentDto equipmentDto = EquipmentMapper.toEquipmentDto(operationalName, ratedCurrent, ratedVoltage);
-            ResponseEntity<Object> addEquipmentAnswer = equipmentClient.addEquipment(equipmentDto, userId);
+            ResponseEntity<Object> addEquipmentAnswer = equipmentClient.addEquipment(
+                    equipmentDto,
+                    authorizationFrameController.getUser().getUserId()
+            );
 
             if (addEquipmentAnswer.getStatusCode().is2xxSuccessful()) {
                 Equipment equipment = EquipmentMapper.toEquipment(addEquipmentAnswer.getBody());
@@ -56,9 +61,5 @@ public class AddEquipmentFrameController {
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
-    }
-
-    public AddEquipmentFrame getFrame() {
-        return frame;
     }
 }

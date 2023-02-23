@@ -11,8 +11,8 @@ import java.util.List;
 public interface UserService {
 
     UserShortDto addUser(UserDto userDto);
-    void deleteUser(long userId);
-    UserFullDto getUser(long userId);
+    void deleteUser(String userName);
+    UserFullDto getUser(String userName);
     List<UserFullDto> findAllUsers();
     UserShortDto updateUser(long userId, UserDto userDto);
     UserShortDto authenticateUser(UserDto userDto);

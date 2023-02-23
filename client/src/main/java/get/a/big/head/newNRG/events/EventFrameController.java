@@ -1,9 +1,5 @@
 package get.a.big.head.newNRG.events;
 
-import get.a.big.head.newNRG.equipment.Equipment;
-import get.a.big.head.newNRG.equipment.EquipmentClient;
-import get.a.big.head.newNRG.equipment.EquipmentFrame;
-import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

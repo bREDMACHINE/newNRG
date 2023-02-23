@@ -47,15 +47,17 @@ public class UserClient extends BaseClient {
         return get("/admin/user?username=" + userName, userId);
     }
 
+    public ResponseEntity<Object> deleteUser(String userName, String userId) {
+        log.info("Delete user {}",  userName);
+        return delete("/admin/user?username=" + userName, userId);
+    }
+
+    public ResponseEntity<Object> findAllUsers(String userId) {
+        log.info("Find all users");
+        return get("/admin/users", userId);
+    }
+
     public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
         return patch("/" + userId, userDto);
-    }
-
-    public ResponseEntity<Object> findAllUsers() {
-        return get("");
-    }
-
-    public ResponseEntity<Object> deleteUser(long userId) {
-        return delete("/" + userId);
     }
 }

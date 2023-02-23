@@ -1,11 +1,13 @@
 package get.a.big.head.newNRG.general.frames;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import javax.swing.*;
 
-@Data
+@Getter
+@Setter
 public class UserMainFrame extends JFrame {
 
     protected JFrame frame;
