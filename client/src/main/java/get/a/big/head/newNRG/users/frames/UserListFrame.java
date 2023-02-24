@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class UserListFrame extends JFrame {
     private JFrame frame;
+    private JButton button;
     private JButton buttonClose;
 
     public UserListFrame(List<User> users) {
@@ -20,7 +21,9 @@ public class UserListFrame extends JFrame {
 
         JPanel panelUsers = new JPanel(new GridLayout(users.size(), 2, 5, 0));
         for (User user : users) {
-            panelUsers.add(new JButton(user.getEmail()));
+            button = new JButton(user.getEmail());
+            button.setActionCommand(user.getEmail());
+            panelUsers.add(button);
             panelUsers.add(new JLabel(user.getRole()));
         }
         frame.getContentPane().add(BorderLayout.CENTER, panelUsers);

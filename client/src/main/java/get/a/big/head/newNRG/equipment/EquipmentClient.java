@@ -26,7 +26,7 @@ public class EquipmentClient extends BaseClient {
     }
 
     public ResponseEntity<Object> findEquipment(String text, String userId) {
-        return get("?text=" + text, userId);
+        return get("?text=" + text, userId, null, null);
     }
 
     public ResponseEntity<Object> addEquipment(EquipmentDto equipmentDto, String userId) {

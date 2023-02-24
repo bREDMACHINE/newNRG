@@ -5,6 +5,7 @@ import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
 import get.a.big.head.newNRG.users.frames.UserAuthorizationFrame;
+import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,18 +43,24 @@ public class UserAuthorizationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get user with userLogin {}, userPassword {}", userLogin, userPassword);
-            UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
-            ResponseEntity<Object> authorizationAnswer = userClient.userAuthorization(userDto);
+            ResponseEntity<Object> authorizationAnswer = userClient.userAuthorization(new UserDto(userLogin, userPassword));
 
             if (authorizationAnswer.getStatusCode().is2xxSuccessful()) {
-                user = UserMapper.toUser(authorizationAnswer.getBody(), userLogin);
+                user = UserMapper.toUser(authorizationAnswer.getHeaders(), userLogin);
                 frame.getFrame().dispose();
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), authorizationAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        frame.getButtonRegistration().addActionListener(e -> registrationFrameController.initUserRegistrationController());
+        frame.getButtonRegistration().addActionListener(e -> {
+            if (registrationFrameController.getFrame() == null) {
+                registrationFrameController.initUserRegistrationController();
+            } else {
+                registrationFrameController.getFrame().getFrame().toFront();
+                registrationFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }

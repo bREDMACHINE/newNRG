@@ -3,6 +3,7 @@ package get.a.big.head.newNRG.users.controllers;
 import get.a.big.head.newNRG.users.UserClient;
 import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import get.a.big.head.newNRG.users.frames.UserManagerFrame;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +55,8 @@ public class UserManagerFrameController {
                     userName,
                     authorizationFrameController.getUser().getUserId()
             );
-            if (getUserAnswer.getStatusCode().is2xxSuccessful()) {
-                User user = UserMapper.toUser(getUserAnswer.getBody(), userName);
+            if (getUserAnswer.getStatusCode().is2xxSuccessful() && getUserAnswer.getBody() != null) {
+                User user = UserMapper.toUser(getUserAnswer.getBody());
                 accountFrameController.initUserAccountFrameController(user);
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), getUserAnswer.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -67,7 +68,7 @@ public class UserManagerFrameController {
             ResponseEntity<Object> findAllUsersAnswer = userClient.findAllUsers(
                     authorizationFrameController.getUser().getUserId()
             );
-            if (findAllUsersAnswer.getStatusCode().is2xxSuccessful()) {
+            if (findAllUsersAnswer.getStatusCode().is2xxSuccessful() && findAllUsersAnswer.getBody() != null) {
                 List<User> users = UserMapper.toUsers(findAllUsersAnswer.getBody());
                 listFrameController.initUserListFrameController(users);
             } else {

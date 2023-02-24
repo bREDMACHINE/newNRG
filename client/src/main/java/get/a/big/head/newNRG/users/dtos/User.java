@@ -1,10 +1,10 @@
 package get.a.big.head.newNRG.users.dtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Builder
+@Getter
 public class User {
 
     private String email;

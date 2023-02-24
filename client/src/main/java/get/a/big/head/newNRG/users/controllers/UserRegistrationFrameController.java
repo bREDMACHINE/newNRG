@@ -26,21 +26,14 @@ public class UserRegistrationFrameController {
 
     private final UserClient userClient;
     private UserRegistrationFrame frame;
-    private boolean close = true;
 
     public void initUserRegistrationController() {
-        if (close) {
-            frame = new UserRegistrationFrame();
-            close = false;
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+        frame = new UserRegistrationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                close = true;
+                frame = null;
             }
         });
 
@@ -48,14 +41,17 @@ public class UserRegistrationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Set userLogin {}, userPassword {}", userLogin, userPassword);
-            UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
-            ResponseEntity<Object> registrationAnswer = userClient.userRegistration(userDto);
+            ResponseEntity<Object> registrationAnswer = userClient.userRegistration(new UserDto(userLogin, userPassword));
+
             if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
-                User user = UserMapper.toUser(registrationAnswer.getBody(), userLogin);
+                User user = UserMapper.toUser(registrationAnswer.getHeaders(), userLogin);
                 frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь " + user.getEmail() + " успешно зарегистрирован");
+                JOptionPane.showMessageDialog(
+                        frame.getFrame(),
+                        "Пользователь " + user.getEmail() + " зарегистрирован с ролью " + user.getRole()
+                );
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getBody(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

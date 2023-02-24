@@ -1,5 +1,7 @@
 package get.a.big.head.newNRG.users.controllers;
 
+import get.a.big.head.newNRG.users.UserClient;
+import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.frames.UserListFrame;
 import lombok.Getter;
@@ -21,6 +23,8 @@ import java.util.List;
 public class UserListFrameController {
 
     private final UserAccountFrameController accountFrameController;
+    private final UserAuthorizationFrameController authorizationFrameController;
+    private final UserClient userClient;
     private UserListFrame frame;
     private boolean close = true;
 
@@ -39,6 +43,13 @@ public class UserListFrameController {
                 close = true;
             }
         });
+
+        frame.getButton().addActionListener(e -> accountFrameController.initUserAccountFrameController(
+                UserMapper.toUser(userClient.getUser(
+                frame.getButton().getActionCommand(),
+                authorizationFrameController.getUser().getUserId()
+                ))
+        ));
 
         frame.getButtonClose().addActionListener(e -> frame.getFrame().dispose());
     }

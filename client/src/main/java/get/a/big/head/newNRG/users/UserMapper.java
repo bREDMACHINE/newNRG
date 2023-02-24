@@ -1,36 +1,43 @@
 package get.a.big.head.newNRG.users;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import get.a.big.head.newNRG.users.dtos.User;
-import get.a.big.head.newNRG.users.dtos.UserDto;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
+import org.springframework.http.HttpHeaders;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserMapper {
-    public static UserDto toUserDto(String userLogin, String userPassword) {
-        return new UserDto(userLogin, userPassword);
+
+    public static User toUser(HttpHeaders headers, String email) {
+        return User.builder()
+                .email(email)
+                .role(headers.getFirst("Role"))
+                .userId(headers.getFirst("Token"))
+                .status(headers.getFirst("Status"))
+                .build();
     }
 
-    public static User toUser(Object object, String email) {
-        Map<String, String> map = (LinkedHashMap<String, String>) object;
-        User user = new User();
-        user.setEmail(email);
-        user.setRole(map.get("role"));
-        if (map.get("token") != null) {
-            user.setUserId(map.get("token"));
-        }
-        if (map.get("status") != null) {
-            user.setStatus(map.get("status"));
-        }
-        return user;
+    public static User toUser(Object object) {
+        Gson gson = new Gson();
+        return toUser(gson.fromJson(object.toString(), UserFullDto.class));
+    }
+
+    public static User toUser(UserFullDto userFullDto) {
+        return User.builder()
+                .email(userFullDto.getEmail())
+                .role(userFullDto.getRole())
+                .status(userFullDto.getStatus())
+                .build();
     }
 
     public static List<User> toUsers(Object object) {
-        Map<String, String> map = (LinkedHashMap<String, String>) object;
-        System.out.println(map);
-        List<User> users = new ArrayList<>();
-        return users;
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<UserFullDto>>(){}.getType();
+        List<UserFullDto> users = gson.fromJson(object.toString(), type);
+        return users.stream().map(UserMapper::toUser).collect(Collectors.toList());
     }
 }
