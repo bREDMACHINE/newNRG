@@ -11,6 +11,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import java.util.Map;
+
 @Service
 @Slf4j
 public class UserClient extends BaseClient {
@@ -29,22 +31,22 @@ public class UserClient extends BaseClient {
 
     public ResponseEntity<Object> userRegistration(UserDto userDto) {
         log.info("Registration user {}",  userDto);
-        return post("/authorization/registration", null, null, userDto);
+        return post("/authorization/registration", null, userDto);
     }
 
     public ResponseEntity<Object> userAuthorization(UserDto userDto) {
         log.info("Authorization user {}",  userDto);
-        return post("/authorization", null, null, userDto);
+        return post("/authorization", null, userDto);
     }
 
     public ResponseEntity<Object> logout(String userId) {
         log.info("Logout user {}",  userId);
-        return post("/authorization/logout", userId, null, null);
+        return post("/authorization/logout", userId);
     }
 
     public ResponseEntity<Object> getUser(String userName, String userId) {
         log.info("Get user {}",  userName);
-        return get("/admin/user?email=" + userName, userId, null,  null);
+        return get("/admin/user?email=" + userName, userId);
     }
 
     public ResponseEntity<Object> deleteUser(String userName, String userId) {
@@ -52,12 +54,15 @@ public class UserClient extends BaseClient {
         return delete("/admin/user?email=" + userName, userId);
     }
 
-    public ResponseEntity<Object> findAllUsers(String userId) {
-        log.info("Find all users");
-        return get("/admin/users", userId, null, null);
+    public ResponseEntity<Object> findAllUsers(String parameters, String userId) {
+        log.info("Find all users with parameters {}", parameters);
+        if (!parameters.isBlank()) {
+            return get("/admin/users" + parameters, userId);
+        }
+        return get("/admin/users", userId);
     }
 
     public ResponseEntity<Object> updateUser(String userId, UserDto userDto) {
-        return get("/authorization/update", userId, null, userDto);
+        return post("/authorization/update", userId, userDto);
     }
 }

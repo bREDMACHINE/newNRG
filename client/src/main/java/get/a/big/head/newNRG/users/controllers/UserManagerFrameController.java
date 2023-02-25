@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Lazy
 @Controller
@@ -65,12 +67,31 @@ public class UserManagerFrameController {
 
         frame.getButtonAllUsers().addActionListener(e -> {
             log.info("Get all users");
+            StringBuilder parameters = new StringBuilder();
+            if (frame.getCheckBoxUser().isSelected()) {
+                parameters.append(",user=user");
+            }
+            if (frame.getCheckBoxModerator().isSelected()) {
+                parameters.append(",moderator=moderator");
+            }
+            if (frame.getCheckBoxRequested().isSelected()) {
+                parameters.append(",requested=requested");
+            }
+            if (parameters.length() != 0) {
+                parameters.replace(0, 1, "?");
+            }
             ResponseEntity<Object> findAllUsersAnswer = userClient.findAllUsers(
+                    parameters.toString(),
                     authorizationFrameController.getUser().getUserId()
             );
             if (findAllUsersAnswer.getStatusCode().is2xxSuccessful() && findAllUsersAnswer.getBody() != null) {
                 List<User> users = UserMapper.toUsers(findAllUsersAnswer.getBody());
-                listFrameController.initUserListFrameController(users);
+                if (listFrameController.getFrame() == null) {
+                    listFrameController.initUserListFrameController(users);
+                } else {
+                    listFrameController.getFrame().getFrame().toFront();
+                    listFrameController.getFrame().getFrame().requestFocus();
+                }
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), findAllUsersAnswer.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
             }

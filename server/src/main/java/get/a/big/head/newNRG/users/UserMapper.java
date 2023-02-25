@@ -13,10 +13,10 @@ public class UserMapper {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
+                user.getStatus().equals(Status.ACCEPTED),
+                user.getStatus().equals(Status.ACCEPTED),
+                user.getStatus().equals(Status.ACCEPTED),
+                user.getStatus().equals(Status.ACCEPTED),
                 new ArrayList<>(user.getRole().getAuthorities())
         );
     }

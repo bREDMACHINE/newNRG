@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         user.setRole(Role.USER);
-        user.setStatus(Status.ACTIVE);
+        user.setStatus(Status.ACCEPTED);
         userRepository.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Role", user.getRole().name());
@@ -91,8 +92,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserFullDto> findAllUsers() {
-        return userRepository.findAll().stream().map(UserMapper::toUserFullDto).collect(Collectors.toList());
+    public List<UserFullDto> findAllUsers(Map<String, String> parameters) {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole().name().equals(parameters.get("user"))
+                        || user.getRole().name().equals(parameters.get("moderator"))
+                        || user.getStatus().name().equals(parameters.get("requested")))
+                .map(UserMapper::toUserFullDto)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -12,20 +12,22 @@ import java.util.List;
 @Setter
 public class UserListFrame extends JFrame {
     private JFrame frame;
-    private JButton button;
     private JButton buttonClose;
+    private JList<String> list;
 
     public UserListFrame(List<User> users) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        JPanel panelUsers = new JPanel(new GridLayout(users.size(), 2, 5, 0));
-        for (User user : users) {
-            button = new JButton(user.getEmail());
-            button.setActionCommand(user.getEmail());
-            panelUsers.add(button);
-            panelUsers.add(new JLabel(user.getRole()));
+        JPanel panelUsers = new JPanel();
+        String[] usersString = new String[users.size()];
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            usersString[i] = user.getEmail();
         }
+        list = new JList<>(usersString);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setVisibleRowCount(0);
+        panelUsers.add(list);
         frame.getContentPane().add(BorderLayout.CENTER, panelUsers);
 
         buttonClose = new JButton("Закрыть");

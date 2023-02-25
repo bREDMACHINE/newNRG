@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -53,9 +55,17 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    public List<UserFullDto> findAllUsers() {
-        log.info("Получен Get запрос к эндпоинту /admin/users");
-        return userService.findAllUsers();
+    public List<UserFullDto> findAllUsers(
+            @RequestParam(required = false, defaultValue = "USER") String user,
+            @RequestParam(required = false, defaultValue = "MODERATOR") String moderator,
+            @RequestParam(required = false, defaultValue = "REQUESTED") String requested
+            ) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("user", user);
+        parameters.put("moderator", moderator);
+        parameters.put("requested", requested);
+        log.info("Получен Get запрос к эндпоинту /admin/users {}", parameters);
+        return userService.findAllUsers(parameters);
     }
 
     @DeleteMapping("/admin/user")
