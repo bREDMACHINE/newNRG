@@ -1,14 +1,13 @@
 package get.a.big.head.newNRG.users.dtos;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Builder
-@Getter
-public class User {
+@Data
+@AllArgsConstructor
+public class UserFullDto {
 
     private String email;
-    private String userId;
     private String role;
     private String status;
 }

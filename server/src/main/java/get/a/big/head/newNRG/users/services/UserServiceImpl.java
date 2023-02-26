@@ -8,6 +8,9 @@ import get.a.big.head.newNRG.users.UserRepository;
 import get.a.big.head.newNRG.users.models.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public UserShortDto addUser(UserDto userDto) {
+    public ResponseEntity<?> addUser(UserDto userDto) {
         Optional<User> userInDataBase = userRepository.findByEmail(userDto.getEmail());
         if (userInDataBase.isPresent()) {
             throw new BadRequestException("Указанный email уже используется");
@@ -42,21 +45,26 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         user.setRole(Role.USER);
-        user.setStatus(Status.ACTIVE);
-        return UserMapper.toUserOutDto(userRepository.save(user));
+        user.setStatus(Status.ACCEPTED);
+        userRepository.save(user);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Role", user.getRole().name());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @Override
-    public UserShortDto authenticateUser(UserDto userDto) {
+    public ResponseEntity<?> authenticateUser(UserDto userDto) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
         } catch (BadCredentialsException e) {
             throw new BadRequestException("Указан неверный пароль");
         }
         User user = userRepository.findByEmail(userDto.getEmail()).orElseThrow(() -> new NotFoundException("Пользователь не зарегистрирован"));
-        UserShortDto userShortDto = UserMapper.toUserOutDto(user);
-        userShortDto.setToken(jwtTokenProvider.createToken(user.getEmail(), user.getRole().name()));
-        return userShortDto;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Token", jwtTokenProvider.createToken(user.getEmail(), user.getRole().name()));
+        headers.add("Role", user.getRole().name());
+        headers.add("Status", user.getStatus().name());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @Override
@@ -66,30 +74,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserShortDto updateUser(long userId, UserDto userDto) {
-        User updateUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует"));
-        if (userDto.getEmail() != null) {
-            updateUser.setEmail(userDto.getEmail());
+    public UserFullDto updateUser(UserFullDto userFullDto) {
+        User updateUser = userRepository.findByEmail(userFullDto.getEmail()).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
+        if (userFullDto.getStatus().equalsIgnoreCase(Status.REQUESTED.name())) {
+            updateUser.setStatus(Status.REQUESTED);
         }
-        if (userDto.getEmail() != null) {
-            updateUser.setEmail(userDto.getEmail());
+        return UserMapper.toUserFullDto(userRepository.save(updateUser));
+    }
+
+    @Override
+    public UserFullDto resolutionUser(String resolution, String email) {
+        User updateUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
+        if (resolution.equalsIgnoreCase("ACCEPTED")) {
+            if (updateUser.getRole().equals(Role.USER)) {
+                updateUser.setRole(Role.MODERATOR);
+            } else {
+                updateUser.setRole(Role.ADMIN);
+            }
         }
-        return UserMapper.toUserOutDto(userRepository.save(updateUser));
+        updateUser.setStatus(Status.ACCEPTED);
+        return UserMapper.toUserFullDto(userRepository.save(updateUser));
     }
 
     @Override
-    public UserFullDto getUser(long userId) {
-        return UserMapper.toUserFullDto(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует")));
+    public UserFullDto getUser(String email) {
+        return UserMapper.toUserFullDto(userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Указанный email не существует")));
     }
 
     @Override
-    public List<UserFullDto> findAllUsers() {
-        return userRepository.findAll().stream().map(UserMapper::toUserFullDto).collect(Collectors.toList());
+    public List<UserFullDto> findAllUsers(String role, String status) {
+        if (role.equalsIgnoreCase("Roles") && status.equalsIgnoreCase("Statuses")) {
+            return userRepository.findAll().stream()
+                    .map(UserMapper::toUserFullDto)
+                    .collect(Collectors.toList());
+        }
+        if (!role.equalsIgnoreCase("Roles") && !status.equalsIgnoreCase("Statuses")) {
+            return userRepository.findAll().stream()
+                    .filter(user -> user.getRole().name().equalsIgnoreCase(role)
+                            && user.getStatus().name().equalsIgnoreCase(status))
+                    .map(UserMapper::toUserFullDto)
+                    .collect(Collectors.toList());
+        }
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole().name().equalsIgnoreCase(role)
+                        || user.getStatus().name().equalsIgnoreCase(status))
+                .map(UserMapper::toUserFullDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteUser(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует"));
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
         userRepository.delete(user);
     }
 }

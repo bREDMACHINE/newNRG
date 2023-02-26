@@ -1,11 +1,13 @@
 package get.a.big.head.newNRG.events;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Data
+@Getter
+@Setter
 public class AddEventFrame extends JFrame {
 
     private JFrame frame;

@@ -5,6 +5,8 @@ import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.dtos.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
 import get.a.big.head.newNRG.users.frames.UserAuthorizationFrame;
+import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,32 +16,23 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserAuthorizationFrameController {
 
     private final UserClient userClient;
     private final UserRegistrationFrameController registrationFrameController;
     private UserAuthorizationFrame frame;
-    private final List<JFrame> windows = new ArrayList<>();
     private User user;
 
-    public void userAuthorization() {
-        if (windows.size() == 0) {
-            frame = new UserAuthorizationFrame();
-            windows.add(frame);
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+    public void initUserAuthorizationFrameController() {
+        frame = new UserAuthorizationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                windows.clear();
                 if (registrationFrameController.getFrame() !=null) {
                     registrationFrameController.getFrame().getFrame().dispose();
                 }
@@ -50,22 +43,26 @@ public class UserAuthorizationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get user with userLogin {}, userPassword {}", userLogin, userPassword);
-            UserDto userDto = UserMapper.toUserDto(userLogin, userPassword);
-            ResponseEntity<Object> authorizationAnswer = userClient.userAuthorization(userDto);
+            ResponseEntity<Object> authorizationAnswer = userClient.userAuthorization(new UserDto(userLogin, userPassword));
 
             if (authorizationAnswer.getStatusCode().is2xxSuccessful()) {
-                user = UserMapper.toUser(authorizationAnswer.getBody(), userLogin);
+                user = UserMapper.toUser(authorizationAnswer.getHeaders(), userLogin);
                 frame.getFrame().dispose();
             } else {
                 JOptionPane.showMessageDialog(frame.getFrame(), authorizationAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        frame.getButtonRegistration().addActionListener(e -> registrationFrameController.UserRegistration());
-
-        frame.getButtonCancel().addActionListener(e -> {
-            frame.getFrame().dispose();
+        frame.getButtonRegistration().addActionListener(e -> {
+            if (registrationFrameController.getFrame() == null) {
+                registrationFrameController.initUserRegistrationController();
+            } else {
+                registrationFrameController.getFrame().getFrame().toFront();
+                registrationFrameController.getFrame().getFrame().requestFocus();
+            }
         });
+
+        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 
     public void logout() {
@@ -77,13 +74,5 @@ public class UserAuthorizationFrameController {
         } else {
             JOptionPane.showMessageDialog(frame.getFrame(), logoutAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public UserAuthorizationFrame getFrame() {
-        return frame;
     }
 }

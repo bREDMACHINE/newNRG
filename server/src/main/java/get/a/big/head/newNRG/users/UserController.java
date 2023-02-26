@@ -2,11 +2,11 @@ package get.a.big.head.newNRG.users;
 
 import get.a.big.head.newNRG.users.models.UserDto;
 import get.a.big.head.newNRG.users.models.UserFullDto;
-import get.a.big.head.newNRG.users.models.UserShortDto;
 import get.a.big.head.newNRG.users.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +22,13 @@ public class UserController {
 
 
     @PostMapping("/authorization/registration")
-    public UserShortDto registration(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> registration(@RequestBody UserDto userDto) {
         log.info("Получен Post запрос к эндпоинту /authorization/registration, user={}", userDto);
         return userService.addUser(userDto);
     }
 
     @PostMapping("/authorization")
-    public UserShortDto authorization(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> authorization(@RequestBody UserDto userDto) {
         log.info("Получен Post запрос к эндпоинту /authorization, user={}", userDto);
         return userService.authenticateUser(userDto);
     }
@@ -40,27 +40,33 @@ public class UserController {
         userService.logoutUser(httpServletRequest, httpServletResponse);
     }
 
-    @PatchMapping("/authorization/{userId}")
-    public UserShortDto requestForUpdateUser(@PathVariable long userId, @RequestBody UserDto userDto) {
-        log.info("Получен Patch запрос к эндпоинту /users/{}", userId);
-        return userService.updateUser(userId, userDto);
+    @PatchMapping("/authorization/update")
+    public UserFullDto requestForUpdateUser(@RequestBody UserFullDto userFullDto) {
+        log.info("Получен Patch запрос к эндпоинту /authorization/update{}", userFullDto);
+        return userService.updateUser(userFullDto);
     }
 
-    @GetMapping("/admin/{userId}")
-    public UserFullDto getUser(@PathVariable long userId) {
-        log.info("Получен Get запрос к эндпоинту /admin/{}", userId);
-        return userService.getUser(userId);
+    @PatchMapping("/admin/user")
+    public UserFullDto resolutionForUpdateUser(@RequestParam String resolution, @RequestParam String email) {
+        log.info("Получен Patch запрос к эндпоинту /admin/user резолюция {}, почта {}", resolution, email);
+        return userService.resolutionUser(resolution, email);
+    }
+
+    @GetMapping("/admin/user")
+    public UserFullDto getUser(@RequestParam String email) {
+        log.info("Получен Get запрос к эндпоинту /admin/user {}", email);
+        return userService.getUser(email);
     }
 
     @GetMapping("/admin/users")
-    public List<UserFullDto> findAllUsers() {
-        log.info("Получен Get запрос к эндпоинту /admin/users");
-        return userService.findAllUsers();
+    public List<UserFullDto> findAllUsers(@RequestParam String role, @RequestParam String status) {
+        log.info("Получен Get запрос к эндпоинту /admin/users role={}, status={}", role, status);
+        return userService.findAllUsers(role, status);
     }
 
-    @DeleteMapping("/admin/{userId}")
-    public void deleteUser(@PathVariable long userId) {
-        log.info("Получен Delete запрос к эндпоинту /admin/{}", userId);
-        userService.deleteUser(userId);
+    @DeleteMapping("/admin/user")
+    public void deleteUser(@RequestParam String email) {
+        log.info("Получен Delete запрос к эндпоинту /admin/{}", email);
+        userService.deleteUser(email);
     }
 }

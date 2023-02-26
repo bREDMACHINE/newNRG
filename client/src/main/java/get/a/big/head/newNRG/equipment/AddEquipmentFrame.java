@@ -1,11 +1,13 @@
 package get.a.big.head.newNRG.equipment;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Data
+@Getter
+@Setter
 public class AddEquipmentFrame extends JFrame {
 
     private JFrame frame;

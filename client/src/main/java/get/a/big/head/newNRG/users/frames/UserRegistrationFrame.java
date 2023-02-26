@@ -1,11 +1,13 @@
 package get.a.big.head.newNRG.users.frames;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Data
+@Getter
+@Setter
 public class UserRegistrationFrame extends JFrame {
 
     private JFrame frame;
