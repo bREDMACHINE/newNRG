@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -42,10 +40,16 @@ public class UserController {
         userService.logoutUser(httpServletRequest, httpServletResponse);
     }
 
-    @PatchMapping("/authorization/{userId}")
-    public UserFullDto requestForUpdateUser(@PathVariable long userId, @RequestBody UserDto userDto) {
-        log.info("Получен Patch запрос к эндпоинту /users/{}", userId);
-        return userService.updateUser(userId, userDto);
+    @PatchMapping("/authorization/update")
+    public UserFullDto requestForUpdateUser(@RequestBody UserFullDto userFullDto) {
+        log.info("Получен Patch запрос к эндпоинту /authorization/update{}", userFullDto);
+        return userService.updateUser(userFullDto);
+    }
+
+    @PatchMapping("/admin/user")
+    public UserFullDto resolutionForUpdateUser(@RequestParam String resolution, @RequestParam String email) {
+        log.info("Получен Patch запрос к эндпоинту /admin/user резолюция {}, почта {}", resolution, email);
+        return userService.resolutionUser(resolution, email);
     }
 
     @GetMapping("/admin/user")
@@ -55,17 +59,9 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    public List<UserFullDto> findAllUsers(
-            @RequestParam(required = false, defaultValue = "USER") String user,
-            @RequestParam(required = false, defaultValue = "MODERATOR") String moderator,
-            @RequestParam(required = false, defaultValue = "REQUESTED") String requested
-            ) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("user", user);
-        parameters.put("moderator", moderator);
-        parameters.put("requested", requested);
-        log.info("Получен Get запрос к эндпоинту /admin/users {}", parameters);
-        return userService.findAllUsers(parameters);
+    public List<UserFullDto> findAllUsers(@RequestParam String role, @RequestParam String status) {
+        log.info("Получен Get запрос к эндпоинту /admin/users role={}, status={}", role, status);
+        return userService.findAllUsers(role, status);
     }
 
     @DeleteMapping("/admin/user")

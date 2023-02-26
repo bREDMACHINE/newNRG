@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -75,14 +74,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserFullDto updateUser(long userId, UserDto userDto) {
-        User updateUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Указанный userId не существует"));
-        if (userDto.getEmail() != null) {
-            updateUser.setEmail(userDto.getEmail());
+    public UserFullDto updateUser(UserFullDto userFullDto) {
+        User updateUser = userRepository.findByEmail(userFullDto.getEmail()).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
+        if (userFullDto.getStatus().equalsIgnoreCase(Status.REQUESTED.name())) {
+            updateUser.setStatus(Status.REQUESTED);
         }
-        if (userDto.getEmail() != null) {
-            updateUser.setEmail(userDto.getEmail());
+        return UserMapper.toUserFullDto(userRepository.save(updateUser));
+    }
+
+    @Override
+    public UserFullDto resolutionUser(String resolution, String email) {
+        User updateUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Указанный email не существует"));
+        if (resolution.equalsIgnoreCase("ACCEPTED")) {
+            if (updateUser.getRole().equals(Role.USER)) {
+                updateUser.setRole(Role.MODERATOR);
+            } else {
+                updateUser.setRole(Role.ADMIN);
+            }
         }
+        updateUser.setStatus(Status.ACCEPTED);
         return UserMapper.toUserFullDto(userRepository.save(updateUser));
     }
 
@@ -92,11 +102,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserFullDto> findAllUsers(Map<String, String> parameters) {
+    public List<UserFullDto> findAllUsers(String role, String status) {
+        if (role.equalsIgnoreCase("Roles") && status.equalsIgnoreCase("Statuses")) {
+            return userRepository.findAll().stream()
+                    .map(UserMapper::toUserFullDto)
+                    .collect(Collectors.toList());
+        }
+        if (!role.equalsIgnoreCase("Roles") && !status.equalsIgnoreCase("Statuses")) {
+            return userRepository.findAll().stream()
+                    .filter(user -> user.getRole().name().equalsIgnoreCase(role)
+                            && user.getStatus().name().equalsIgnoreCase(status))
+                    .map(UserMapper::toUserFullDto)
+                    .collect(Collectors.toList());
+        }
         return userRepository.findAll().stream()
-                .filter(user -> user.getRole().name().equals(parameters.get("user"))
-                        || user.getRole().name().equals(parameters.get("moderator"))
-                        || user.getStatus().name().equals(parameters.get("requested")))
+                .filter(user -> user.getRole().name().equalsIgnoreCase(role)
+                        || user.getStatus().name().equalsIgnoreCase(status))
                 .map(UserMapper::toUserFullDto)
                 .collect(Collectors.toList());
     }

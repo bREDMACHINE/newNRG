@@ -2,6 +2,7 @@ package get.a.big.head.newNRG.users;
 
 import get.a.big.head.newNRG.httpclients.BaseClient;
 import get.a.big.head.newNRG.users.dtos.UserDto;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +11,6 @@ import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -54,15 +53,16 @@ public class UserClient extends BaseClient {
         return delete("/admin/user?email=" + userName, userId);
     }
 
-    public ResponseEntity<Object> findAllUsers(String parameters, String userId) {
-        log.info("Find all users with parameters {}", parameters);
-        if (!parameters.isBlank()) {
-            return get("/admin/users" + parameters, userId);
-        }
-        return get("/admin/users", userId);
+    public ResponseEntity<Object> findAllUsers(String role, String status, String userId) {
+        log.info("Find all users with parameters role={} and status={}", role, status);
+        return get("/admin/users?role=" + role + "&status=" + status, userId);
     }
 
-    public ResponseEntity<Object> updateUser(String userId, UserDto userDto) {
-        return post("/authorization/update", userId, userDto);
+    public ResponseEntity<Object> updateUser(String userId, UserFullDto userFullDto) {
+        return patch("/authorization/update", userId, userFullDto);
+    }
+
+    public ResponseEntity<Object> resolutionUser(String resolution, String email, String userId) {
+        return patch("/admin/user?resolution=" + resolution + "&email=" + email, userId);
     }
 }

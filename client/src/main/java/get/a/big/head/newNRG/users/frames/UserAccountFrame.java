@@ -12,29 +12,40 @@ import java.awt.*;
 public class UserAccountFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelEmail;
-    private JLabel labelRole;
+    protected JButton buttonAcceptRole;
+    protected JButton buttonRejectRole;
+    protected JButton buttonRequestRole;
     protected JButton buttonDeleteUser;
-    private JButton buttonClose;
+    protected JButton buttonClose;
     protected JPanel panelButtons;
 
     public UserAccountFrame(User user) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 300);
 
-        JPanel panelLabels = new JPanel();
-        labelEmail = new JLabel(user.getEmail());
-        labelRole = new JLabel(user.getRole());
+        JPanel panelLabels = new JPanel(new GridLayout(4, 2, 5,5));
+        JLabel labelEmail = new JLabel(user.getEmail());
+        JLabel labelRole = new JLabel(user.getRole());
+        JLabel labelStatus = new JLabel(user.getStatus());
+        panelLabels.add(new JLabel("Email: "));
         panelLabels.add(labelEmail);
+        panelLabels.add(new JLabel("Role: "));
         panelLabels.add(labelRole);
-        frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
+        panelLabels.add(new JLabel("Status: "));
+        panelLabels.add(labelStatus);
+        frame.getContentPane().add(BorderLayout.NORTH, panelLabels);
 
         buttonDeleteUser = new JButton("Удалить пользователя");
+        buttonAcceptRole = new JButton("Согласовано");
+        buttonRejectRole = new JButton("Отказано");
+        buttonRequestRole = new JButton("Запросить повышение роли");
         buttonClose = new JButton("Закрыть");
-        panelButtons = new JPanel();
+        panelButtons = new JPanel(new GridLayout(5, 1, 5,5));
+        panelButtons.add(buttonRequestRole);
         panelButtons.add(buttonClose);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+
+        frame.pack();
         frame.setVisible(true);
     }
 }

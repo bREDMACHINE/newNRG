@@ -40,4 +40,8 @@ public class UserMapper {
         List<UserFullDto> users = gson.fromJson(object.toString(), type);
         return users.stream().map(UserMapper::toUser).collect(Collectors.toList());
     }
+
+    public static UserFullDto toUserFullDto(User user) {
+        return new UserFullDto(user.getEmail(), user.getRole(), user.getStatus());
+    }
 }

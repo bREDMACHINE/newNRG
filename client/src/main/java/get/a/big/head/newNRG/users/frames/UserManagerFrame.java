@@ -12,10 +12,11 @@ public class UserManagerFrame extends JFrame {
     private JFrame frame;
     private JButton buttonFind;
     private JTextField textFieldFinder;
-    private JCheckBox checkBoxUser;
-    private JCheckBox checkBoxModerator;
-    private JCheckBox checkBoxRequested;
+    private JComboBox<String> roleMenu;
+    private JComboBox<String> statusMenu;
     private JButton buttonAllUsers;
+    private JPanel panelButtons;
+    private JButton buttonRequest;
     private JButton buttonCancel;
 
     public UserManagerFrame() {
@@ -30,20 +31,19 @@ public class UserManagerFrame extends JFrame {
         frame.getContentPane().add(BorderLayout.NORTH, panelFindUser);
 
         buttonAllUsers = new JButton("Найти пользователей");
-        checkBoxUser = new JCheckBox("User");
-        checkBoxModerator = new JCheckBox("Moderator");
-        checkBoxRequested = new JCheckBox("Requested");
+        String[] roles = new String[] {"Roles", "User", "Moderator", "Admin"};
+        roleMenu = new JComboBox<>(roles);
+        String[] status = new String[] {"Statuses", "Accepted", "Requested"};
+        statusMenu = new JComboBox<>(status);
         JPanel panelAllUsers = new JPanel();
-        JPanel panelCheckBox = new JPanel();
-        panelCheckBox.add(checkBoxUser);
-        panelCheckBox.add(checkBoxModerator);
-        panelCheckBox.add(checkBoxRequested);
         panelAllUsers.add(buttonAllUsers);
-        panelAllUsers.add(panelCheckBox);
+        panelAllUsers.add(roleMenu);
+        panelAllUsers.add(statusMenu);
         frame.getContentPane().add(BorderLayout.CENTER, panelAllUsers);
 
         buttonCancel = new JButton("Отмена");
-        JPanel panelButtons = new JPanel();
+        buttonRequest = new JButton("Запрос повышения роли");
+        panelButtons = new JPanel();
         panelButtons.add(buttonCancel);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
         frame.pack();

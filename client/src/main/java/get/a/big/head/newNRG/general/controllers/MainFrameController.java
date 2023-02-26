@@ -36,26 +36,25 @@ public class MainFrameController {
 
         if (authorizationFrameController.getUser().getRole().equals(Role.USER.name())) {
             frame = new UserMainFrame();
-            frame.getMenuItemLogout().addActionListener(event -> {
-                authorizationFrameController.logout();
-                frame.getFrame().dispose();
-            });
         } else if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
             frame = new ModeratorMainFrame();
-            frame.getMenuItemLogout().addActionListener(event -> {
-                authorizationFrameController.logout();
-                frame.getFrame().dispose();
-            });
         } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
             frame = new AdminMainFrame();
-            frame.getMenuItemLogout().addActionListener(event -> {
-                authorizationFrameController.logout();
-                frame.getFrame().dispose();
-            });
         }
 
-        frame.getMenuItemAccount().addActionListener(e -> accountFrameController
-                .initUserAccountFrameController(authorizationFrameController.getUser()));
+        frame.getMenuItemLogout().addActionListener(event -> {
+            authorizationFrameController.logout();
+            frame.getFrame().dispose();
+        });
+
+        frame.getMenuItemAccount().addActionListener(e -> {
+            if (accountFrameController.getFrame() == null) {
+                accountFrameController.initUserAccountFrameController(authorizationFrameController.getUser());
+            } else {
+                accountFrameController.getFrame().getFrame().toFront();
+                accountFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
 
         frame.getButtonFind().addActionListener(e -> {
             Equipment equipment = equipmentFrameController.getEquipment(
@@ -69,9 +68,14 @@ public class MainFrameController {
                 e -> addEquipmentFrameController.initAddEquipmentFrameController()
         );
 
-        frame.getUserManager().addActionListener(
-                e -> userManagerFrameController.initUserManagerFrameController()
-        );
+        frame.getUserManager().addActionListener(e -> {
+            if (userManagerFrameController.getFrame() == null) {
+                userManagerFrameController.initUserManagerFrameController();
+            } else {
+                userManagerFrameController.getFrame().getFrame().toFront();
+                userManagerFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
