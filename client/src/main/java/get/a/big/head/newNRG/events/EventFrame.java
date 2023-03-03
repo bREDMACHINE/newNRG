@@ -25,9 +25,9 @@ public class EventFrame extends JFrame {
 
         JPanel panelLabels = new JPanel();
         createEvent = new JLabel(event.getCreateEvent());
-        eventName = new JLabel(event.getName());
-        description = new JLabel(event.getDescription());
-        file = new JLabel(event.getFile().getName());
+        eventName = new JLabel(event.getNameEvent());
+        description = new JLabel(event.getDescriptionEvent());
+        file = new JLabel(event.getDescriptionEvent());
 
         panelLabels.add(createEvent);
         panelLabels.add(eventName);

@@ -1,23 +1,19 @@
 package get.a.big.head.newNRG.equipment;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.google.gson.Gson;
+import get.a.big.head.newNRG.type.Type;
 
 public class EquipmentMapper {
     public static Equipment toEquipment(Object object) {
-        Map<String, String> map = (LinkedHashMap<String, String>) object;
-        Equipment equipment = new Equipment();
-        equipment.setOperationalName(map.get("operationalName"));
-        equipment.setRatedCurrent(map.get("ratedCurrent"));
-        equipment.setRatedVoltage(map.get("ratedVoltage"));
-        return equipment;
+        Gson gson = new Gson();
+        return gson.fromJson(object.toString(), Equipment.class);
     }
 
-    public static EquipmentDto toEquipmentDto(String operationalName, String ratedCurrent, String ratedVoltage) {
-        EquipmentDto equipmentDto = new EquipmentDto();
-        equipmentDto.setOperationalName(operationalName);
-        equipmentDto.setRatedCurrent(ratedCurrent);
-        equipmentDto.setRatedVoltage(ratedVoltage);
-        return equipmentDto;
+    public static Equipment toEquipment(String operationalName, String installationYear, Type type) {
+        return Equipment.builder()
+                .operationalName(operationalName)
+                .installationYear(installationYear)
+                .type(type)
+                .build();
     }
 }

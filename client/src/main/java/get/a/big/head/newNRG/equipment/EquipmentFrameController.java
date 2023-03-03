@@ -41,11 +41,11 @@ public class EquipmentFrameController {
     }
 
     public Equipment getEquipment(String text, String userId) {
-        ResponseEntity<Object> equipmentAnswer = equipmentClient.findEquipment(text, userId);
-        if (equipmentAnswer.getStatusCode().is2xxSuccessful()) {
-            return EquipmentMapper.toEquipment(equipmentAnswer.getBody());
+        ResponseEntity<Object> equipmentResponse = equipmentClient.findEquipment(text, userId);
+        if (equipmentResponse.getStatusCode().is2xxSuccessful() && equipmentResponse.getBody() != null) {
+            return EquipmentMapper.toEquipment(equipmentResponse.getBody());
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), equipmentAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame.getFrame(), equipmentResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }

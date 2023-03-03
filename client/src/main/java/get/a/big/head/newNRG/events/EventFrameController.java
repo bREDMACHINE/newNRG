@@ -43,11 +43,11 @@ public class EventFrameController {
     }
 
     public Event getEvent(String userId) {
-        ResponseEntity<Object> eventAnswer = eventClient.getEvent(userId);
-        if (eventAnswer.getStatusCode().is2xxSuccessful()) {
-            return EventMapper.toEvent(eventAnswer.getBody());
+        ResponseEntity<Object> eventResponse = eventClient.getEvent(userId);
+        if (eventResponse.getStatusCode().is2xxSuccessful() && eventResponse.getBody() != null) {
+            return EventMapper.toEvent(eventResponse.getBody());
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), eventAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame.getFrame(), eventResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }

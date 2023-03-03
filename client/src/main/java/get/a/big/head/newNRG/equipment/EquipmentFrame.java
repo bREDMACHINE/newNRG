@@ -25,8 +25,8 @@ public class EquipmentFrame extends JFrame {
 
         JPanel panelLabels = new JPanel();
         labelOperationalName = new JLabel(equipment.getOperationalName());
-        labelRatedCurrent = new JLabel(equipment.getRatedCurrent());
-        labelRatedVoltage = new JLabel(equipment.getRatedVoltage());
+        labelRatedCurrent = new JLabel(equipment.getInstallationYear());
+        labelRatedVoltage = new JLabel(equipment.getType().getTypeName());
 
         panelLabels.add(labelOperationalName);
         panelLabels.add(labelRatedCurrent);

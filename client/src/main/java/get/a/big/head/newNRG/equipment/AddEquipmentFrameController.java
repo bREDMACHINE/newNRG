@@ -44,19 +44,18 @@ public class AddEquipmentFrameController {
             String ratedVoltage = frame.getTextRatedVoltage().getText();
             log.info("Add equipment  with operationalName {}, ratedCurrent {}, ratedVoltage {}",
                     operationalName, ratedCurrent, ratedVoltage);
-            EquipmentDto equipmentDto = EquipmentMapper.toEquipmentDto(operationalName, ratedCurrent, ratedVoltage);
-            ResponseEntity<Object> addEquipmentAnswer = equipmentClient.addEquipment(
-                    equipmentDto,
+            ResponseEntity<Object> addEquipmentResponse = equipmentClient.addEquipment(
+                    EquipmentMapper.toEquipment(operationalName, ratedCurrent, ratedVoltage),
                     authorizationFrameController.getUser().getUserId()
             );
 
-            if (addEquipmentAnswer.getStatusCode().is2xxSuccessful()) {
-                Equipment equipment = EquipmentMapper.toEquipment(addEquipmentAnswer.getBody());
+            if (addEquipmentResponse.getStatusCode().is2xxSuccessful() && addEquipmentResponse.getBody() != null) {
+                Equipment equipment = EquipmentMapper.toEquipment(addEquipmentResponse.getBody());
                 frame.getFrame().dispose();
                 JOptionPane.showMessageDialog(frame.getFrame(),
                         "Оборудование " + equipment.getOperationalName() + " успешно добавлено");
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), addEquipmentAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame.getFrame(), addEquipmentResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

@@ -49,19 +49,21 @@ public class AddEventFrameController {
             String description = frame.getTextDescription().getText();
             log.info("Add event  with createEvent {}, nameEvent {}, description {}",
                     createEvent, nameEvent, description);
-            EventDto eventDto = EventMapper.toEventDto(createEvent, nameEvent, description);
-            ResponseEntity<Object> addEventAnswer = eventClient.addEvent(
-                    eventDto,
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(
+                    Event.builder()
+                            .createEvent(createEvent)
+                            .descriptionEvent(description)
+                            .nameEvent(nameEvent).build(),
                     authorizationFrameController.getUser().getUserId()
             );
 
-            if (addEventAnswer.getStatusCode().is2xxSuccessful()) {
-                Equipment equipment = EquipmentMapper.toEquipment(addEventAnswer.getBody());
+            if (addEventResponse.getStatusCode().is2xxSuccessful()) {
+                Equipment equipment = EquipmentMapper.toEquipment(addEventResponse.getBody());
                 frame.getFrame().dispose();
                 JOptionPane.showMessageDialog(frame.getFrame(),
                         "Оборудование " + equipment.getOperationalName() + " успешно добавлено");
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), addEventAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame.getFrame(), addEventResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
