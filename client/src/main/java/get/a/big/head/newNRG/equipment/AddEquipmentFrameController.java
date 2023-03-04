@@ -1,5 +1,8 @@
 package get.a.big.head.newNRG.equipment;
 
+import get.a.big.head.newNRG.type.Type;
+import get.a.big.head.newNRG.type.TypeClient;
+import get.a.big.head.newNRG.type.TypeMapper;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -18,35 +22,37 @@ import java.awt.event.WindowEvent;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddEquipmentFrameController {
 
-    private boolean close = true;
     private final EquipmentClient equipmentClient;
+    private final TypeClient typeClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
 
-    public void initAddEquipmentFrameController() {
-        if (close) {
-            frame = new AddEquipmentFrame();
-            close = false;
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+    public void initAddEquipmentFrameController(List<String> types) {
+        frame = new AddEquipmentFrame(types);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                close = true;
+                frame = null;
             }
         });
 
         frame.getButtonOk().addActionListener(e -> {
             String operationalName = frame.getTextOperationalName().getText();
-            String ratedCurrent = frame.getTextRatedCurrent().getText();
-            String ratedVoltage = frame.getTextRatedVoltage().getText();
-            log.info("Add equipment  with operationalName {}, ratedCurrent {}, ratedVoltage {}",
-                    operationalName, ratedCurrent, ratedVoltage);
+            String installationYear = frame.getTextInstallationYear().getText();
+            String typeString = frame.getTypeMenu().getSelectedItem().toString();
+            String userId = authorizationFrameController.getUser().getUserId();
+            log.info("Add equipment  with operationalName {}, installationYear {}, type {}",
+                    operationalName, installationYear, typeString);
+            Type type = null;
+            ResponseEntity<Object> getTypeResponse = typeClient.getType(typeString, authorizationFrameController.getUser().getUserId());
+            if (getTypeResponse.getStatusCode().is2xxSuccessful() && getTypeResponse.getBody() != null) {
+                type = TypeMapper.toType(getTypeResponse.getBody());
+            } else {
+                JOptionPane.showMessageDialog(frame.getFrame(), getTypeResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
             ResponseEntity<Object> addEquipmentResponse = equipmentClient.addEquipment(
-                    EquipmentMapper.toEquipment(operationalName, ratedCurrent, ratedVoltage),
-                    authorizationFrameController.getUser().getUserId()
+                    EquipmentMapper.toEquipment(operationalName, installationYear, type),
+                    userId
             );
 
             if (addEquipmentResponse.getStatusCode().is2xxSuccessful() && addEquipmentResponse.getBody() != null) {

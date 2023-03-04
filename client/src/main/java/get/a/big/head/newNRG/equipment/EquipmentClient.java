@@ -32,4 +32,8 @@ public class EquipmentClient extends BaseClient {
     public ResponseEntity<Object> addEquipment(Equipment equipment, String userId) {
         return post("/moderator", userId, equipment);
     }
+
+    public ResponseEntity<Object> updateEquipment(Equipment equipment, String userId) {
+        return post("/moderator/update", userId, equipment);
+    }
 }

@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.events;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +17,20 @@ import java.util.List;
 @Lazy
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventFrameController {
 
     private EventFrame frame;
-    private final List<JFrame> windows = new ArrayList<>();
     private final EventClient eventClient;
 
     public void initEventController(Event event) {
-        if (windows.size() == 0) {
-            frame = new EventFrame(event);
-            windows.add(frame);
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+        frame = new EventFrame(event);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                windows.clear();
+                frame = null;
             }
         });
 

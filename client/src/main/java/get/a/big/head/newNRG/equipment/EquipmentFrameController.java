@@ -1,5 +1,10 @@
 package get.a.big.head.newNRG.equipment;
 
+import get.a.big.head.newNRG.events.AddEventFrameController;
+import get.a.big.head.newNRG.events.EventFrameController;
+import get.a.big.head.newNRG.projectdocumentations.ProjectDocumentationFrameController;
+import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +19,78 @@ import java.awt.event.WindowEvent;
 @Lazy
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EquipmentFrameController {
 
     private EquipmentFrame frame;
-    private boolean close = true;
+    private Equipment equipment;
     private final EquipmentClient equipmentClient;
+    private final EventFrameController eventFrameController;
+    private final AddEventFrameController addEventFrameController;
+    private final UserAuthorizationFrameController authorizationFrameController;
+    private final ProjectDocumentationFrameController projectDocumentationFrameController;
 
     public void initEquipmentFrameController(Equipment equipment) {
-        if (close) {
-            frame = new EquipmentFrame(equipment);
-            close = false;
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+        this.equipment = equipment;
+        frame = new EquipmentFrame(equipment);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                close = true;
+                frame = null;
             }
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+
+        frame.getButtonAddEvent().addActionListener(e -> {
+            if (addEventFrameController.getFrame() == null) {
+                addEventFrameController.initAddEventFrameController();
+            } else {
+                addEventFrameController.getFrame().getFrame().toFront();
+                addEventFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
+
+        frame.getButtonAddDocumentation().addActionListener(e -> {
+            //loader
+        });
+
+        frame.getButtonOk().addActionListener(e -> {
+            ResponseEntity<Object> updateEquipmentResponse = equipmentClient.updateEquipment(
+                    equipment,
+                    authorizationFrameController.getUser().getUserId()
+            );
+            if (updateEquipmentResponse.getStatusCode().is2xxSuccessful() && updateEquipmentResponse.getBody() != null) {
+                frame.getFrame().dispose();
+            } else {
+                JOptionPane.showMessageDialog(
+                        frame.getFrame(),
+                        updateEquipmentResponse.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        });
+
+        frame.getButtonShowDocumentation().addActionListener(e -> {
+            if (projectDocumentationFrameController.getFrame() == null) {
+                projectDocumentationFrameController.initProjectDocumentationFrameController(equipment.getProjectDocuments());
+            } else {
+                projectDocumentationFrameController.getFrame().getFrame().toFront();
+                projectDocumentationFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
+
+        frame.getButtonShowEvents().addActionListener(e -> {
+            if (eventFrameController.getFrame() == null) {
+                eventFrameController.initEventController();
+            } else {
+                eventFrameController.getFrame().getFrame().toFront();
+                eventFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
     }
 
     public Equipment getEquipment(String text, String userId) {
@@ -45,12 +98,13 @@ public class EquipmentFrameController {
         if (equipmentResponse.getStatusCode().is2xxSuccessful() && equipmentResponse.getBody() != null) {
             return EquipmentMapper.toEquipment(equipmentResponse.getBody());
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), equipmentResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    equipmentResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
         return null;
-    }
-
-    public EquipmentFrame getFrame() {
-        return frame;
     }
 }

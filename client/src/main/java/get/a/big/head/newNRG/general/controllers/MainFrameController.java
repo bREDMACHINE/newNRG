@@ -6,6 +6,9 @@ import get.a.big.head.newNRG.equipment.EquipmentFrameController;
 import get.a.big.head.newNRG.general.frames.AdminMainFrame;
 import get.a.big.head.newNRG.general.frames.ModeratorMainFrame;
 import get.a.big.head.newNRG.general.frames.UserMainFrame;
+import get.a.big.head.newNRG.type.Type;
+import get.a.big.head.newNRG.type.TypeClient;
+import get.a.big.head.newNRG.type.TypeMapper;
 import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import get.a.big.head.newNRG.users.controllers.UserManagerFrameController;
@@ -14,10 +17,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Lazy
 @Controller
@@ -30,6 +38,7 @@ public class MainFrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private final AddEquipmentFrameController addEquipmentFrameController;
     private final UserManagerFrameController userManagerFrameController;
+    private final TypeClient typeClient;
     private UserMainFrame frame;
 
     public void initMainFrameController() {
@@ -57,16 +66,42 @@ public class MainFrameController {
         });
 
         frame.getButtonFind().addActionListener(e -> {
-            Equipment equipment = equipmentFrameController.getEquipment(
-                    frame.getTextField().getText(),
-                    authorizationFrameController.getUser().getUserId()
-            );
-            equipmentFrameController.initEquipmentFrameController(equipment);
+            if (equipmentFrameController.getFrame() == null) {
+                Equipment equipment = equipmentFrameController.getEquipment(
+                        frame.getTextField().getText(),
+                        authorizationFrameController.getUser().getUserId()
+                );
+                equipmentFrameController.initEquipmentFrameController(equipment);
+            } else {
+                equipmentFrameController.getFrame().getFrame().toFront();
+                equipmentFrameController.getFrame().getFrame().requestFocus();
+            }
         });
 
-        frame.getButtonAddEquipment().addActionListener(
-                e -> addEquipmentFrameController.initAddEquipmentFrameController()
-        );
+        frame.getButtonAddEquipment().addActionListener(e -> {
+            if (addEquipmentFrameController.getFrame() == null) {
+                List<Type> types = new ArrayList<>();
+                ResponseEntity<Object> findAllTypesResponse = typeClient.findAllTypes(
+                        authorizationFrameController.getUser().getUserId()
+                );
+                if (findAllTypesResponse.getStatusCode().is2xxSuccessful() && findAllTypesResponse.getBody() != null) {
+                    types = TypeMapper.toTypes(findAllTypesResponse.getBody());
+                } else {
+                    JOptionPane.showMessageDialog(
+                            frame.getFrame(),
+                            findAllTypesResponse.getStatusCode().toString(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+                addEquipmentFrameController.initAddEquipmentFrameController(
+                        types.stream().map(Type::getTypeName).collect(Collectors.toList())
+                );
+            } else {
+                addEquipmentFrameController.getFrame().getFrame().toFront();
+                addEquipmentFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
 
         frame.getUserManager().addActionListener(e -> {
             if (userManagerFrameController.getFrame() == null) {

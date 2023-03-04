@@ -5,39 +5,37 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 @Getter
 @Setter
 public class AddEquipmentFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelOperationalName;
     private JTextField textOperationalName;
-    private JLabel labelRatedCurrent;
-    private JTextField textRatedCurrent;
-    private JLabel labelRatedVoltage;
-    private JTextField textRatedVoltage;
+    private JTextField textInstallationYear;
+    private JComboBox<String> typeMenu;
+    private JButton buttonAddDocumentation;
     private JButton buttonOk;
     private JButton buttonCancel;
 
-    public AddEquipmentFrame() {
+    public AddEquipmentFrame(List<String> types) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelLabels = new JPanel(new GridLayout(3, 2, 5, 0));
-        labelOperationalName = new JLabel("Оперативное наименование");
-        labelRatedCurrent = new JLabel("Номинальный ток");
-        labelRatedVoltage = new JLabel("Номинальное напряжение");
+        types.add(0, "Выберите тип");
+        JPanel panelLabels = new JPanel(new GridLayout(5, 2, 5, 0));
         textOperationalName = new JTextField(15);
-        textRatedCurrent = new JTextField(15);
-        textRatedVoltage = new JTextField(15);
-        panelLabels.add(labelOperationalName);
+        textInstallationYear = new JTextField(15);
+        typeMenu = new JComboBox<>(types.toArray(new String[types.size()]));
+        buttonAddDocumentation = new JButton("Добавить проект");
+        panelLabels.add(new JLabel("Оперативное наименование"));
         panelLabels.add(textOperationalName);
-        panelLabels.add(labelRatedCurrent);
-        panelLabels.add(textRatedCurrent);
-        panelLabels.add(labelRatedVoltage);
-        panelLabels.add(textRatedVoltage);
-        frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
+        panelLabels.add(new JLabel("Год ввода в эксплуатацию"));
+        panelLabels.add(textInstallationYear);
+        panelLabels.add(new JLabel("Тип"));
+        panelLabels.add(typeMenu);
+        frame.getContentPane().add(BorderLayout.NORTH, panelLabels);
 
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");

@@ -11,9 +11,9 @@ import java.awt.*;
 public class EquipmentFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelOperationalName;
-    private JLabel labelRatedCurrent;
-    private JLabel labelRatedVoltage;
+    private JButton buttonShowDocumentation;
+    private JButton buttonAddDocumentation;
+    private JButton buttonShowEvents;
     private JButton buttonAddEvent;
     private JButton buttonOk;
     private JButton buttonCancel;
@@ -21,26 +21,33 @@ public class EquipmentFrame extends JFrame {
     public EquipmentFrame(Equipment equipment) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 300);
 
-        JPanel panelLabels = new JPanel();
-        labelOperationalName = new JLabel(equipment.getOperationalName());
-        labelRatedCurrent = new JLabel(equipment.getInstallationYear());
-        labelRatedVoltage = new JLabel(equipment.getType().getTypeName());
-
-        panelLabels.add(labelOperationalName);
-        panelLabels.add(labelRatedCurrent);
-        panelLabels.add(labelRatedVoltage);
-        frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
-
+        buttonShowDocumentation = new JButton("Показать проект");
+        buttonAddDocumentation = new JButton("Добавить проект");
+        buttonShowEvents = new JButton("Показать события");
         buttonAddEvent = new JButton("Добавить событие");
+        JPanel panelSpecifications = new JPanel(new GridLayout(7, 2, 5, 0));
+        panelSpecifications.add(new JLabel("Оперативное наименование"));
+        panelSpecifications.add(new JLabel(equipment.getOperationalName()));
+        panelSpecifications.add(new JLabel("Год ввода в эксплуатацию"));
+        panelSpecifications.add(new JLabel(equipment.getInstallationYear()));
+        panelSpecifications.add(new JLabel("Тип"));
+        panelSpecifications.add(new JLabel(equipment.getType().getTypeName()));
+        panelSpecifications.add(buttonShowDocumentation);
+        panelSpecifications.add(buttonAddDocumentation);
+        panelSpecifications.add(buttonShowEvents);
+        panelSpecifications.add(buttonAddEvent);
+        frame.getContentPane().add(BorderLayout.NORTH, panelSpecifications);
+
+
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonAddEvent);
         panelButtons.add(buttonOk);
         panelButtons.add(buttonCancel);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+
+        frame.pack();
         frame.setVisible(true);
     }
 }

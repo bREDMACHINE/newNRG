@@ -24,15 +24,12 @@ public class UserAccountFrame extends JFrame {
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         JPanel panelLabels = new JPanel(new GridLayout(4, 2, 5,5));
-        JLabel labelEmail = new JLabel(user.getEmail());
-        JLabel labelRole = new JLabel(user.getRole());
-        JLabel labelStatus = new JLabel(user.getStatus());
         panelLabels.add(new JLabel("Email: "));
-        panelLabels.add(labelEmail);
+        panelLabels.add(new JLabel(user.getEmail()));
         panelLabels.add(new JLabel("Role: "));
-        panelLabels.add(labelRole);
+        panelLabels.add(new JLabel(user.getRole()));
         panelLabels.add(new JLabel("Status: "));
-        panelLabels.add(labelStatus);
+        panelLabels.add(new JLabel(user.getStatus()));
         frame.getContentPane().add(BorderLayout.NORTH, panelLabels);
 
         buttonDeleteUser = new JButton("Удалить пользователя");

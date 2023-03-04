@@ -18,6 +18,6 @@ public class Equipment {
     private String operationalName;
     private String installationYear;
     private Type type;
-    private Set<ProjectDocumentation> projectDocumentations = new HashSet<>();
+    private Set<ProjectDocumentation> projectDocuments = new HashSet<>();
     private List<Event> events = new ArrayList<>();
 }
