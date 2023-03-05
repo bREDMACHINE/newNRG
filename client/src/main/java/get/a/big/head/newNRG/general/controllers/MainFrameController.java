@@ -1,8 +1,8 @@
 package get.a.big.head.newNRG.general.controllers;
 
-import get.a.big.head.newNRG.equipment.AddEquipmentFrameController;
+import get.a.big.head.newNRG.equipment.controllers.AddEquipmentFrameController;
 import get.a.big.head.newNRG.equipment.Equipment;
-import get.a.big.head.newNRG.equipment.EquipmentFrameController;
+import get.a.big.head.newNRG.equipment.controllers.EquipmentFrameController;
 import get.a.big.head.newNRG.general.frames.AdminMainFrame;
 import get.a.big.head.newNRG.general.frames.ModeratorMainFrame;
 import get.a.big.head.newNRG.general.frames.UserMainFrame;
@@ -12,7 +12,7 @@ import get.a.big.head.newNRG.type.TypeMapper;
 import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import get.a.big.head.newNRG.users.controllers.UserManagerFrameController;
-import get.a.big.head.newNRG.users.dtos.Role;
+import get.a.big.head.newNRG.users.models.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

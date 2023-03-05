@@ -1,5 +1,6 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.frames;
 
+import get.a.big.head.newNRG.equipment.Equipment;
 import lombok.Getter;
 import lombok.Setter;
 

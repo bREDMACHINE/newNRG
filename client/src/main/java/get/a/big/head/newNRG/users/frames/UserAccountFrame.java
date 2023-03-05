@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG.users.frames;
 
-import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.models.User;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -7,8 +7,9 @@ import lombok.Getter;
 @Getter
 public class Event {
 
-    String createEvent;
-    String nameEvent;
-    String descriptionEvent;
-    String documentEvent;
+    private Long id;
+    private String createEvent;
+    private String nameEvent;
+    private String descriptionEvent;
+    private String documentEvent;
 }

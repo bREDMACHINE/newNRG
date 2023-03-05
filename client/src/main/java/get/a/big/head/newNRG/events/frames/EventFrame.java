@@ -1,5 +1,6 @@
-package get.a.big.head.newNRG.events;
+package get.a.big.head.newNRG.events.frames;
 
+import get.a.big.head.newNRG.events.Event;
 import lombok.Getter;
 import lombok.Setter;
 

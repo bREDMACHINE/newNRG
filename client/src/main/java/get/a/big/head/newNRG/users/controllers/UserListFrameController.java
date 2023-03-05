@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG.users.controllers;
 
-import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.models.User;
 import get.a.big.head.newNRG.users.frames.UserListFrame;
 import lombok.Getter;
 import org.springframework.context.annotation.Lazy;

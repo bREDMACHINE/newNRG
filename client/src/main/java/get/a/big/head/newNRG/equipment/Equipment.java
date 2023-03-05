@@ -7,17 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Builder
 @Getter
 public class Equipment {
 
+    private Long id;
     private String operationalName;
     private String installationYear;
     private Type type;
-    private Set<ProjectDocumentation> projectDocuments = new HashSet<>();
+    private List<ProjectDocumentation> projectDocuments = new ArrayList<>();
     private List<Event> events = new ArrayList<>();
 }

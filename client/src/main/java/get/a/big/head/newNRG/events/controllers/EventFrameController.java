@@ -1,5 +1,9 @@
-package get.a.big.head.newNRG.events;
+package get.a.big.head.newNRG.events.controllers;
 
+import get.a.big.head.newNRG.events.Event;
+import get.a.big.head.newNRG.events.EventClient;
+import get.a.big.head.newNRG.events.EventMapper;
+import get.a.big.head.newNRG.events.frames.EventFrame;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Lazy
 @Controller

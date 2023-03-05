@@ -6,17 +6,15 @@ import get.a.big.head.newNRG.specification.Specification;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Builder
 @Getter
 public class Type {
-
+    private Long typeId;
     private String typeName;
     private String factoryName;
-    private Set<Specification> specifications = new HashSet<>();
-    private Set<FactoryDocumentation> factoryDocumentations = new HashSet<>();
-    private HashMap<Spare, Long> spares = new HashMap<>();
+    private List<Specification> specifications;
+    private List<FactoryDocumentation> factoryDocumentations;
+    private List<Spare> spares;
 }

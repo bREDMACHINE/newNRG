@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import java.util.Set;
+import java.util.List;
 
 @Lazy
 @Controller
@@ -18,8 +18,12 @@ public class ProjectDocumentationFrameController {
 
     private ProjectDocumentationFrame frame;
 
-    public void initProjectDocumentationFrameController(Set<ProjectDocumentation> projectDocuments) {
+    public void initProjectDocumentationFrameController(List<ProjectDocumentation> projectDocuments) {
 
         frame = new ProjectDocumentationFrame(projectDocuments);
+    }
+
+    public ProjectDocumentation addDocumentation() {
+        return ProjectDocumentation.builder().build();
     }
 }

@@ -1,7 +1,11 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.controllers;
 
-import get.a.big.head.newNRG.events.AddEventFrameController;
-import get.a.big.head.newNRG.events.EventFrameController;
+import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.EquipmentClient;
+import get.a.big.head.newNRG.equipment.EquipmentMapper;
+import get.a.big.head.newNRG.equipment.frames.EquipmentFrame;
+import get.a.big.head.newNRG.events.controllers.AddEventFrameController;
+import get.a.big.head.newNRG.events.controllers.EventListFrameController;
 import get.a.big.head.newNRG.projectdocumentations.ProjectDocumentationFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -26,7 +30,7 @@ public class EquipmentFrameController {
     private EquipmentFrame frame;
     private Equipment equipment;
     private final EquipmentClient equipmentClient;
-    private final EventFrameController eventFrameController;
+    private final EventListFrameController eventListFrameController;
     private final AddEventFrameController addEventFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final ProjectDocumentationFrameController projectDocumentationFrameController;
@@ -47,6 +51,9 @@ public class EquipmentFrameController {
         frame.getButtonAddEvent().addActionListener(e -> {
             if (addEventFrameController.getFrame() == null) {
                 addEventFrameController.initAddEventFrameController();
+                if (addEventFrameController.getEvent() != null) {
+                    equipment.getEvents().add(addEventFrameController.getEvent());
+                }
             } else {
                 addEventFrameController.getFrame().getFrame().toFront();
                 addEventFrameController.getFrame().getFrame().requestFocus();
@@ -54,7 +61,7 @@ public class EquipmentFrameController {
         });
 
         frame.getButtonAddDocumentation().addActionListener(e -> {
-            //loader
+            equipment.getProjectDocuments().add(projectDocumentationFrameController.addDocumentation());
         });
 
         frame.getButtonOk().addActionListener(e -> {
@@ -84,11 +91,11 @@ public class EquipmentFrameController {
         });
 
         frame.getButtonShowEvents().addActionListener(e -> {
-            if (eventFrameController.getFrame() == null) {
-                eventFrameController.initEventController();
+            if (eventListFrameController.getFrame() == null) {
+                eventListFrameController.initEventListFrameController(equipment.getEvents());
             } else {
-                eventFrameController.getFrame().getFrame().toFront();
-                eventFrameController.getFrame().getFrame().requestFocus();
+                eventListFrameController.getFrame().getFrame().toFront();
+                eventListFrameController.getFrame().getFrame().requestFocus();
             }
         });
     }

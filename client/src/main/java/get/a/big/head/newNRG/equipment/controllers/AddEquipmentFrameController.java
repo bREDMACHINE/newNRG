@@ -1,5 +1,9 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.controllers;
 
+import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.EquipmentClient;
+import get.a.big.head.newNRG.equipment.EquipmentMapper;
+import get.a.big.head.newNRG.equipment.frames.AddEquipmentFrame;
 import get.a.big.head.newNRG.type.Type;
 import get.a.big.head.newNRG.type.TypeClient;
 import get.a.big.head.newNRG.type.TypeMapper;

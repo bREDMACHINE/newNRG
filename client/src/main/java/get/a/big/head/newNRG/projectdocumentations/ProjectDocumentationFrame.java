@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class ProjectDocumentationFrame extends JFrame {
     private JButton buttonOk;
     private JButton buttonCancel;
 
-    public ProjectDocumentationFrame(Set<ProjectDocumentation> projectDocuments) {
+    public ProjectDocumentationFrame(List<ProjectDocumentation> projectDocuments) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
