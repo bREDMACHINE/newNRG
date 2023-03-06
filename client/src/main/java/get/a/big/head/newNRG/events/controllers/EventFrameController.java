@@ -1,5 +1,10 @@
-package get.a.big.head.newNRG.events;
+package get.a.big.head.newNRG.events.controllers;
 
+import get.a.big.head.newNRG.events.Event;
+import get.a.big.head.newNRG.events.EventClient;
+import get.a.big.head.newNRG.events.EventMapper;
+import get.a.big.head.newNRG.events.frames.EventFrame;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,32 +15,24 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 @Lazy
 @Controller
 @Slf4j
+@Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventFrameController {
 
     private EventFrame frame;
-    private final List<JFrame> windows = new ArrayList<>();
     private final EventClient eventClient;
 
     public void initEventController(Event event) {
-        if (windows.size() == 0) {
-            frame = new EventFrame(event);
-            windows.add(frame);
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+        frame = new EventFrame(event);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                windows.clear();
+                frame = null;
             }
         });
 
@@ -43,11 +40,11 @@ public class EventFrameController {
     }
 
     public Event getEvent(String userId) {
-        ResponseEntity<Object> eventAnswer = eventClient.getEvent(userId);
-        if (eventAnswer.getStatusCode().is2xxSuccessful()) {
-            return EventMapper.toEvent(eventAnswer.getBody());
+        ResponseEntity<Object> eventResponse = eventClient.getEvent(userId);
+        if (eventResponse.getStatusCode().is2xxSuccessful() && eventResponse.getBody() != null) {
+            return EventMapper.toEvent(eventResponse.getBody());
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), eventAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame.getFrame(), eventResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }

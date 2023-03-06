@@ -2,8 +2,8 @@ package get.a.big.head.newNRG.users.controllers;
 
 import get.a.big.head.newNRG.users.UserClient;
 import get.a.big.head.newNRG.users.UserMapper;
-import get.a.big.head.newNRG.users.dtos.Role;
-import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.models.Role;
+import get.a.big.head.newNRG.users.models.User;
 import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import get.a.big.head.newNRG.users.frames.AdminAccountFrame;
 import get.a.big.head.newNRG.users.frames.UserAccountFrame;

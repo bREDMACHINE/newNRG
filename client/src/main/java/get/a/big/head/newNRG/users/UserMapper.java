@@ -2,7 +2,7 @@ package get.a.big.head.newNRG.users;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.models.User;
 import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import org.springframework.http.HttpHeaders;
 

@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.users.dtos;
+package get.a.big.head.newNRG.users.models;
 
 import lombok.Builder;
 import lombok.Getter;

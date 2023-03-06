@@ -1,40 +1,34 @@
 package get.a.big.head.newNRG.equipment;
 
+import get.a.big.head.newNRG.projectdocumentation.ProjectDocumentation;
+import get.a.big.head.newNRG.types.Type;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "equipment", schema = "public")
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "equipment_id")
-    private Long id;
+    private Long equipmentId;
     @Column(name = "operational_name")
     private String operationalName;
-    @Column(name = "rated_current")
-    private String ratedCurrent;
-    @Column(name = "rated_voltage")
-    private String ratedVoltage;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Equipment equipment = (Equipment) o;
-        return id != null && Objects.equals(id, equipment.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    @Column(name = "installation_year")
+    private LocalDate installationYear;
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private Type type;
+    @ManyToMany
+    @JoinTable(
+            name = "equipment_projects",
+            joinColumns = @JoinColumn(name = "equipment_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private List<ProjectDocumentation> projectDocuments;
 }

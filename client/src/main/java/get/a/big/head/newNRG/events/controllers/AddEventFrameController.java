@@ -1,7 +1,9 @@
-package get.a.big.head.newNRG.events;
+package get.a.big.head.newNRG.events.controllers;
 
-import get.a.big.head.newNRG.equipment.Equipment;
-import get.a.big.head.newNRG.equipment.EquipmentMapper;
+import get.a.big.head.newNRG.events.Event;
+import get.a.big.head.newNRG.events.EventClient;
+import get.a.big.head.newNRG.events.EventMapper;
+import get.a.big.head.newNRG.events.frames.AddEventFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,23 +25,17 @@ import java.awt.event.WindowEvent;
 public class AddEventFrameController {
 
     private AddEventFrame frame;
-    private boolean close = true;
+    private Event event;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
 
     public void initAddEventFrameController() {
-        if (close) {
-            frame = new AddEventFrame();
-            close = false;
-        } else {
-            frame.getFrame().toFront();
-            frame.getFrame().requestFocus();
-        }
+        frame = new AddEventFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                close = true;
+                frame = null;
             }
         });
 
@@ -49,19 +45,26 @@ public class AddEventFrameController {
             String description = frame.getTextDescription().getText();
             log.info("Add event  with createEvent {}, nameEvent {}, description {}",
                     createEvent, nameEvent, description);
-            EventDto eventDto = EventMapper.toEventDto(createEvent, nameEvent, description);
-            ResponseEntity<Object> addEventAnswer = eventClient.addEvent(
-                    eventDto,
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(
+                    Event.builder()
+                            .createEvent(createEvent)
+                            .descriptionEvent(description)
+                            .nameEvent(nameEvent).build(),
                     authorizationFrameController.getUser().getUserId()
             );
 
-            if (addEventAnswer.getStatusCode().is2xxSuccessful()) {
-                Equipment equipment = EquipmentMapper.toEquipment(addEventAnswer.getBody());
+            if (addEventResponse.getStatusCode().is2xxSuccessful() && addEventResponse.getBody() != null) {
+                event = EventMapper.toEvent(addEventResponse.getBody());
                 frame.getFrame().dispose();
                 JOptionPane.showMessageDialog(frame.getFrame(),
-                        "Оборудование " + equipment.getOperationalName() + " успешно добавлено");
+                        "Событие " + event.getNameEvent() + " успешно создано");
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), addEventAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        frame.getFrame(),
+                        addEventResponse.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
         });
 

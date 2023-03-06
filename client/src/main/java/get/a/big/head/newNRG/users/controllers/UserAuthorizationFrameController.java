@@ -2,10 +2,9 @@ package get.a.big.head.newNRG.users.controllers;
 
 import get.a.big.head.newNRG.users.UserClient;
 import get.a.big.head.newNRG.users.UserMapper;
-import get.a.big.head.newNRG.users.dtos.User;
+import get.a.big.head.newNRG.users.models.User;
 import get.a.big.head.newNRG.users.dtos.UserDto;
 import get.a.big.head.newNRG.users.frames.UserAuthorizationFrame;
-import get.a.big.head.newNRG.users.frames.UserRegistrationFrame;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

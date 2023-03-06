@@ -29,7 +29,11 @@ public class EquipmentClient extends BaseClient {
         return get("?text=" + text, userId);
     }
 
-    public ResponseEntity<Object> addEquipment(EquipmentDto equipmentDto, String userId) {
-        return post("/moderator", userId, equipmentDto);
+    public ResponseEntity<Object> addEquipment(Equipment equipment, String userId) {
+        return post("/moderator", userId, equipment);
+    }
+
+    public ResponseEntity<Object> updateEquipment(Equipment equipment, String userId) {
+        return post("/moderator/update", userId, equipment);
     }
 }

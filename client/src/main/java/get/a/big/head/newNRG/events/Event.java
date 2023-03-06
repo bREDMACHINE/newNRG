@@ -1,16 +1,15 @@
 package get.a.big.head.newNRG.events;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-import java.io.File;
-
-@Data
-@NoArgsConstructor
+@Builder
+@Getter
 public class Event {
 
-    String createEvent;
-    String name;
-    String description;
-    File file;
+    private Long id;
+    private String createEvent;
+    private String nameEvent;
+    private String descriptionEvent;
+    private String documentEvent;
 }
