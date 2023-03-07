@@ -11,27 +11,15 @@ public class EquipmentDto {
 
     private Long equipmentId;
     private String operationalName;
-    private String installationYear;
+    private Short installationYear;
     private TypeDtoForEquipmentDto type;
-    private List<ProjectDtoForEquipmentDto> projectDocuments;
-    private List<EventDtoForEquipmentDto> events;
+    private List<Long> projectDocuments;
+    private List<Long> events;
 
     @Builder
     @Getter
     public static class TypeDtoForEquipmentDto {
         Long typeId;
         String typeName;
-    }
-
-    @Builder
-    @Getter
-    public static class ProjectDtoForEquipmentDto {
-        Long projectId;
-    }
-
-    @Builder
-    @Getter
-    public static class EventDtoForEquipmentDto {
-        Long eventId;
     }
 }

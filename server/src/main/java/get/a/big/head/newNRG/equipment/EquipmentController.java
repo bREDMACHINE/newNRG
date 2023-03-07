@@ -13,9 +13,21 @@ public class EquipmentController {
     private final EquipmentService equipmentService;
 
     @PostMapping("/equipment/moderator")
-    public EquipmentDto addEquipment(@RequestBody EquipmentDto equipmentDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment, equipment={}", equipmentDto);
-        return equipmentService.addEquipment(equipmentDto);
+    public EquipmentShortDto addEquipment(@RequestBody EquipmentShortDto equipmentShortDto) {
+        log.info("Получен Post запрос к эндпоинту /equipment/moderator, equipment={}", equipmentShortDto);
+        return equipmentService.addEquipment(equipmentShortDto);
+    }
+
+    @PatchMapping("/equipment/moderator")
+    public EquipmentDto updateEquipment(@RequestBody EquipmentDto equipmentDto) {
+        log.info("Получен Patch запрос к эндпоинту /equipment/moderator, equipment={}", equipmentDto);
+        return equipmentService.updateEquipment(equipmentDto);
+    }
+
+    @DeleteMapping("/equipment/moderator/{id}")
+    public void deleteEquipment(@PathVariable Long id) {
+        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/{}", id);
+        equipmentService.deleteEquipment(id);
     }
 
     @GetMapping("/equipment")

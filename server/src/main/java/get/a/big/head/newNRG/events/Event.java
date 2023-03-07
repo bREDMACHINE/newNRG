@@ -1,17 +1,18 @@
 package get.a.big.head.newNRG.events;
 
 import get.a.big.head.newNRG.equipment.Equipment;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "events", schema = "public")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Event {
     @Id
@@ -19,14 +20,27 @@ public class Event {
     @Column(name = "event_id")
     private Long eventId;
     @Column(name = "create_event")
-    private LocalDate createEvent;
+    private LocalDateTime createEvent;
     @Column(name = "name_event")
     private String nameEvent;
     @Column(name = "decsription_event")
     private String descriptionEvent;
-    @ManyToOne
-    @JoinColumn(name = "equipment_id")
+    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+    @JoinColumn (name="equipment_id")
     private Equipment equipment;
     @Column(name = "file")
     private String documentEvent;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Event event = (Event) o;
+        return eventId != null && Objects.equals(eventId, event.eventId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
