@@ -1,7 +1,7 @@
 package get.a.big.head.newNRG.users;
 
-import get.a.big.head.newNRG.users.models.UserDto;
-import get.a.big.head.newNRG.users.models.UserFullDto;
+import get.a.big.head.newNRG.users.dtos.UserDto;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import get.a.big.head.newNRG.users.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

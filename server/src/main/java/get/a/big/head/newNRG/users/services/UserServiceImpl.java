@@ -2,6 +2,8 @@ package get.a.big.head.newNRG.users.services;
 
 import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
+import get.a.big.head.newNRG.users.dtos.UserDto;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import get.a.big.head.newNRG.users.security.JwtTokenProvider;
 import get.a.big.head.newNRG.users.UserMapper;
 import get.a.big.head.newNRG.users.UserRepository;

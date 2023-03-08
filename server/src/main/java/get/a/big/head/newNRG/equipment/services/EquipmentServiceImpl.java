@@ -1,5 +1,10 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.services;
 
+import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.dtos.EquipmentMapper;
+import get.a.big.head.newNRG.equipment.EquipmentRepository;
+import get.a.big.head.newNRG.equipment.dtos.EquipmentDto;
+import get.a.big.head.newNRG.equipment.dtos.EquipmentShortDto;
 import get.a.big.head.newNRG.events.Event;
 import get.a.big.head.newNRG.events.EventRepository;
 import get.a.big.head.newNRG.exception.BadRequestException;
@@ -39,7 +44,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public EquipmentDto updateEquipment(EquipmentDto equipmentDto) {
-        Equipment equipment = equipmentRepository.findByOperationalName(equipmentDto.getOperationalName())
+        Equipment equipment = equipmentRepository.findById(equipmentDto.getEquipmentId())
                 .orElseThrow(() -> new NotFoundException("Указанный equipmentId не существует"));
         if (equipmentDto.getProjectDocuments() != null) {
             List<ProjectDocumentation> projectDocuments = projectDocumentationRepository.findAllById(
@@ -57,7 +62,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public void deleteEquipment(Long id) {
         Equipment equipment = equipmentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Указанное оперативное наименование не существует"));
+                .orElseThrow(() -> new NotFoundException("Указанный equipmentId не существует"));
         equipmentRepository.delete(equipment);
     }
 

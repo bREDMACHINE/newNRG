@@ -29,18 +29,18 @@ public class Type {
     private Factory factory;
     @ManyToMany
     @JoinTable(
-            name = "types_documents",
-            joinColumns = @JoinColumn(name = "type_id"),
-            inverseJoinColumns = @JoinColumn(name = "document_id"))
-    @ToString.Exclude
-    private List<FactoryDocumentation> factoryDocuments;
-    @ManyToMany
-    @JoinTable(
             name = "types_specifications",
             joinColumns = @JoinColumn(name = "type_id"),
             inverseJoinColumns = @JoinColumn(name = "specification_id"))
     @ToString.Exclude
     private List<Specification> specifications;
+    @ManyToMany
+    @JoinTable(
+            name = "types_documents",
+            joinColumns = @JoinColumn(name = "type_id"),
+            inverseJoinColumns = @JoinColumn(name = "document_id"))
+    @ToString.Exclude
+    private List<FactoryDocumentation> factoryDocuments;
     @ManyToMany
     @JoinTable(
             name = "types_spares",

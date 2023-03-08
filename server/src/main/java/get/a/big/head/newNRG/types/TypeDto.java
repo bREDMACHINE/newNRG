@@ -12,8 +12,8 @@ public class TypeDto {
     private Long typeId;
     private String typeName;
     private FactoryDtoForTypeDto factory;
-    private List<Long> factoryDocuments;
     private List<Long> specifications;
+    private List<Long> factoryDocuments;
     private List<Long> spares;
 
     @Builder

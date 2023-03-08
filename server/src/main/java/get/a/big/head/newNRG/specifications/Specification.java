@@ -1,18 +1,18 @@
 package get.a.big.head.newNRG.specifications;
 
-import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.types.Type;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "specifications", schema = "public")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Specification {
     @Id
@@ -26,5 +26,19 @@ public class Specification {
     @Column(name = "value")
     private String specificationValue;
     @ManyToMany(mappedBy = "types")
+    @ToString.Exclude
     private List<Type> types;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Specification that = (Specification) o;
+        return specificationId != null && Objects.equals(specificationId, that.specificationId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,4 +1,7 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.services;
+
+import get.a.big.head.newNRG.equipment.dtos.EquipmentDto;
+import get.a.big.head.newNRG.equipment.dtos.EquipmentShortDto;
 
 public interface EquipmentService {
 

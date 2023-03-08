@@ -1,7 +1,6 @@
 package get.a.big.head.newNRG.events;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import get.a.big.head.newNRG.equipment.Equipment;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +17,6 @@ public class EventDto {
     private LocalDateTime createEvent;
     private String nameEvent;
     private String descriptionEvent;
-    private Equipment equipment;
+    private Long equipmentId;
     private String documentEvent;
 }

@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.dtos;
 
 import lombok.Builder;
 import lombok.Getter;

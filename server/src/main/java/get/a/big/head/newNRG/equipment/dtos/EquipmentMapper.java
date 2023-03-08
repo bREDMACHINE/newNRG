@@ -1,5 +1,6 @@
-package get.a.big.head.newNRG.equipment;
+package get.a.big.head.newNRG.equipment.dtos;
 
+import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.events.Event;
 import get.a.big.head.newNRG.projectdocumentation.ProjectDocumentation;
 import get.a.big.head.newNRG.types.Type;
