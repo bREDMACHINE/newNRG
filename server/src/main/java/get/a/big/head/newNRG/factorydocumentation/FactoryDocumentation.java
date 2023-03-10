@@ -27,7 +27,7 @@ public class FactoryDocumentation {
     private String factoryDocumentation;
     @ManyToMany(mappedBy = "types")
     @ToString.Exclude
-    private List<Type> equipment;
+    private List<Type> types;
 
     @Override
     public boolean equals(Object o) {
