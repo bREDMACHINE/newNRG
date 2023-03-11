@@ -25,7 +25,7 @@ public class ProjectDocumentation {
     private String codeProjectDocumentation;
     @Column(name = "file")
     private String projectDocumentation;
-    @ManyToMany(mappedBy = "equipment")
+    @ManyToMany(mappedBy = "projectDocuments")
     @ToString.Exclude
     private List<Equipment> equipment;
 

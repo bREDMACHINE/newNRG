@@ -14,27 +14,27 @@ public class SpecificationController {
 
     private final SpecificationService specificationService;
 
-    @PostMapping("/equipment/moderator/type/specification")
+    @PostMapping("/moderator/equipment/type/specification")
     public SpecificationDto addSpecification(@RequestBody SpecificationDto specificationDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/type/specification, specification={}", specificationDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/type/specification, specification={}", specificationDto);
         return specificationService.addSpecification(specificationDto);
     }
 
-    @DeleteMapping("/equipment/moderator/type/specification/{id}")
+    @DeleteMapping("/moderator/equipment/type/specification/{id}")
     public void deleteSpecification(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/type/specification/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/type/specification/{}", id);
         specificationService.deleteSpecification(id);
     }
 
-    @GetMapping("/equipment/type/specification/{id}")
+    @GetMapping("/user/equipment/type/specification/{id}")
     public SpecificationDto getSpecification(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/specification/{}", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/specification/{}", id);
         return specificationService.getSpecification(id);
     }
 
-    @GetMapping("/equipment/type/specifications")
+    @GetMapping("/user/equipment/type/specifications")
     public List<SpecificationDto> findAllSpecifications() {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/specifications");
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/specifications");
         return specificationService.findAllSpecifications();
     }
 }

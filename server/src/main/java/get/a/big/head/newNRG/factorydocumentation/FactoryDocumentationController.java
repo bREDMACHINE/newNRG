@@ -14,27 +14,27 @@ public class FactoryDocumentationController {
 
     private final FactoryDocumentationService factoryDocumentationService;
 
-    @PostMapping("/equipment/moderator/type/document")
+    @PostMapping("/moderator/equipment/type/document")
     public FactoryDocumentationDto addDocument(@RequestBody FactoryDocumentationDto factoryDocumentationDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/type/document, document={}", factoryDocumentationDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/type/document, document={}", factoryDocumentationDto);
         return factoryDocumentationService.addDocument(factoryDocumentationDto);
     }
 
-    @DeleteMapping("/equipment/moderator/type/document/{id}")
+    @DeleteMapping("/moderator/equipment/type/document/{id}")
     public void deleteDocument(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/type/document/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/type/document/{}", id);
         factoryDocumentationService.deleteDocument(id);
     }
 
-    @GetMapping("/equipment/type/document/{id}")
+    @GetMapping("/user/equipment/type/document/{id}")
     public FactoryDocumentationDto getDocument(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/document/{}", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/document/{}", id);
         return factoryDocumentationService.getDocument(id);
     }
 
-    @GetMapping("/equipment/type/{id}/documents")
+    @GetMapping("/user/equipment/type/{id}/documents")
     public List<FactoryDocumentationDto> findAllDocuments(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/{}/documents", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/{}/documents", id);
         return factoryDocumentationService.findAllDocuments(id);
     }
 }

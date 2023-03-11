@@ -15,19 +15,19 @@ public class EventController {
 
     private final EventService eventService;
 
-    @PostMapping("/equipment/moderator/event")
+    @PostMapping("/moderator/equipment/event")
     public EventDto addEvent(@RequestBody EventDto eventDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/event, event={}", eventDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/event, event={}", eventDto);
         return eventService.addEvent(eventDto);
     }
 
-    @DeleteMapping("/equipment/moderator/event/{id}")
+    @DeleteMapping("/moderator/equipment/event/{id}")
     public void deleteEvent(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/event/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/event/{}", id);
         eventService.deleteEvent(id);
     }
 
-    @GetMapping("/equipment/{id}/events")
+    @GetMapping("/user/equipment/{id}/events")
     public List<EventDto> findAllEvents(@PathVariable Long id) {
         log.info("Получен Get запрос к эндпоинту /equipment/{}/events", id);
         return eventService.findAllEvents(id);

@@ -101,7 +101,7 @@ public class EquipmentFrameController {
     }
 
     public Equipment getEquipment(String text, String userId) {
-        ResponseEntity<Object> equipmentResponse = equipmentClient.findEquipment(text, userId);
+        ResponseEntity<Object> equipmentResponse = equipmentClient.getEquipment(text, userId);
         if (equipmentResponse.getStatusCode().is2xxSuccessful() && equipmentResponse.getBody() != null) {
             return EquipmentMapper.toEquipment(equipmentResponse.getBody());
         } else {

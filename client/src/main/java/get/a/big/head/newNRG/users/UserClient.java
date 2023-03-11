@@ -59,7 +59,7 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateUser(String userId, UserFullDto userFullDto) {
-        return patch("/authorization/update", userId, userFullDto);
+        return patch("/user/update", userId, userFullDto);
     }
 
     public ResponseEntity<Object> resolutionUser(String resolution, String email, String userId) {

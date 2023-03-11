@@ -1,6 +1,5 @@
 package get.a.big.head.newNRG.factories;
 
-import get.a.big.head.newNRG.spares.SpareDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +14,27 @@ public class FactoryController {
 
     private final FactoryService factoryService;
 
-    @PostMapping("/equipment/moderator/type/factory")
+    @PostMapping("/moderator/equipment/type/factory")
     public FactoryDto addFactory(@RequestBody FactoryDto factoryDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/type/factory, factory={}", factoryDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/type/factory, factory={}", factoryDto);
         return factoryService.addFactory(factoryDto);
     }
 
-    @DeleteMapping("/equipment/moderator/type/factory/{id}")
+    @DeleteMapping("/moderator/equipment/type/factory/{id}")
     public void deleteFactory(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/type/factory/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/type/factory/{}", id);
         factoryService.deleteFactory(id);
     }
 
-    @GetMapping("/equipment/moderator/type/factory/{id}")
+    @GetMapping("/user/equipment/type/factory/{id}")
     public FactoryDto getFactory(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/moderator/type/factory/{}", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/factory/{}", id);
         return factoryService.getFactory(id);
     }
 
-    @GetMapping("/equipment/type/factories")
+    @GetMapping("/user/equipment/type/factories")
     public List<FactoryDto> findAllFactories() {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/factory");
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/factory");
         return factoryService.findAllFactories();
     }
 }

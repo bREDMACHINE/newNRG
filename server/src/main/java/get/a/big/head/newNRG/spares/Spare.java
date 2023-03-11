@@ -25,7 +25,7 @@ public class Spare {
     private String spareDescription;
     @Column(name = "spare_code")
     private String spareCode;
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "spares")
     @ToString.Exclude
     private List<Type> types;
 

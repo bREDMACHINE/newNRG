@@ -10,11 +10,18 @@ import java.util.List;
 
 @Builder
 @Getter
-public class Type {
+public class TypeDto {
     private Long typeId;
     private String typeName;
-    private String factoryName;
-    private List<Specification> specifications;
-    private List<FactoryDocumentation> factoryDocumentations;
-    private List<Spare> spares;
+    private FactoryDtoForTypeDto factory;
+    private List<Long> specifications;
+    private List<Long> factoryDocuments;
+    private List<Long> spares;
+
+    @Builder
+    @Getter
+    public static class FactoryDtoForTypeDto {
+        Long factoryId;
+        String factoryName;
+    }
 }

@@ -40,7 +40,7 @@ public class UserController {
         userService.logoutUser(httpServletRequest, httpServletResponse);
     }
 
-    @PatchMapping("/authorization/update")
+    @PatchMapping("/user/update")
     public UserFullDto requestForUpdateUser(@RequestBody UserFullDto userFullDto) {
         log.info("Получен Patch запрос к эндпоинту /authorization/update{}", userFullDto);
         return userService.updateUser(userFullDto);

@@ -1,6 +1,5 @@
 package get.a.big.head.newNRG.users.security;
 
-import get.a.big.head.newNRG.users.models.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,6 @@ import org.springframework.security
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security
         .crypto.bcrypt.BCryptPasswordEncoder;
-
 
 @Configuration
 @EnableWebSecurity
@@ -39,8 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authorization/**").permitAll()
-                .antMatchers("/equipment").hasAuthority("READ")
-                .antMatchers("/equipment/moderator/**").hasAuthority("WRITE")
+                .antMatchers("/user/**").hasAuthority("READ")
+                .antMatchers("/moderator/**").hasAuthority("WRITE")
                 .antMatchers("/admin/**").hasAuthority("GOD")
                 .anyRequest()
                 .authenticated()

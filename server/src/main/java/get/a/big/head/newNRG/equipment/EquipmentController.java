@@ -15,27 +15,27 @@ public class EquipmentController {
 
     private final EquipmentService equipmentService;
 
-    @PostMapping("/equipment/moderator")
+    @PostMapping("/moderator/equipment")
     public EquipmentShortDto addEquipment(@RequestBody EquipmentShortDto equipmentShortDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator, equipment={}", equipmentShortDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment, equipment={}", equipmentShortDto);
         return equipmentService.addEquipment(equipmentShortDto);
     }
 
-    @PatchMapping("/equipment/moderator")
+    @PatchMapping("/moderator/equipment")
     public EquipmentDto updateEquipment(@RequestBody EquipmentDto equipmentDto) {
-        log.info("Получен Patch запрос к эндпоинту /equipment/moderator, equipment={}", equipmentDto);
+        log.info("Получен Patch запрос к эндпоинту /moderator/equipment, equipment={}", equipmentDto);
         return equipmentService.updateEquipment(equipmentDto);
     }
 
-    @DeleteMapping("/equipment/moderator/{id}")
+    @DeleteMapping("/moderator/equipment/{id}")
     public void deleteEquipment(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/{}", id);
         equipmentService.deleteEquipment(id);
     }
 
-    @GetMapping("/equipment")
+    @GetMapping("/user/equipment")
     public EquipmentDto getEquipment(@RequestParam String text) {
-        log.info("Получен Get запрос к эндпоинту /equipment text={}", text);
+        log.info("Получен Get запрос к эндпоинту /user/equipment text={}", text);
         return equipmentService.getEquipment(text);
     }
 }

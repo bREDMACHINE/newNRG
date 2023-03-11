@@ -35,7 +35,7 @@ public class Equipment {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     @ToString.Exclude
     private List<ProjectDocumentation> projectDocuments;
-    @OneToMany (mappedBy="events", fetch=FetchType.EAGER)
+    @OneToMany (mappedBy="equipment", fetch=FetchType.EAGER)
     private List<Event> events;
 
     @Override

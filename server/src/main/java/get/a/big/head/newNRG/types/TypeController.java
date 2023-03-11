@@ -14,33 +14,33 @@ public class TypeController {
 
     private final TypeService typeService;
 
-    @PostMapping("/equipment/moderator/type")
+    @PostMapping("/moderator/equipment/type")
     public TypeShortDto addType(@RequestBody TypeShortDto typeShortDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/type, type={}", typeShortDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/type, type={}", typeShortDto);
         return typeService.addType(typeShortDto);
     }
 
-    @PatchMapping("/equipment/moderator/type")
+    @PatchMapping("/moderator/equipment/type")
     public TypeDto updateType(@RequestBody TypeDto typeDto) {
-        log.info("Получен Patch запрос к эндпоинту /equipment/moderator/type, type={}", typeDto);
+        log.info("Получен Patch запрос к эндпоинту /moderator/equipment/type, type={}", typeDto);
         return typeService.updateType(typeDto);
     }
 
-    @DeleteMapping("/equipment/moderator/type/{id}")
+    @DeleteMapping("/moderator/equipment/type/{id}")
     public void deleteType(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/type/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/type/{}", id);
         typeService.deleteType(id);
     }
 
-    @GetMapping("/equipment/type/{id}")
+    @GetMapping("/user/equipment/type/{id}")
     public TypeDto getType(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/{}", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/{}", id);
         return typeService.getType(id);
     }
 
-    @GetMapping("/equipment/types")
+    @GetMapping("/user/equipment/types")
     public List<TypeShortDto> findAllTypes() {
-        log.info("Получен Get запрос к эндпоинту /equipment/types");
+        log.info("Получен Get запрос к эндпоинту /user/equipment/types");
         return typeService.findAllTypes();
     }
 }

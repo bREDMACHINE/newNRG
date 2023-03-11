@@ -23,9 +23,9 @@ public class Specification {
     private String specificationName;
     @Column(name = "specification_description")
     private String specificationDescription;
-    @Column(name = "value")
+    @Column(name = "specification_value")
     private String specificationValue;
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "specifications")
     @ToString.Exclude
     private List<Type> types;
 

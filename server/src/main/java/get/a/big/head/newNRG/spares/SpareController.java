@@ -14,27 +14,27 @@ public class SpareController {
 
     private final SpareService spareService;
 
-    @PostMapping("/equipment/moderator/type/spare")
+    @PostMapping("/moderator/equipment/type/spare")
     public SpareDto addSpare(@RequestBody SpareDto spareDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/type/spare, spare={}", spareDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/type/spare, spare={}", spareDto);
         return spareService.addSpare(spareDto);
     }
 
-    @DeleteMapping("/equipment/moderator/type/spare/{id}")
+    @DeleteMapping("/moderator/equipment/type/spare/{id}")
     public void deleteSpare(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/type/spare/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/type/spare/{}", id);
         spareService.deleteSpare(id);
     }
 
-    @GetMapping("/equipment/moderator/type/spare/{id}")
+    @GetMapping("/moderator/equipment/type/spare/{id}")
     public SpareDto getSpare(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/moderator/type/spare/{}", id);
+        log.info("Получен Get запрос к эндпоинту /moderator/equipment/type/spare/{}", id);
         return spareService.getSpare(id);
     }
 
-    @GetMapping("/equipment/type/{id}/spare")
+    @GetMapping("/user/equipment/type/{id}/spare")
     public List<SpareDto> findAllSpares(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/type/{}/spare", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/{}/spare", id);
         return spareService.findAllSpares(id);
     }
 }

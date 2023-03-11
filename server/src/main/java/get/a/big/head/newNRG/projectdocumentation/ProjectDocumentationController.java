@@ -14,27 +14,27 @@ public class ProjectDocumentationController {
 
     private final ProjectDocumentationService projectDocumentationService;
 
-    @PostMapping("/equipment/moderator/project")
+    @PostMapping("/moderator/equipment/project")
     public ProjectDocumentationDto addProject(@RequestBody ProjectDocumentationDto projectDocumentationDto) {
-        log.info("Получен Post запрос к эндпоинту /equipment/moderator/project, project={}", projectDocumentationDto);
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/project, project={}", projectDocumentationDto);
         return projectDocumentationService.addProject(projectDocumentationDto);
     }
 
-    @DeleteMapping("/equipment/moderator/project/{id}")
+    @DeleteMapping("/moderator/equipment/project/{id}")
     public void deleteProject(@PathVariable Long id) {
-        log.info("Получен Delete запрос к эндпоинту /equipment/moderator/project/{}", id);
+        log.info("Получен Delete запрос к эндпоинту /moderator/equipment/project/{}", id);
         projectDocumentationService.deleteProject(id);
     }
 
-    @GetMapping("/equipment/project/{id}")
+    @GetMapping("/user/equipment/project/{id}")
     public ProjectDocumentationDto getProject(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/project/{}", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/project/{}", id);
         return projectDocumentationService.getProject(id);
     }
 
-    @GetMapping("/equipment/projects")
+    @GetMapping("/user/equipment/projects")
     public List<ProjectDocumentationDto> findAllProjects() {
-        log.info("Получен Get запрос к эндпоинту /equipment/projects");
+        log.info("Получен Get запрос к эндпоинту /user/equipment/projects");
         return projectDocumentationService.findAllProjects();
     }
 }

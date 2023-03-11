@@ -25,7 +25,7 @@ public class FactoryDocumentation {
     private String codeFactoryDocumentation;
     @Column(name = "file")
     private String factoryDocumentation;
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "factoryDocuments")
     @ToString.Exclude
     private List<Type> types;
 
