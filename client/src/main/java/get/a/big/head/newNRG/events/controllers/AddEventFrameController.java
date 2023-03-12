@@ -1,7 +1,7 @@
 package get.a.big.head.newNRG.events.controllers;
 
-import get.a.big.head.newNRG.events.Event;
 import get.a.big.head.newNRG.events.EventClient;
+import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.events.frames.AddEventFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
@@ -25,11 +25,10 @@ import java.awt.event.WindowEvent;
 public class AddEventFrameController {
 
     private AddEventFrame frame;
-    private Event event;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
 
-    public void initAddEventFrameController() {
+    public void initAddEventFrameController(Long equipmentId) {
         frame = new AddEventFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -38,23 +37,26 @@ public class AddEventFrameController {
                 frame = null;
             }
         });
+        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
         frame.getButtonOk().addActionListener(e -> {
-            String createEvent = frame.getTextCreateEvent().getText();
+            String timeEvent = frame.getTextEventTime().getText();
             String nameEvent = frame.getTextEventName().getText();
-            String description = frame.getTextDescription().getText();
-            log.info("Add event  with createEvent {}, nameEvent {}, description {}",
-                    createEvent, nameEvent, description);
-            ResponseEntity<Object> addEventResponse = eventClient.addEvent(
-                    Event.builder()
-                            .createEvent(createEvent)
-                            .descriptionEvent(description)
-                            .nameEvent(nameEvent).build(),
+            String descriptionEvent = frame.getTextDescription().getText();
+            String documentEvent = "file";
+            log.info("Add event  with createEvent {}, nameEvent {}, description {}, document {}",
+                    timeEvent, nameEvent, descriptionEvent, documentEvent);
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
+                    equipmentId,
+                    timeEvent,
+                    nameEvent,
+                    descriptionEvent,
+                    documentEvent),
                     authorizationFrameController.getUser().getUserId()
             );
 
             if (addEventResponse.getStatusCode().is2xxSuccessful() && addEventResponse.getBody() != null) {
-                event = EventMapper.toEvent(addEventResponse.getBody());
+                EventDto event = EventMapper.toEventDto(addEventResponse.getBody());
                 frame.getFrame().dispose();
                 JOptionPane.showMessageDialog(frame.getFrame(),
                         "Событие " + event.getNameEvent() + " успешно создано");
@@ -67,7 +69,5 @@ public class AddEventFrameController {
                 );
             }
         });
-
-        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 }

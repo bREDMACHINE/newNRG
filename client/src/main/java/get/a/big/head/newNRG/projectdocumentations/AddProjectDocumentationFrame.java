@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.events.frames;
+package get.a.big.head.newNRG.projectdocumentations;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,41 +8,30 @@ import java.awt.*;
 
 @Getter
 @Setter
-public class AddEventFrame extends JFrame {
-
+public class AddProjectDocumentationFrame extends JFrame {
     private JFrame frame;
-    private JLabel labelEventTime;
-    private JTextField textEventTime;
-    private JLabel labelEventName;
-    private JTextField textEventName;
-    private JLabel labelDescription;
-    private JTextField textDescription;
+    private JTextField textNameProject;
+    private JTextField textCodeProject;
     private JLabel labelFile;
     private JButton buttonFile;
     private JButton buttonOk;
     private JButton buttonCancel;
 
-    public AddEventFrame() {
+    public AddProjectDocumentationFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         frame.setSize(300, 800);
 
         JPanel panelLabels = new JPanel();
-        labelEventTime = new JLabel("Дата события");
-        labelEventName = new JLabel("Наименование");
-        labelDescription = new JLabel("Описание");
         labelFile = new JLabel("Документ");
-        textEventTime = new JTextField(15);
-        textEventName = new JTextField(15);
-        textDescription = new JTextField(15);
+        textNameProject = new JTextField(15);
+        textCodeProject = new JTextField(15);
         buttonFile = new JButton("Прикрепить");
 
-        panelLabels.add(labelEventTime);
-        panelLabels.add(textEventTime);
-        panelLabels.add(labelEventName);
-        panelLabels.add(textEventName);
-        panelLabels.add(labelDescription);
-        panelLabels.add(textDescription);
+        panelLabels.add(new JLabel("Название проекта"));
+        panelLabels.add(textNameProject);
+        panelLabels.add(new JLabel("Шифр проекта"));
+        panelLabels.add(textCodeProject);
         panelLabels.add(labelFile);
         panelLabels.add(buttonFile);
         frame.getContentPane().add(BorderLayout.CENTER, panelLabels);

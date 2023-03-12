@@ -26,7 +26,7 @@ public class EventClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> addEvent(Event event, String userId) {
+    public ResponseEntity<Object> addEvent(EventDto event, String userId) {
         return post("/moderator/equipment/event",  userId, event);
     }
 
@@ -34,7 +34,7 @@ public class EventClient extends BaseClient {
         return delete("/moderator/equipment/event/" + eventId,  userId);
     }
 
-    public ResponseEntity<Object> findAllEvents(Long typeId, String userId) {
-        return get("/user/equipment/" + typeId + "/events",  userId);
+    public ResponseEntity<Object> findAllEvents(Long equipmentId, int from, int size, String userId) {
+        return get("/user/equipment/" + equipmentId + "/events?from=" + from + "&size=" + size,  userId);
     }
 }

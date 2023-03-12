@@ -3,13 +3,16 @@ package get.a.big.head.newNRG.events;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
-public class Event {
+public class EventDto {
 
-    private Long id;
-    private String createEvent;
+    private Long eventId;
+    private String timeEvent;
     private String nameEvent;
     private String descriptionEvent;
+    private Long equipmentId;
     private String documentEvent;
 }

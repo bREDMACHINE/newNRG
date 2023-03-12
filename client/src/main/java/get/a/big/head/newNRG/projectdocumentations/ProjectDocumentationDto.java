@@ -5,8 +5,9 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ProjectDocumentation {
+public class ProjectDocumentationDto {
 
+    private Long projectId;
     private String nameProjectDocumentation;
     private String codeProjectDocumentation;
     private String projectDocumentation;

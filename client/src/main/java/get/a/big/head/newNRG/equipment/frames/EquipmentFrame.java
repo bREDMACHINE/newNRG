@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG.equipment.frames;
 
-import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.EquipmentDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +19,7 @@ public class EquipmentFrame extends JFrame {
     private JButton buttonOk;
     private JButton buttonCancel;
 
-    public EquipmentFrame(Equipment equipment) {
+    public EquipmentFrame(EquipmentDto equipment) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -31,7 +31,7 @@ public class EquipmentFrame extends JFrame {
         panelSpecifications.add(new JLabel("Оперативное наименование"));
         panelSpecifications.add(new JLabel(equipment.getOperationalName()));
         panelSpecifications.add(new JLabel("Год ввода в эксплуатацию"));
-        panelSpecifications.add(new JLabel(equipment.getInstallationYear()));
+        panelSpecifications.add(new JLabel(String.valueOf(equipment.getInstallationYear())));
         panelSpecifications.add(new JLabel("Тип"));
         panelSpecifications.add(new JLabel(equipment.getType().getTypeName()));
         panelSpecifications.add(buttonShowDocumentation);

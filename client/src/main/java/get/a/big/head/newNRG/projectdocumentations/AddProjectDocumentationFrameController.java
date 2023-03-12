@@ -7,23 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import java.util.List;
-
 @Lazy
 @Controller
 @Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class ProjectDocumentationFrameController {
+public class AddProjectDocumentationFrameController {
 
-    private ProjectDocumentationFrame frame;
+    private AddProjectDocumentationFrame frame;
 
-    public void initProjectDocumentationFrameController(List<ProjectDocumentation> projectDocuments) {
-
-        frame = new ProjectDocumentationFrame(projectDocuments);
-    }
-
-    public ProjectDocumentation addDocumentation() {
-        return ProjectDocumentation.builder().build();
+    public void initProjectDocumentationFrameController(Long projectId) {
+        frame = new AddProjectDocumentationFrame();
     }
 }

@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.general.controllers;
 
+import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.equipment.controllers.AddEquipmentFrameController;
 import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.equipment.controllers.EquipmentFrameController;
@@ -67,7 +68,7 @@ public class MainFrameController {
 
         frame.getButtonFind().addActionListener(e -> {
             if (equipmentFrameController.getFrame() == null) {
-                Equipment equipment = equipmentFrameController.getEquipment(
+                EquipmentDto equipment = equipmentFrameController.getEquipment(
                         frame.getTextField().getText(),
                         authorizationFrameController.getUser().getUserId()
                 );
