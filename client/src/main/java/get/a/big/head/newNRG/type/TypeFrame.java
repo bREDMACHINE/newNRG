@@ -8,4 +8,14 @@ import javax.swing.*;
 @Getter
 @Setter
 public class TypeFrame extends JFrame {
+
+    private JFrame frame;
+
+    public TypeFrame() {
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        frame.pack();
+        frame.setVisible(true);
+    }
 }

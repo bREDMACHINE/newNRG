@@ -1,14 +1,12 @@
 package get.a.big.head.newNRG.equipment.controllers;
 
-import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.equipment.EquipmentClient;
 import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import get.a.big.head.newNRG.equipment.EquipmentShortDto;
 import get.a.big.head.newNRG.equipment.frames.AddEquipmentFrame;
-import get.a.big.head.newNRG.type.Type;
 import get.a.big.head.newNRG.type.TypeClient;
-import get.a.big.head.newNRG.type.TypeDto;
 import get.a.big.head.newNRG.type.TypeMapper;
+import get.a.big.head.newNRG.type.TypeShortDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -32,9 +32,25 @@ public class AddEquipmentFrameController {
     private final TypeClient typeClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
+    private List<TypeShortDto> types = new ArrayList<>();
 
-    public void initAddEquipmentFrameController(List<String> types) {
-        frame = new AddEquipmentFrame(types);
+    public void initAddEquipmentFrameController() {
+
+        ResponseEntity<Object> findAllTypesResponse = typeClient.findAllTypes(
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (findAllTypesResponse.getStatusCode().is2xxSuccessful() && findAllTypesResponse.getBody() != null) {
+            types = TypeMapper.toTypeShortDtos(findAllTypesResponse.getBody());
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    findAllTypesResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+        frame = new AddEquipmentFrame(types.stream().map(TypeShortDto::getTypeName).collect(Collectors.toList()));
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
@@ -44,20 +60,20 @@ public class AddEquipmentFrameController {
 
         frame.getButtonOk().addActionListener(e -> {
             String operationalName = frame.getTextOperationalName().getText();
-            String installationYear = frame.getTextInstallationYear().getText();
+            Short installationYear = Short.parseShort(frame.getTextInstallationYear().getText());
             String typeString = frame.getTypeMenu().getSelectedItem().toString();
             String userId = authorizationFrameController.getUser().getUserId();
             log.info("Add equipment  with operationalName {}, installationYear {}, type {}",
                     operationalName, installationYear, typeString);
-            TypeDto type = null;
-            ResponseEntity<Object> getTypeResponse = typeClient.getType(typeString, authorizationFrameController.getUser().getUserId());
-            if (getTypeResponse.getStatusCode().is2xxSuccessful() && getTypeResponse.getBody() != null) {
-                type = TypeMapper.toType(getTypeResponse.getBody());
-            } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), getTypeResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            Long typeId = null;
+            for (TypeShortDto type : types) {
+                if (type.getTypeName().equalsIgnoreCase(typeString)) {
+                    typeId = type.getTypeId();
+                }
             }
+
             ResponseEntity<Object> addEquipmentResponse = equipmentClient.addEquipment(
-                    EquipmentMapper.toEquipmentShortDto(operationalName, installationYear, type),
+                    EquipmentMapper.toEquipmentShortDto(operationalName, installationYear, typeId),
                     userId
             );
 
