@@ -97,10 +97,7 @@ public class EquipmentFrameController {
 
         frame.getButtonShowEvents().addActionListener(e -> {
             if (eventListFrameController.getFrame() == null) {
-                eventListFrameController.initEventListFrameController(
-                        equipment.getEquipmentId(),
-                        equipment.getEvents()
-                );
+                eventListFrameController.initEventListFrameController(equipment);
             } else {
                 eventListFrameController.getFrame().getFrame().toFront();
                 eventListFrameController.getFrame().getFrame().requestFocus();

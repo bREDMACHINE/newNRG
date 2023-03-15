@@ -2,7 +2,6 @@ package get.a.big.head.newNRG.factorydocumentation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,5 +9,5 @@ public interface FactoryDocumentationRepository extends JpaRepository<FactoryDoc
 
     Optional<FactoryDocumentation> findByNameFactoryDocumentation(String nameFactoryDocumentation);
 
-    List<FactoryDocumentation> findAllBy(Long id);
+    List<FactoryDocumentation> findAll();
 }

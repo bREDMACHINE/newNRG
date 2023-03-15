@@ -44,7 +44,7 @@ public class FactoryDocumentationServiceImpl implements FactoryDocumentationServ
 
     @Override
     public List<FactoryDocumentationDto> findAllDocuments(Long id) {
-        return factoryDocumentationRepository.findAllBy(id).stream()
+        return factoryDocumentationRepository.findAll().stream()
                 .map(FactoryDocumentationMapper::toFactoryDocumentationDto)
                 .collect(Collectors.toList());
     }

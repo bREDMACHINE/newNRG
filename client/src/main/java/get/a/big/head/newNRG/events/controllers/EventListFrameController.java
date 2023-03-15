@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.events.controllers;
 
+import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
@@ -33,21 +34,27 @@ public class EventListFrameController {
     private int maxShow;
     private int from;
     private Long equipmentId;
+    private int page;
+    private int pages;
 
-    public void initEventListFrameController(Long equipmentId, List<Long> events) {
-        this.equipmentId = equipmentId;
-        maxSize = events.size();
+    public void initEventListFrameController(EquipmentDto equipment) {
+        this.equipmentId = equipment.getEquipmentId();
+        maxSize = equipment.getEvents().size();
         maxShow = (from / size) * size + size;
         from = 0;
+        page = 1;
+        pages = maxSize / size;
         openPage();
 
         frame.getButtonNext().addActionListener(e -> {
             from = from + 15;
+            page = page + 1;
             openPage();
         });
 
         frame.getButtonPrevious().addActionListener(e -> {
             from = from - 15;
+            page = page - 1;
             openPage();
         });
 
@@ -57,8 +64,6 @@ public class EventListFrameController {
                 frame = null;
             }
         });
-
-        frame.getButtonClose().addActionListener(e -> frame.getFrame().dispose());
 
         for (JButton button : frame.getOpenFileButtons()) {
             button.addActionListener(e -> {
@@ -79,14 +84,27 @@ public class EventListFrameController {
             if (frame != null) {
                 frame.getFrame().dispose();
             }
+            List<EventDto> events = EventMapper.toEventDtos(eventListResponse);
             if (from < size && maxSize <= maxShow) {
-                // without buttons
+                frame = new EventListFrame(events, page, pages);
+                frame.getPanelButtons().remove(frame.getButtonNext());
+                frame.getPanelButtons().remove(frame.getButtonPrevious());
             } else if (from < size && maxSize > maxShow) {
-                // with next button
+                frame = new EventListFrame(events, page, pages);
+                frame.getPanelButtons().remove(frame.getButtonNext());
+                frame.getPanelButtons().remove(frame.getButtonPrevious());
+                frame.getPanelButtons().add(frame.getButtonNext());
             } else if (from > size && maxSize > maxShow) {
-                frame = new EventListFrame(EventMapper.toEventDtos(eventListResponse.getBody()), from);
+                frame = new EventListFrame(events, page, pages);
+                frame.getPanelButtons().remove(frame.getButtonNext());
+                frame.getPanelButtons().remove(frame.getButtonPrevious());
+                frame.getPanelButtons().add(frame.getButtonPrevious());
+                frame.getPanelButtons().add(frame.getButtonNext());
             } else if (from > size && maxSize <= maxShow) {
-                // with previous
+                frame = new EventListFrame(events, page, pages);
+                frame.getPanelButtons().remove(frame.getButtonNext());
+                frame.getPanelButtons().remove(frame.getButtonPrevious());
+                frame.getPanelButtons().add(frame.getButtonPrevious());
             }
         } else {
             JOptionPane.showMessageDialog(

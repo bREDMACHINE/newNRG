@@ -17,9 +17,9 @@ public class EventListFrame extends JFrame {
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
-    private JButton buttonClose;
+    private JPanel panelButtons;
 
-    public EventListFrame(List<EventDto> events, int page) {
+    public EventListFrame(List<EventDto> events, int page, int pages) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -44,19 +44,15 @@ public class EventListFrame extends JFrame {
             panelEvents.add(openFileButton);
             panelEvents.add(deleteEventButton);
         }
-        buttonPrevious = new JButton("Предыдущая");
-        buttonNext = new JButton("Следующая");
+        buttonPrevious = new JButton("< Предыдущая");
+        buttonNext = new JButton("Следующая >");
         panelEvents.add(new JLabel());
         panelEvents.add(new JLabel());
-        panelEvents.add(buttonPrevious);
-        panelEvents.add(buttonNext);
         frame.getContentPane().add(BorderLayout.NORTH, panelEvents);
 
-        labelPage = new JLabel("Страница " + page);
-        buttonClose = new JButton("Закрыть");
-        JPanel panelButtons = new JPanel();
+        labelPage = new JLabel("Страница " + page + " из " + pages);
+        panelButtons = new JPanel();
         panelButtons.add(labelPage);
-        panelButtons.add(buttonClose);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
         frame.pack();
         frame.setVisible(true);
