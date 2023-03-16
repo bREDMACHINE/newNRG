@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
+import java.util.List;
 
 @Lazy
 @Controller
@@ -30,5 +31,22 @@ public class TypeFrameController {
         } else {
             JOptionPane.showMessageDialog(frame.getFrame(), getTypeResponse.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public List<TypeShortDto> findAllTypes() {
+        ResponseEntity<Object> findAllTypesResponse = typeClient.findAllTypes(
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (findAllTypesResponse.getStatusCode().is2xxSuccessful() && findAllTypesResponse.getBody() != null) {
+            return TypeMapper.toTypeShortDtos(findAllTypesResponse.getBody());
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    findAllTypesResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+        return null;
     }
 }

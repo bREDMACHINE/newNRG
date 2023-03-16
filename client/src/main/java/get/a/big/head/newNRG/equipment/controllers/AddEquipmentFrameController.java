@@ -4,8 +4,7 @@ import get.a.big.head.newNRG.equipment.EquipmentClient;
 import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import get.a.big.head.newNRG.equipment.EquipmentShortDto;
 import get.a.big.head.newNRG.equipment.frames.AddEquipmentFrame;
-import get.a.big.head.newNRG.type.TypeClient;
-import get.a.big.head.newNRG.type.TypeMapper;
+import get.a.big.head.newNRG.type.TypeFrameController;
 import get.a.big.head.newNRG.type.TypeShortDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,26 +27,13 @@ import java.util.stream.Collectors;
 public class AddEquipmentFrameController {
 
     private final EquipmentClient equipmentClient;
-    private final TypeClient typeClient;
+    private final TypeFrameController typeFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
-    private List<TypeShortDto> types = new ArrayList<>();
 
     public void initAddEquipmentFrameController() {
 
-        ResponseEntity<Object> findAllTypesResponse = typeClient.findAllTypes(
-                authorizationFrameController.getUser().getUserId()
-        );
-        if (findAllTypesResponse.getStatusCode().is2xxSuccessful() && findAllTypesResponse.getBody() != null) {
-            types = TypeMapper.toTypeShortDtos(findAllTypesResponse.getBody());
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame.getFrame(),
-                    findAllTypesResponse.getStatusCode().toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        List<TypeShortDto> types = typeFrameController.findAllTypes();
 
         frame = new AddEquipmentFrame(types.stream().map(TypeShortDto::getTypeName).collect(Collectors.toList()));
 
@@ -76,7 +61,6 @@ public class AddEquipmentFrameController {
                     EquipmentMapper.toEquipmentShortDto(operationalName, installationYear, typeId),
                     userId
             );
-
             if (addEquipmentResponse.getStatusCode().is2xxSuccessful() && addEquipmentResponse.getBody() != null) {
                 EquipmentShortDto equipment = EquipmentMapper.toEquipmentShortDto(addEquipmentResponse.getBody());
                 frame.getFrame().dispose();

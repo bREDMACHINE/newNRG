@@ -16,4 +16,17 @@ public class TypeMapper {
         Gson gson = new Gson();
         return gson.fromJson(object.toString(), TypeDto.class);
     }
+
+    public static TypeShortDto toTypeShortDto(String typeName, Long factoryId, List<Long> specifications) {
+        return TypeShortDto.builder()
+                .typeName(typeName)
+                .factoryId(factoryId)
+                .specifications(specifications)
+                .build();
+    }
+
+    public static TypeShortDto toTypeShortDto(Object object) {
+        Gson gson = new Gson();
+        return gson.fromJson(object.toString(), TypeShortDto.class);
+    }
 }
