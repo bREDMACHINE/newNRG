@@ -32,9 +32,9 @@ public class SpareController {
         return spareService.getSpare(id);
     }
 
-    @GetMapping("/user/equipment/type/{id}/spare")
+    @GetMapping("/user/equipment/type/{id}/spares")
     public List<SpareDto> findAllSpares(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /user/equipment/type/{}/spare", id);
+        log.info("Получен Get запрос к эндпоинту /user/equipment/type/{}/spares", id);
         return spareService.findAllSpares(id);
     }
 }
