@@ -4,6 +4,7 @@ import get.a.big.head.newNRG.equipment.EquipmentClient;
 import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import get.a.big.head.newNRG.equipment.EquipmentShortDto;
 import get.a.big.head.newNRG.equipment.frames.AddEquipmentFrame;
+import get.a.big.head.newNRG.type.AddTypeFrameController;
 import get.a.big.head.newNRG.type.TypeFrameController;
 import get.a.big.head.newNRG.type.TypeShortDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
@@ -11,6 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -20,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Lazy
 @Controller
 @Slf4j
 @Getter
@@ -28,6 +31,7 @@ public class AddEquipmentFrameController {
 
     private final EquipmentClient equipmentClient;
     private final TypeFrameController typeFrameController;
+    private final AddTypeFrameController addTypeFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
 
@@ -40,6 +44,15 @@ public class AddEquipmentFrameController {
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 frame = null;
+            }
+        });
+
+        frame.getButtonAddType().addActionListener(e -> {
+            if (addTypeFrameController.getFrame() == null) {
+                addTypeFrameController.initAddTypeFrameController();
+            } else {
+                addTypeFrameController.getFrame().getFrame().toFront();
+                addTypeFrameController.getFrame().getFrame().requestFocus();
             }
         });
 

@@ -41,7 +41,7 @@ public class AddEquipmentFrame extends JFrame {
         panelLabels.add(buttonAddType);
         frame.getContentPane().add(BorderLayout.NORTH, panelLabels);
 
-        buttonOk = new JButton("OK");
+        buttonOk = new JButton("Oк");
         buttonCancel = new JButton("Отмена");
         JPanel panelButtons = new JPanel();
         panelButtons.add(buttonOk);

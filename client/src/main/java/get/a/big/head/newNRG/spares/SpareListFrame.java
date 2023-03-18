@@ -1,6 +1,5 @@
 package get.a.big.head.newNRG.spares;
 
-import get.a.big.head.newNRG.events.EventDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,45 +11,37 @@ import java.util.List;
 @Setter
 public class SpareListFrame extends JFrame {
     private JFrame frame;
-    private List<JButton> openFileButtons;
     private List<JButton> deleteButtons;
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
     private JPanel panelButtons;
 
-    public SpareListFrame(List<EventDto> events, int page, int pages) {
+    public SpareListFrame(List<SpareDto> spares, int page, int pages) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelEvents = new JPanel(new GridLayout(18, 4, 5, 5));
-        panelEvents.add(new JLabel("Дата события"));
-        panelEvents.add(new JLabel("Событие"));
-        panelEvents.add(new JLabel("Описание"));
-        panelEvents.add(new JLabel("Прикрепленный файл"));
-        panelEvents.add(new JLabel("Удалить событие"));
-        for (int i = 0; i < events.size(); i++) {
-            EventDto event = events.get(i);
-            JButton openFileButton = new JButton(event.getDocumentEvent());
-            openFileButton.setActionCommand(String.valueOf(i));
-            openFileButtons.add(openFileButton);
-            JButton deleteEventButton = new JButton("Удалить");
-            deleteEventButton.setActionCommand(String.valueOf(i));
-            deleteButtons.add(deleteEventButton);
+        JPanel panelList = new JPanel(new GridLayout(18, 4, 5, 5));
+        panelList.add(new JLabel("Краткое наименование"));
+        panelList.add(new JLabel("Полное описание"));
+        panelList.add(new JLabel("Номер материала"));
+        panelList.add(new JLabel(" "));
+        for (int i = 0; i < spares.size(); i++) {
+            SpareDto spare = spares.get(i);
+            JButton deleteButton = new JButton("Удалить");
+            deleteButton.setActionCommand(String.valueOf(i));
+            deleteButtons.add(deleteButton);
 
-            panelEvents.add(new JLabel(event.getTimeEvent()));
-            panelEvents.add(new JLabel(event.getNameEvent()));
-            panelEvents.add(new JLabel(event.getDescriptionEvent()));
-            panelEvents.add(openFileButton);
-            panelEvents.add(deleteEventButton);
+            panelList.add(new JLabel(spare.getSpareName()));
+            panelList.add(new JLabel(spare.getSpareDescription()));
+            panelList.add(new JLabel(spare.getSpareCode()));
+            panelList.add(deleteButton);
         }
-        buttonPrevious = new JButton("< Предыдущая");
-        buttonNext = new JButton("Следующая >");
-        panelEvents.add(new JLabel());
-        panelEvents.add(new JLabel());
-        frame.getContentPane().add(BorderLayout.NORTH, panelEvents);
+        frame.getContentPane().add(BorderLayout.NORTH, panelList);
 
         labelPage = new JLabel("Страница " + page + " из " + pages);
+        buttonPrevious = new JButton("< Предыдущая");
+        buttonNext = new JButton("Следующая >");
         panelButtons = new JPanel();
         panelButtons.add(labelPage);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);

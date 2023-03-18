@@ -1,8 +1,5 @@
 package get.a.big.head.newNRG.type;
 
-import get.a.big.head.newNRG.factorydocumentations.FactoryDocumentation;
-import get.a.big.head.newNRG.spares.Spare;
-import get.a.big.head.newNRG.specification.Specification;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,7 +18,7 @@ public class TypeDto {
     @Builder
     @Getter
     public static class FactoryDtoForTypeDto {
-        Long factoryId;
-        String factoryName;
+        private Long factoryId;
+        private String factoryName;
     }
 }

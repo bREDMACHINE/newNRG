@@ -38,7 +38,7 @@ public class SpareClient extends BaseClient {
         return get("/moderator/equipment/type/spare/" + spareId,  userId);
     }
 
-    public ResponseEntity<Object> findAllSpares(Long typeId, String userId) {
-        return get("/user/equipment/type/" + typeId + "/spares",  userId);
+    public ResponseEntity<Object> findAllSpares(Long typeId, int from, int size, String userId) {
+        return get("/user/equipment/type/" + typeId + "/spares?from=" + from + "&size=" + size,  userId);
     }
 }
