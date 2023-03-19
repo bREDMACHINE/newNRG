@@ -36,6 +36,24 @@ public class SpecificationFrameController {
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 
+    public void deleteSpecification(Long specificationId) {
+        ResponseEntity<Object> deleteSpecificationResponse = specificationClient.deleteSpecification(
+                specificationId,
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (deleteSpecificationResponse.getStatusCode().is2xxSuccessful() && deleteSpecificationResponse.getBody() != null) {
+            frame.getFrame().dispose();
+            JOptionPane.showMessageDialog(frame.getFrame(),"Характеристика удалена");
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    deleteSpecificationResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
     public SpecificationDto getSpecification(Long specificationId) {
         ResponseEntity<Object> getSpecificationResponse = specificationClient.getSpecification(
                 specificationId,

@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.spares;
+package get.a.big.head.newNRG.specificationvalue;
 
 import get.a.big.head.newNRG.type.TypeDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
@@ -18,24 +18,24 @@ import java.util.List;
 @Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class SpareListFrameController {
+public class SpecificationValueListFrameController {
 
-    private SpareListFrame frame;
-    private final SpareClient spareClient;
+    private SpecificationValueListFrame frame;
+    private final SpecificationValueClient specificationValueClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final int size = 15;
     private int maxSize;
     private int from;
-    private int pages = maxSize / size + 1;
-    private int maxShow = (pages - 1) * size;
+    private int pages = maxSize / size;
+    private int maxShow = pages * size;
     private Long typeId;
     private int page;
 
-    private List<SpareDto> list;
 
-    public void initSpareListFrameController(TypeDto type) {
-        this.typeId = type.getTypeId();
-        maxSize = type.getSpares().size();
+
+    public void initSpecificationValueListFrameController(TypeDto type) {
+        typeId = type.getTypeId();
+        maxSize = type.getSpecificationValues().size();
         from = 0;
         page = 1;
         openPage();
@@ -52,13 +52,6 @@ public class SpareListFrameController {
             openPage();
         });
 
-        for (JButton button : frame.getDeleteButtons()) {
-            button.addActionListener(e -> spareClient.deleteSpare(
-                        list.get(Integer.parseInt(button.getActionCommand())).getSpareId(),
-                        authorizationFrameController.getUser().getUserId()
-            ));
-        }
-
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -67,19 +60,19 @@ public class SpareListFrameController {
         });
     }
 
-    private List<SpareDto> getSpares() {
-        ResponseEntity<Object> spareListResponse = spareClient.findAllSpares(
+    private List<SpecificationValueDto> findAllSpecificationValues(Long typeId, int from) {
+        ResponseEntity<Object> specificationValuesListResponse = specificationValueClient.findAllSpecificationValues(
                 typeId,
                 from,
                 size,
                 authorizationFrameController.getUser().getUserId()
         );
-        if (spareListResponse.getStatusCode().is2xxSuccessful() && spareListResponse.getBody() != null) {
-            return SpareMapper.toSpareDtos(spareListResponse.getBody());
+        if (specificationValuesListResponse.getStatusCode().is2xxSuccessful() && specificationValuesListResponse.getBody() != null) {
+            return SpecificationValueMapper.toSpecificationValueDtos(specificationValuesListResponse.getBody());
         } else {
             JOptionPane.showMessageDialog(
                     frame.getFrame(),
-                    spareListResponse.getStatusCode().toString(),
+                    specificationValuesListResponse.getStatusCode().toString(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -88,22 +81,22 @@ public class SpareListFrameController {
     }
 
     private void openPage() {
-        list = getSpares();
+        List<SpecificationValueDto> list = findAllSpecificationValues(typeId, from);
         if (frame != null) {
             frame.getFrame().dispose();
         }
         if (list != null) {
             if (maxSize <= size) {
-                frame = new SpareListFrame(list, page, pages);
+                frame = new SpecificationValueListFrame(list, page, pages);
             } else if (from < size) {
-                frame = new SpareListFrame(list, page, pages);
+                frame = new SpecificationValueListFrame(list, page, pages);
                 frame.getPanelButtons().add(frame.getButtonNext());
             } else if (from > size && from < maxShow) {
-                frame = new SpareListFrame(list, page, pages);
+                frame = new SpecificationValueListFrame(list, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
                 frame.getPanelButtons().add(frame.getButtonNext());
             } else if (from > size && from == maxShow) {
-                frame = new SpareListFrame(list, page, pages);
+                frame = new SpecificationValueListFrame(list, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
             }
         }

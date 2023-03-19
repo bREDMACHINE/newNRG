@@ -17,13 +17,11 @@ public class SpecificationFrame extends JFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelSpecifications = new JPanel(new GridLayout(5, 2, 5, 0));
+        JPanel panelSpecifications = new JPanel(new GridLayout(3, 2, 5, 0));
         panelSpecifications.add(new JLabel("Наименование характеристики"));
         panelSpecifications.add(new JLabel(specification.getSpecificationName()));
         panelSpecifications.add(new JLabel("Описание характеристики"));
         panelSpecifications.add(new JLabel(String.valueOf(specification.getSpecificationDescription())));
-        panelSpecifications.add(new JLabel("Значение"));
-        panelSpecifications.add(new JLabel(specification.getSpecificationValue()));
         frame.getContentPane().add(BorderLayout.NORTH, panelSpecifications);
 
         buttonCancel = new JButton("Закрыть");

@@ -19,7 +19,7 @@ public class EquipmentDto {
     @Builder
     @Getter
     public static class TypeDtoForEquipmentDto {
-        Long typeId;
-        String typeName;
+        private Long typeId;
+        private String typeName;
     }
 }

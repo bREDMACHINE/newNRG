@@ -1,12 +1,12 @@
 package get.a.big.head.newNRG.type;
 
 import get.a.big.head.newNRG.spares.SpareListFrameController;
+import get.a.big.head.newNRG.specificationvalue.SpecificationValueListFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -15,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-@Lazy
 @Controller
 @Slf4j
 @Getter
@@ -26,6 +25,7 @@ public class TypeFrameController {
     private final TypeClient typeClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final SpareListFrameController spareListFrameController;
+    private final SpecificationValueListFrameController specificationValueListFrameController;
 
     public void initTypeFrameController(Long typeId) {
         TypeDto type = getType(typeId);
@@ -33,7 +33,12 @@ public class TypeFrameController {
         frame = new TypeFrame(type);
 
         frame.getButtonSpecifications().addActionListener(e -> {
-            //открытие листа характеристик
+            if (specificationValueListFrameController.getFrame() == null) {
+                specificationValueListFrameController.initSpecificationValueListFrameController(type);
+            } else {
+                specificationValueListFrameController.getFrame().getFrame().toFront();
+                specificationValueListFrameController.getFrame().getFrame().requestFocus();
+            }
         });
 
         frame.getButtonDocuments().addActionListener(e -> {
@@ -77,6 +82,24 @@ public class TypeFrameController {
                 }
             }
         });
+    }
+
+    public void deleteType(Long typeId) {
+        ResponseEntity<Object> deleteTypeResponse = typeClient.deleteType(
+                typeId,
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (deleteTypeResponse.getStatusCode().is2xxSuccessful() && deleteTypeResponse.getBody() != null) {
+            frame.getFrame().dispose();
+            JOptionPane.showMessageDialog(frame.getFrame(),"Тип удален");
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    deleteTypeResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     public TypeDto getType(Long typeId) {

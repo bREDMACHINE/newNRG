@@ -15,4 +15,11 @@ public class SpecificationMapper {
         Gson gson = new Gson();
         return gson.fromJson(object.toString(), SpecificationDto.class);
     }
+
+    public static SpecificationDto toSpecificationDto(String specificationName, String specificationDescription) {
+        return SpecificationDto.builder()
+                .specificationName(specificationName)
+                .specificationDescription(specificationDescription)
+                .build();
+    }
 }

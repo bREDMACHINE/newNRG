@@ -1,4 +1,4 @@
-package get.a.big.head.newNRG.spares;
+package get.a.big.head.newNRG.specification;
 
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -16,15 +16,15 @@ import java.awt.event.WindowEvent;
 @Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddSpareFrameController {
+public class AddSpecificationFrameController {
 
     private final UserAuthorizationFrameController authorizationFrameController;
-    private final SpareClient spareClient;
-    private AddSpareFrame frame;
+    private final SpecificationClient specificationClient;
+    private AddSpecificationFrame frame;
 
-    public void initAddSpareFrameController() {
+    public void initAddSpecificationFrameController() {
 
-        frame = new AddSpareFrame();
+        frame = new AddSpecificationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
@@ -33,25 +33,24 @@ public class AddSpareFrameController {
         });
 
         frame.getButtonOk().addActionListener(e -> {
-            String spareName = frame.getTextSpareName().getText();
-            String spareDescription = frame.getTextSpareDescription().getText();
-            String spareCode = frame.getTextSpareCode().getText();
-            log.info("Add spare  with spareName {}, spareDescription {}, spareCode {}",
-                    spareName, spareDescription, spareCode);
+            String specificationName = frame.getTextSpecificationName().getText();
+            String specificationDescription = frame.getTextSpecificationDescription().getText();
+            log.info("Add specification  with specificationName {}, specificationDescription {}",
+                    specificationName, specificationDescription);
 
-            ResponseEntity<Object> addSpareResponse = spareClient.addSpare(
-                    SpareMapper.toSpareDto(spareName, spareDescription, spareCode),
+            ResponseEntity<Object> addSpecificationResponse = specificationClient.addSpecification(
+                    SpecificationMapper.toSpecificationDto(specificationName, specificationDescription),
                     authorizationFrameController.getUser().getUserId()
             );
-            if (addSpareResponse.getStatusCode().is2xxSuccessful() && addSpareResponse.getBody() != null) {
-                SpareDto spareDto = SpareMapper.toSpareDto(addSpareResponse.getBody());
+            if (addSpecificationResponse.getStatusCode().is2xxSuccessful() && addSpecificationResponse.getBody() != null) {
+                SpecificationDto specificationDto = SpecificationMapper.toSpecificationDto(addSpecificationResponse);
                 frame.getFrame().dispose();
                 JOptionPane.showMessageDialog(frame.getFrame(),
-                        "Деталь " + spareDto.getSpareName() + " успешно добавлена");
+                        "Характеристика " + specificationDto.getSpecificationName() + " успешно добавлена");
             } else {
                 JOptionPane.showMessageDialog(
                         frame.getFrame(),
-                        addSpareResponse.getStatusCode().toString(),
+                        addSpecificationResponse.getStatusCode().toString(),
                         "Error",
                         JOptionPane.ERROR_MESSAGE
                 );

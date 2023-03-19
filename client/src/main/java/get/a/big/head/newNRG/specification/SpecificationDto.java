@@ -10,5 +10,4 @@ public class SpecificationDto {
     private Long specificationId;
     private String specificationName;
     private String specificationDescription;
-    private String specificationValue;
 }
