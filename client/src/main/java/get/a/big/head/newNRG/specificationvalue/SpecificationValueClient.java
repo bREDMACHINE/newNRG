@@ -27,18 +27,18 @@ public class SpecificationValueClient extends BaseClient {
     }
 
     public ResponseEntity<Object> addSpecificationValue(SpecificationValueDto specificationValue, String userId) {
-        return post("/moderator/equipment/type/specificationValue",  userId, specificationValue);
+        return post("/moderator/equipment/type/specification/value",  userId, specificationValue);
     }
 
     public ResponseEntity<Object> deleteSpecificationValue(Long specificationValueId, String userId) {
-        return delete("/moderator/equipment/type/specificationValue/" + specificationValueId,  userId);
+        return delete("/moderator/equipment/type/specification/value/" + specificationValueId,  userId);
     }
 
     public ResponseEntity<Object> getSpecificationValue(Long specificationValueId, String userId) {
-        return get("/user/equipment/type/specificationValue/" + specificationValueId, userId);
+        return get("/user/equipment/type/specification/value/" + specificationValueId, userId);
     }
 
     public ResponseEntity<Object> findAllSpecificationValues(Long typeId, int from, int size, String userId) {
-        return get("/user/equipment/type/" + typeId + "/specificationValues?from=" + from + "&size=" + size,  userId);
+        return get("/user/equipment/type/" + typeId + "/specification/values?from=" + from + "&size=" + size,  userId);
     }
 }

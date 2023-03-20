@@ -8,8 +8,8 @@ import get.a.big.head.newNRG.factorydocumentation.FactoryDocumentation;
 import get.a.big.head.newNRG.factorydocumentation.FactoryDocumentationRepository;
 import get.a.big.head.newNRG.spares.Spare;
 import get.a.big.head.newNRG.spares.SpareRepository;
-import get.a.big.head.newNRG.specifications.Specification;
-import get.a.big.head.newNRG.specifications.SpecificationRepository;
+import get.a.big.head.newNRG.specificationvalue.SpecificationValue;
+import get.a.big.head.newNRG.specificationvalue.SpecificationValueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class TypeServiceImpl implements TypeService {
 
     private final TypeRepository typeRepository;
     private final FactoryRepository factoryRepository;
-    private final SpecificationRepository specificationRepository;
+    private final SpecificationValueRepository specificationValueRepository;
     private final SpareRepository spareRepository;
     private final FactoryDocumentationRepository factoryDocumentationRepository;
 
@@ -34,9 +34,9 @@ public class TypeServiceImpl implements TypeService {
         if (typeRepository.findByTypeName(typeShortDto.getTypeName()).isEmpty()) {
             Factory factory = factoryRepository.findById(typeShortDto.getFactoryId())
                     .orElseThrow(() -> new NotFoundException("Указанный factoryId не существует"));
-            List<Specification> specifications = specificationRepository.findAllById(typeShortDto.getSpecifications());
+            List<SpecificationValue> specificationValues = specificationValueRepository.findAllById(typeShortDto.getSpecificationValues());
             return TypeMapper.toTypeShortDto(typeRepository.save(
-                    TypeMapper.toType(typeShortDto, factory, specifications)
+                    TypeMapper.toType(typeShortDto, factory, specificationValues)
             ));
         }
         throw  new BadRequestException("Указанный тип уже используется");

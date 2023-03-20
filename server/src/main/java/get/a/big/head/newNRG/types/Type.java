@@ -3,7 +3,7 @@ package get.a.big.head.newNRG.types;
 import get.a.big.head.newNRG.factories.Factory;
 import get.a.big.head.newNRG.factorydocumentation.FactoryDocumentation;
 import get.a.big.head.newNRG.spares.Spare;
-import get.a.big.head.newNRG.specifications.Specification;
+import get.a.big.head.newNRG.specificationvalue.SpecificationValue;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -27,13 +27,9 @@ public class Type {
     @ManyToOne
     @JoinColumn(name = "factory_id")
     private Factory factory;
-    @ManyToMany
-    @JoinTable(
-            name = "types_specifications",
-            joinColumns = @JoinColumn(name = "type_id"),
-            inverseJoinColumns = @JoinColumn(name = "specification_id"))
+    @OneToMany (mappedBy="type", fetch=FetchType.EAGER)
     @ToString.Exclude
-    private List<Specification> specifications;
+    private List<SpecificationValue> specificationValues;
     @ManyToMany
     @JoinTable(
             name = "types_documents",

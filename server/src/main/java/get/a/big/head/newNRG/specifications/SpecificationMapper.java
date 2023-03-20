@@ -6,7 +6,6 @@ public class SpecificationMapper {
         Specification specification = new Specification();
         specification.setSpecificationName(specificationDto.getSpecificationName());
         specification.setSpecificationDescription(specificationDto.getSpecificationDescription());
-        specification.setSpecificationValue(specificationDto.getSpecificationValue());
         return specification;
     }
 
@@ -15,7 +14,6 @@ public class SpecificationMapper {
                 .specificationId(specification.getSpecificationId())
                 .specificationName(specification.getSpecificationName())
                 .specificationDescription(specification.getSpecificationDescription())
-                .specificationValue(specification.getSpecificationValue())
                 .build();
     }
 }

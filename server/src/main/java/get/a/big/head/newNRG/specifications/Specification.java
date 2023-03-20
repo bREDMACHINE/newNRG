@@ -1,6 +1,6 @@
 package get.a.big.head.newNRG.specifications;
 
-import get.a.big.head.newNRG.types.Type;
+import get.a.big.head.newNRG.specificationvalue.SpecificationValue;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,11 +23,9 @@ public class Specification {
     private String specificationName;
     @Column(name = "specification_description")
     private String specificationDescription;
-    @Column(name = "specification_value")
-    private String specificationValue;
-    @ManyToMany(mappedBy = "specifications")
+    @OneToMany (mappedBy="specification", fetch=FetchType.EAGER)
     @ToString.Exclude
-    private List<Type> types;
+    private List<SpecificationValue> specificationValues;
 
     @Override
     public boolean equals(Object o) {

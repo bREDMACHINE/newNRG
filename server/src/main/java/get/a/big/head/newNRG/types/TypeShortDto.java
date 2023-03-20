@@ -12,5 +12,5 @@ public class TypeShortDto {
     private Long typeId;
     private String typeName;
     private Long factoryId;
-    private List<Long> specifications;
+    private List<Long> specificationValues;
 }
