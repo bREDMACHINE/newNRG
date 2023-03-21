@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface SpecificationValueRepository extends JpaRepository<SpecificationValue, Long> {
 
-    List<SpecificationValueDto> findByTypeTypeId(Long id);
+    List<SpecificationValue> findByTypeTypeId(Long id);
 }

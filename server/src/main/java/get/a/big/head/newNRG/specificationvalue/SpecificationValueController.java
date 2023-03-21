@@ -1,6 +1,5 @@
 package get.a.big.head.newNRG.specificationvalue;
 
-import get.a.big.head.newNRG.specifications.SpecificationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

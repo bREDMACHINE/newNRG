@@ -1,6 +1,7 @@
 package get.a.big.head.newNRG.specificationvalue;
 
-import java.util.List;
+import get.a.big.head.newNRG.specifications.Specification;
+import get.a.big.head.newNRG.types.Type;
 
 public class SpecificationValueMapper {
 
@@ -15,12 +16,12 @@ public class SpecificationValueMapper {
                 .build();
     }
 
-    public static SpecificationValue toSpecificationValue(SpecificationValueDto specificationValueDto) {
+    public static SpecificationValue toSpecificationValue(SpecificationValueDto specificationValueDto,
+                                                          Specification specification, Type type) {
         SpecificationValue specificationValue = new SpecificationValue();
-        specificationValue.setSpecification();
-    }
-
-    public static List<SpecificationValueDto> toSpecidicationValueDtos(SpecificationValueDto specificationValueDto) {
-        return ;
+        specificationValue.setSpecification(specification);
+        specificationValue.setSpecificationValueId(specificationValueDto.getSpecificationValueId());
+        specificationValue.setType(type);
+        return specificationValue;
     }
 }
