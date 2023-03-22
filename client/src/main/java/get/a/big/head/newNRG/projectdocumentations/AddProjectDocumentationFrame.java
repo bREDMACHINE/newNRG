@@ -12,7 +12,6 @@ public class AddProjectDocumentationFrame extends JFrame {
     private JFrame frame;
     private JTextField textNameProject;
     private JTextField textCodeProject;
-    private JLabel labelFile;
     private JButton buttonFile;
     private JButton buttonOk;
     private JButton buttonCancel;
@@ -23,7 +22,7 @@ public class AddProjectDocumentationFrame extends JFrame {
         frame.setSize(300, 800);
 
         JPanel panelLabels = new JPanel();
-        labelFile = new JLabel("Документ");
+        JLabel labelFile = new JLabel("Документ");
         textNameProject = new JTextField(15);
         textCodeProject = new JTextField(15);
         buttonFile = new JButton("Прикрепить");

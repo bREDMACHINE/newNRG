@@ -70,7 +70,7 @@ public class EquipmentFrameController {
 
         frame.getButtonAddProject().addActionListener(e -> {
             if (addProjectDocumentationFrameController.getFrame() == null) {
-                addProjectDocumentationFrameController.initProjectDocumentationFrameController(equipment.getEquipmentId());
+                addProjectDocumentationFrameController.initAddProjectDocumentationFrameController();
             } else {
                 addProjectDocumentationFrameController.getFrame().getFrame().toFront();
                 addProjectDocumentationFrameController.getFrame().getFrame().requestFocus();
@@ -96,10 +96,7 @@ public class EquipmentFrameController {
 
         frame.getButtonProjects().addActionListener(e -> {
             if (projectDocumentationListFrameController.getFrame() == null) {
-                projectDocumentationListFrameController.initProjectDocumentationListFrameController(
-                        equipment.getEquipmentId(),
-                        equipment.getProjectDocuments()
-                );
+                projectDocumentationListFrameController.initProjectDocumentationListFrameController(equipment);
             } else {
                 projectDocumentationListFrameController.getFrame().getFrame().toFront();
                 projectDocumentationListFrameController.getFrame().getFrame().requestFocus();

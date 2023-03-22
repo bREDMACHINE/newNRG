@@ -36,8 +36,8 @@ public class ProjectDocumentationClient extends BaseClient {
         return delete("/moderator/equipment/project/" + projectId, userId);
     }
 
-    public ResponseEntity<Object> findAllProjects(String userId) {
-        log.info("Find all projects");
-        return get("/user/equipment/projects", userId);
+    public ResponseEntity<Object> findAllProjects(Long equipmentId, int from, int size, String userId) {
+        log.info("Find all projects for equipmentId {}", equipmentId);
+        return get("/user/equipment/" + equipmentId + "/projects?from=" + from + "&size=" + size, userId);
     }
 }
