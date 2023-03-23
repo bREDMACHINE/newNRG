@@ -13,7 +13,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Service
 @Slf4j
 public class EquipmentClient extends BaseClient {
-    private static final String API_PREFIX = "/equipment";
+    private static final String API_PREFIX = "";
 
     @Autowired
     public EquipmentClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -25,15 +25,19 @@ public class EquipmentClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> findEquipment(String text, String userId) {
-        return get("?text=" + text, userId);
+    public ResponseEntity<Object> addEquipment(EquipmentShortDto equipment, String userId) {
+        return post("/moderator/equipment", userId, equipment);
     }
 
-    public ResponseEntity<Object> addEquipment(Equipment equipment, String userId) {
-        return post("/moderator", userId, equipment);
+    public ResponseEntity<Object> updateEquipment(EquipmentDto equipment, String userId) {
+        return patch("/moderator/equipment", userId, equipment);
     }
 
-    public ResponseEntity<Object> updateEquipment(Equipment equipment, String userId) {
-        return post("/moderator/update", userId, equipment);
+    public ResponseEntity<Object> deleteEquipment(Long equipmentId, String userId) {
+        return delete("/moderator/equipment/" + equipmentId, userId);
+    }
+
+    public ResponseEntity<Object> getEquipment(String text, String userId) {
+        return get("/user/equipment?text=" + text, userId);
     }
 }

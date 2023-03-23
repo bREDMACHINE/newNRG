@@ -1,17 +1,18 @@
 package get.a.big.head.newNRG.spares;
 
 import get.a.big.head.newNRG.types.Type;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "spares", schema = "public")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Spare {
     @Id
@@ -24,6 +25,20 @@ public class Spare {
     private String spareDescription;
     @Column(name = "spare_code")
     private String spareCode;
-    @ManyToMany(mappedBy = "types")
+    @ManyToMany(mappedBy = "spares")
+    @ToString.Exclude
     private List<Type> types;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Spare spare = (Spare) o;
+        return spareId != null && Objects.equals(spareId, spare.spareId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,17 +1,18 @@
 package get.a.big.head.newNRG.projectdocumentation;
 
 import get.a.big.head.newNRG.equipment.Equipment;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "projects", schema = "public")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class ProjectDocumentation {
     @Id
@@ -24,6 +25,20 @@ public class ProjectDocumentation {
     private String codeProjectDocumentation;
     @Column(name = "file")
     private String projectDocumentation;
-    @ManyToMany(mappedBy = "equipment")
+    @ManyToMany(mappedBy = "projectDocuments")
+    @ToString.Exclude
     private List<Equipment> equipment;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ProjectDocumentation that = (ProjectDocumentation) o;
+        return projectId != null && Objects.equals(projectId, that.projectId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Slf4j
 public class EventClient extends BaseClient {
 
-    private static final String API_PREFIX = "/equipment/event";
+    private static final String API_PREFIX = "";
 
     @Autowired
     public EventClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -26,11 +26,15 @@ public class EventClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> getEvent(String userId) {
-        return get("", userId);
+    public ResponseEntity<Object> addEvent(EventDto event, String userId) {
+        return post("/moderator/equipment/event",  userId, event);
     }
 
-    public ResponseEntity<Object> addEvent(Event event, String userId) {
-        return post("",  userId, event);
+    public ResponseEntity<Object> deleteEvent(Long eventId, String userId) {
+        return delete("/moderator/equipment/event/" + eventId,  userId);
+    }
+
+    public ResponseEntity<Object> findAllEvents(Long equipmentId, int from, int size, String userId) {
+        return get("/user/equipment/" + equipmentId + "/events?from=" + from + "&size=" + size,  userId);
     }
 }

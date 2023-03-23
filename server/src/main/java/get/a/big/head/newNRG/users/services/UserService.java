@@ -1,7 +1,7 @@
 package get.a.big.head.newNRG.users.services;
 
-import get.a.big.head.newNRG.users.models.UserDto;
-import get.a.big.head.newNRG.users.models.UserFullDto;
+import get.a.big.head.newNRG.users.dtos.UserDto;
+import get.a.big.head.newNRG.users.dtos.UserFullDto;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;

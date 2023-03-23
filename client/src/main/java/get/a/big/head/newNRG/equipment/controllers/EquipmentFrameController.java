@@ -1,12 +1,14 @@
 package get.a.big.head.newNRG.equipment.controllers;
 
-import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.equipment.EquipmentClient;
+import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import get.a.big.head.newNRG.equipment.frames.EquipmentFrame;
 import get.a.big.head.newNRG.events.controllers.AddEventFrameController;
 import get.a.big.head.newNRG.events.controllers.EventListFrameController;
-import get.a.big.head.newNRG.projectdocumentations.ProjectDocumentationFrameController;
+import get.a.big.head.newNRG.projectdocumentations.AddProjectDocumentationFrameController;
+import get.a.big.head.newNRG.projectdocumentations.ProjectDocumentationListFrameController;
+import get.a.big.head.newNRG.type.TypeFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +30,15 @@ import java.awt.event.WindowEvent;
 public class EquipmentFrameController {
 
     private EquipmentFrame frame;
-    private Equipment equipment;
     private final EquipmentClient equipmentClient;
+    private final TypeFrameController typeFrameController;
     private final EventListFrameController eventListFrameController;
     private final AddEventFrameController addEventFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
-    private final ProjectDocumentationFrameController projectDocumentationFrameController;
+    private final ProjectDocumentationListFrameController projectDocumentationListFrameController;
+    private final AddProjectDocumentationFrameController addProjectDocumentationFrameController;
 
-    public void initEquipmentFrameController(Equipment equipment) {
-        this.equipment = equipment;
+    public void initEquipmentFrameController(EquipmentDto equipment) {
         frame = new EquipmentFrame(equipment);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -48,20 +50,31 @@ public class EquipmentFrameController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
+        frame.getButtonType().addActionListener(e -> {
+            if (typeFrameController.getFrame() == null) {
+                typeFrameController.initTypeFrameController(equipment.getType().getTypeId());
+            } else {
+                typeFrameController.getFrame().getFrame().toFront();
+                typeFrameController.getFrame().getFrame().requestFocus();
+            }
+        });
+
         frame.getButtonAddEvent().addActionListener(e -> {
             if (addEventFrameController.getFrame() == null) {
-                addEventFrameController.initAddEventFrameController();
-                if (addEventFrameController.getEvent() != null) {
-                    equipment.getEvents().add(addEventFrameController.getEvent());
-                }
+                addEventFrameController.initAddEventFrameController(equipment.getEquipmentId());
             } else {
                 addEventFrameController.getFrame().getFrame().toFront();
                 addEventFrameController.getFrame().getFrame().requestFocus();
             }
         });
 
-        frame.getButtonAddDocumentation().addActionListener(e -> {
-            equipment.getProjectDocuments().add(projectDocumentationFrameController.addDocumentation());
+        frame.getButtonAddProject().addActionListener(e -> {
+            if (addProjectDocumentationFrameController.getFrame() == null) {
+                addProjectDocumentationFrameController.initAddProjectDocumentationFrameController();
+            } else {
+                addProjectDocumentationFrameController.getFrame().getFrame().toFront();
+                addProjectDocumentationFrameController.getFrame().getFrame().requestFocus();
+            }
         });
 
         frame.getButtonOk().addActionListener(e -> {
@@ -81,18 +94,18 @@ public class EquipmentFrameController {
             }
         });
 
-        frame.getButtonShowDocumentation().addActionListener(e -> {
-            if (projectDocumentationFrameController.getFrame() == null) {
-                projectDocumentationFrameController.initProjectDocumentationFrameController(equipment.getProjectDocuments());
+        frame.getButtonProjects().addActionListener(e -> {
+            if (projectDocumentationListFrameController.getFrame() == null) {
+                projectDocumentationListFrameController.initProjectDocumentationListFrameController(equipment);
             } else {
-                projectDocumentationFrameController.getFrame().getFrame().toFront();
-                projectDocumentationFrameController.getFrame().getFrame().requestFocus();
+                projectDocumentationListFrameController.getFrame().getFrame().toFront();
+                projectDocumentationListFrameController.getFrame().getFrame().requestFocus();
             }
         });
 
-        frame.getButtonShowEvents().addActionListener(e -> {
+        frame.getButtonEvents().addActionListener(e -> {
             if (eventListFrameController.getFrame() == null) {
-                eventListFrameController.initEventListFrameController(equipment.getEvents());
+                eventListFrameController.initEventListFrameController(equipment);
             } else {
                 eventListFrameController.getFrame().getFrame().toFront();
                 eventListFrameController.getFrame().getFrame().requestFocus();
@@ -100,10 +113,10 @@ public class EquipmentFrameController {
         });
     }
 
-    public Equipment getEquipment(String text, String userId) {
-        ResponseEntity<Object> equipmentResponse = equipmentClient.findEquipment(text, userId);
+    public EquipmentDto getEquipment(String text, String userId) {
+        ResponseEntity<Object> equipmentResponse = equipmentClient.getEquipment(text, userId);
         if (equipmentResponse.getStatusCode().is2xxSuccessful() && equipmentResponse.getBody() != null) {
-            return EquipmentMapper.toEquipment(equipmentResponse.getBody());
+            return EquipmentMapper.toEquipmentDto(equipmentResponse.getBody());
         } else {
             JOptionPane.showMessageDialog(
                     frame.getFrame(),

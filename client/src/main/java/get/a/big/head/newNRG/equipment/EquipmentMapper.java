@@ -1,19 +1,24 @@
 package get.a.big.head.newNRG.equipment;
 
 import com.google.gson.Gson;
-import get.a.big.head.newNRG.type.Type;
 
 public class EquipmentMapper {
-    public static Equipment toEquipment(Object object) {
+
+    public static EquipmentShortDto toEquipmentShortDto(Object object) {
         Gson gson = new Gson();
-        return gson.fromJson(object.toString(), Equipment.class);
+        return gson.fromJson(object.toString(), EquipmentShortDto.class);
     }
 
-    public static Equipment toEquipment(String operationalName, String installationYear, Type type) {
-        return Equipment.builder()
+    public static EquipmentDto toEquipmentDto(Object object) {
+        Gson gson = new Gson();
+        return gson.fromJson(object.toString(), EquipmentDto.class);
+    }
+
+    public static EquipmentShortDto toEquipmentShortDto(String operationalName, Short installationYear, Long typeId) {
+        return EquipmentShortDto.builder()
                 .operationalName(operationalName)
                 .installationYear(installationYear)
-                .type(type)
+                .typeId(typeId)
                 .build();
     }
 }

@@ -11,8 +11,8 @@ import java.awt.*;
 public class AddEventFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelCreateEvent;
-    private JTextField textCreateEvent;
+    private JLabel labelEventTime;
+    private JTextField textEventTime;
     private JLabel labelEventName;
     private JTextField textEventName;
     private JLabel labelDescription;
@@ -28,17 +28,17 @@ public class AddEventFrame extends JFrame {
         frame.setSize(300, 800);
 
         JPanel panelLabels = new JPanel();
-        labelCreateEvent = new JLabel("Дата события");
+        labelEventTime = new JLabel("Дата события");
         labelEventName = new JLabel("Наименование");
         labelDescription = new JLabel("Описание");
         labelFile = new JLabel("Документ");
-        textCreateEvent = new JTextField(15);
+        textEventTime = new JTextField(15);
         textEventName = new JTextField(15);
         textDescription = new JTextField(15);
         buttonFile = new JButton("Прикрепить");
 
-        panelLabels.add(labelCreateEvent);
-        panelLabels.add(textCreateEvent);
+        panelLabels.add(labelEventTime);
+        panelLabels.add(textEventTime);
         panelLabels.add(labelEventName);
         panelLabels.add(textEventName);
         panelLabels.add(labelDescription);

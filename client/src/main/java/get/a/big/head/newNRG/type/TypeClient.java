@@ -14,7 +14,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Slf4j
 public class TypeClient extends BaseClient {
 
-    private static final String API_PREFIX = "/equipment/type";
+    private static final String API_PREFIX = "";
 
     @Autowired
     public TypeClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -26,23 +26,28 @@ public class TypeClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> addType(Type type, String userId) {
+    public ResponseEntity<Object> addType(TypeShortDto type, String userId) {
         log.info("Add type {}",  type);
-        return post("", userId, type);
+        return post("/moderator/equipment/type", userId, type);
     }
 
-    public ResponseEntity<Object> getType(String typeName, String userId) {
-        log.info("Get type {}",  typeName);
-        return get("?typename=" + typeName, userId);
+    public ResponseEntity<Object> updateType(TypeDto type, String userId) {
+        log.info("Update type {}",  type);
+        return patch("/moderator/equipment/type", userId, type);
     }
 
-    public ResponseEntity<Object> removeType(String typeName, String userId) {
-        log.info("Delete type {}",  typeName);
-        return delete("?typename=" + typeName, userId);
+    public ResponseEntity<Object> deleteType(Long typeId, String userId) {
+        log.info("Delete type {}",  typeId);
+        return delete("/moderator/equipment/type/" + typeId, userId);
+    }
+
+    public ResponseEntity<Object> getType(Long typeId, String userId) {
+        log.info("Get type {}",  typeId);
+        return get("/user/equipment/type/" + typeId, userId);
     }
 
     public ResponseEntity<Object> findAllTypes(String userId) {
         log.info("Find all types");
-        return get("/all", userId);
+        return get("/user/equipment/types", userId);
     }
 }
