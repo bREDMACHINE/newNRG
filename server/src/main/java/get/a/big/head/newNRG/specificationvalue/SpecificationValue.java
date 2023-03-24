@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "specificationValues", schema = "public")
+@Table(name = "values", schema = "public")
 @Getter
 @Setter
 @ToString
@@ -18,12 +18,12 @@ public class SpecificationValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "specification_value_id")
+    @Column(name = "value_id")
     private Long specificationValueId;
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "specification_id")
     private Specification specification;
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn (name="type_id")
     private Type type;
     @Column(name = "specification_value")

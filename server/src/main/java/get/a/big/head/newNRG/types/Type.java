@@ -6,6 +6,8 @@ import get.a.big.head.newNRG.spares.Spare;
 import get.a.big.head.newNRG.specificationvalue.SpecificationValue;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +29,8 @@ public class Type {
     @ManyToOne
     @JoinColumn(name = "factory_id")
     private Factory factory;
-    @OneToMany (mappedBy="type", fetch=FetchType.EAGER)
+    @OneToMany (mappedBy="type")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ToString.Exclude
     private List<SpecificationValue> specificationValues;
     @ManyToMany

@@ -1,11 +1,9 @@
 package get.a.big.head.newNRG.specifications;
 
-import get.a.big.head.newNRG.specificationvalue.SpecificationValue;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,9 +21,6 @@ public class Specification {
     private String specificationName;
     @Column(name = "specification_description")
     private String specificationDescription;
-    @OneToMany (mappedBy="specification", fetch=FetchType.EAGER)
-    @ToString.Exclude
-    private List<SpecificationValue> specificationValues;
 
     @Override
     public boolean equals(Object o) {
