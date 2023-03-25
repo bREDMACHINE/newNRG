@@ -17,7 +17,9 @@ public class ProjectDocumentationController {
     @PostMapping("/moderator/equipment/project")
     public ProjectDocumentationDto addProject(@RequestBody ProjectDocumentationDto projectDocumentationDto) {
         log.info("Получен Post запрос к эндпоинту /moderator/equipment/project, project={}", projectDocumentationDto);
-        return projectDocumentationService.addProject(projectDocumentationDto);
+        ProjectDocumentationDto project = projectDocumentationService.addProject(projectDocumentationDto);
+        log.info("Результат запроса {}", project);
+        return project;
     }
 
     @DeleteMapping("/moderator/equipment/project/{id}")
@@ -29,12 +31,18 @@ public class ProjectDocumentationController {
     @GetMapping("/user/equipment/project/{id}")
     public ProjectDocumentationDto getProject(@PathVariable Long id) {
         log.info("Получен Get запрос к эндпоинту /user/equipment/project/{}", id);
-        return projectDocumentationService.getProject(id);
+        ProjectDocumentationDto project = projectDocumentationService.getProject(id);
+        log.info("Результат запроса {}", project);
+        return project;
     }
 
-    @GetMapping("/user/equipment/projects")
-    public List<ProjectDocumentationDto> findAllProjects() {
-        log.info("Получен Get запрос к эндпоинту /user/equipment/projects");
-        return projectDocumentationService.findAllProjects();
+    @GetMapping("/user/equipment/{id}/projects")
+    public List<ProjectDocumentationDto> findAllProjects(@PathVariable Long id,
+                                                         @RequestParam int from,
+                                                         @RequestParam int size) {
+        log.info("Получен Get запрос к эндпоинту /user/equipment/{}/projects с листа {}", id, from);
+        List<ProjectDocumentationDto> list = projectDocumentationService.findAllProjects(id, from, size);
+        log.info("Результат запроса {}", list);
+        return list;
     }
 }

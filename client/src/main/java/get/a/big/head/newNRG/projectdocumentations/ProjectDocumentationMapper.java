@@ -2,7 +2,6 @@ package get.a.big.head.newNRG.projectdocumentations;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import get.a.big.head.newNRG.specification.SpecificationDto;
 
 import java.util.List;
 

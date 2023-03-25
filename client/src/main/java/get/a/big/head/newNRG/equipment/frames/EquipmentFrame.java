@@ -25,7 +25,7 @@ public class EquipmentFrame extends JFrame {
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         buttonType = new JButton(equipment.getType().getTypeName());
-        buttonProjects = new JButton("Показать проект");
+        buttonProjects = new JButton("Показать проекты");
         buttonAddProject = new JButton("Добавить проект");
         buttonEvents = new JButton("Показать события");
         buttonAddEvent = new JButton("Добавить событие");

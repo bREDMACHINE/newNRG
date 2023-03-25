@@ -4,6 +4,7 @@ import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +44,8 @@ public class ProjectDocumentationServiceImpl implements ProjectDocumentationServ
     }
 
     @Override
-    public List<ProjectDocumentationDto> findAllProjects() {
-        return projectDocumentationRepository.findAll().stream()
+    public List<ProjectDocumentationDto> findAllProjects(Long equipmentId, int from, int size) {
+        return projectDocumentationRepository.findByEquipmentEquipmentId(equipmentId, PageRequest.of(from / size, size)).stream()
                 .map(ProjectDocumentationMapper::toProjectDocumentationDto)
                 .collect(Collectors.toList());
     }
