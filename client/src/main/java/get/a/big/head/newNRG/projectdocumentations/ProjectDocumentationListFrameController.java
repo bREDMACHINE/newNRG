@@ -26,8 +26,8 @@ public class ProjectDocumentationListFrameController {
     private final int size = 15;
     private int maxSize;
     private int from;
-    private int pages = maxSize / size;
-    private int maxShow = pages * size;
+    private int pages = maxSize / size + 1;
+    private int maxShow = pages * size - 15;
     private Long equipmentId;
     private int page;
 

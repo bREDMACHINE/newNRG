@@ -42,13 +42,18 @@ public class UserAuthorizationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get user with userLogin {}, userPassword {}", userLogin, userPassword);
-            ResponseEntity<Object> authorizationAnswer = userClient.userAuthorization(new UserDto(userLogin, userPassword));
+            ResponseEntity<Object> authorizationResponse = userClient.userAuthorization(new UserDto(userLogin, userPassword));
 
-            if (authorizationAnswer.getStatusCode().is2xxSuccessful()) {
-                user = UserMapper.toUser(authorizationAnswer.getHeaders(), userLogin);
+            if (authorizationResponse.getStatusCode().is2xxSuccessful()) {
+                user = UserMapper.toUser(authorizationResponse.getHeaders(), userLogin);
                 frame.getFrame().dispose();
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), authorizationAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        frame.getFrame(),
+                        authorizationResponse.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
         });
 
@@ -65,13 +70,17 @@ public class UserAuthorizationFrameController {
     }
 
     public void logout() {
-        log.info("Logout user={}", user);
-        ResponseEntity<Object> logoutAnswer = userClient.logout(user.getUserId());
-        if (logoutAnswer.getStatusCode().is2xxSuccessful()) {
+        ResponseEntity<Object> logoutResponse = userClient.logout(user.getUserId());
+        if (logoutResponse.getStatusCode().is2xxSuccessful()) {
             user = null;
             JOptionPane.showMessageDialog(frame.getFrame(), "Вы вышли из аккаунта");
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), logoutAnswer.getStatusCode().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    logoutResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 }

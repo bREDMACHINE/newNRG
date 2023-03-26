@@ -6,14 +6,15 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class EventListFrame extends JFrame {
     private JFrame frame;
-    private List<JButton> openFileButtons;
-    private List<JButton> deleteEventButtons;
+    private List<JButton> openFileButtons = new ArrayList<>();
+    private List<JButton> deleteButtons = new ArrayList<>();
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
@@ -23,7 +24,7 @@ public class EventListFrame extends JFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelEvents = new JPanel(new GridLayout(18, 4, 5, 5));
+        JPanel panelEvents = new JPanel(new GridLayout(0, 4, 12, 5));
         panelEvents.add(new JLabel("Дата события"));
         panelEvents.add(new JLabel("Событие"));
         panelEvents.add(new JLabel("Описание"));
@@ -36,7 +37,7 @@ public class EventListFrame extends JFrame {
             openFileButtons.add(openFileButton);
             JButton deleteEventButton = new JButton("Удалить");
             deleteEventButton.setActionCommand(String.valueOf(i));
-            deleteEventButtons.add(deleteEventButton);
+            deleteButtons.add(deleteEventButton);
 
             panelEvents.add(new JLabel(event.getTimeEvent()));
             panelEvents.add(new JLabel(event.getNameEvent()));

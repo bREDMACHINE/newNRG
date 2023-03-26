@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.List;
 public class ProjectDocumentationListFrame {
 
     private JFrame frame;
-    private List<JButton> openFileButtons;
+    private List<JButton> openFileButtons = new ArrayList<>();
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
@@ -22,7 +23,7 @@ public class ProjectDocumentationListFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelList = new JPanel(new GridLayout(18, 3, 5, 5));
+        JPanel panelList = new JPanel(new GridLayout(0, 3, 12, 5));
         panelList.add(new JLabel("Наименование проекта"));
         panelList.add(new JLabel("Шифр проекта"));
         panelList.add(new JLabel("Прикрепленный файл"));
