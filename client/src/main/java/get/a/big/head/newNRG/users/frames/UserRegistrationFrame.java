@@ -6,14 +6,15 @@ import lombok.Setter;
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.GroupLayout.Alignment.*;
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+
 @Getter
 @Setter
 public class UserRegistrationFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelLogin;
     private JTextField textFieldLogin;
-    private JLabel labelPassword;
     private JPasswordField passwordField;
     private JButton buttonOk;
     private JButton buttonCancel;
@@ -21,28 +22,50 @@ public class UserRegistrationFrame extends JFrame {
     public UserRegistrationFrame() {
         frame = new JFrame("Регистрация");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(320, 240);
+        frame.setFont(new Font("Arial", Font.PLAIN, 16));
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        frame.setLocationRelativeTo(null);
 
-        labelLogin = new JLabel("Введите почту");
+        JPanel panel = new JPanel();
+        JLabel loginLabel = new JLabel("Введите почту");
         textFieldLogin = new JTextField(15);
-        JPanel panelLogin = new JPanel();
-        panelLogin.add(labelLogin);
-        panelLogin.add(textFieldLogin);
-        frame.getContentPane().add(BorderLayout.NORTH, panelLogin);
-
-        labelPassword = new JLabel("Введите пароль");
+        JLabel passwordLabel = new JLabel("Введите пароль");
         passwordField = new JPasswordField(10);
-        JPanel panelPassword = new JPanel();
-        panelPassword.add(labelPassword);
-        panelPassword.add(passwordField);
-        frame.getContentPane().add(BorderLayout.CENTER, panelPassword);
-
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
-        JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonOk);
-        panelButtons.add(buttonCancel);
-        frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(LEADING)
+                        .addComponent(loginLabel)
+                        .addComponent(passwordLabel))
+                .addGroup(layout.createParallelGroup(TRAILING, false)
+                        .addComponent(textFieldLogin)
+                        .addComponent(passwordField)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonOk)
+                                .addComponent(buttonCancel)))
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(loginLabel)
+                        .addComponent(textFieldLogin))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(30)
+                        .addComponent(passwordLabel)
+                        .addComponent(passwordField))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(buttonOk)
+                        .addComponent(buttonCancel))
+        );
+
+        frame.getContentPane().add(panel);
+        frame.pack();
         frame.setVisible(true);
     }
 }

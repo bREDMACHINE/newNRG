@@ -6,52 +6,55 @@ import lombok.Setter;
 import java.awt.*;
 import javax.swing.*;
 
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+
 @Getter
 @Setter
 public class UserMainFrame extends JFrame {
 
     protected JFrame frame;
-    private JMenu menuMain;
-    private JMenu menuOptions;
-    private JMenu menuUserLogin;
+    private JMenu menu;
     private JMenuItem menuItemAccount;
     private JMenuItem menuItemLogout;
-    private JLabel label;
     private JTextField textField;
     private JButton buttonFind;
-    protected JButton buttonAddEquipment;
-    protected JButton userManager;
-    protected JPanel panelButtons;
+    private JButton buttonAddEquipment;
+    private JButton userManager;
+    private JPanel panelButtons;
 
     public UserMainFrame() {
         frame = new JFrame("Основное окно");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 600);
+        frame.setFont(new Font("Arial", Font.PLAIN, 16));
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        frame.setLocationRelativeTo(null);
 
         JMenuBar menuBar = new JMenuBar();
-        menuMain = new JMenu("Основное");
-        menuOptions = new JMenu("Настройки");
-        menuUserLogin = new JMenu("Личный кабинет");
-        menuBar.add(menuMain);
-        menuBar.add(menuOptions);
-        menuBar.add(menuUserLogin);
-        frame.getContentPane().add(BorderLayout.BEFORE_FIRST_LINE, menuBar);
-
+        menu = new JMenu("Меню пользователя");
+        menuBar.add(menu);
         menuItemAccount = new JMenuItem("Личный кабинет");
         menuItemLogout = new JMenuItem("Выйти");
-        menuUserLogin.add(menuItemAccount);
-        menuUserLogin.add(menuItemLogout);
+        menu.add(menuItemAccount);
+        menu.add(menuItemLogout);
+        frame.getContentPane().add(BorderLayout.BEFORE_FIRST_LINE, menuBar);
 
         JPanel panel = new JPanel();
-        textField = new JTextField(10);
+        textField = new JTextField("Введите оперативное наименование",20);
         buttonFind = new JButton("Найти");
-        panel.add(textField);
-        panel.add(buttonFind);
-
-        JPanel panel1 = new JPanel();
-        label = new JLabel("Введите оперативное наименование");
-        panel1.add(label);
-        panel1.add(panel);
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addComponent(textField)
+                .addComponent(buttonFind)
+                .addGap(40)
+        );
+        layout.setVerticalGroup(layout.createParallelGroup(BASELINE)
+                .addComponent(textField)
+                .addComponent(buttonFind)
+        );
+        frame.getContentPane().add(BorderLayout.CENTER, panel);
 
         panelButtons = new JPanel();
         buttonAddEquipment = new JButton("Добавить оборудование");
@@ -60,7 +63,8 @@ public class UserMainFrame extends JFrame {
         flow.add(panelButtons);
         frame.getContentPane().add(BorderLayout.SOUTH, flow);
 
-        frame.getContentPane().add(BorderLayout.CENTER, panel1);
+
+        frame.pack();
         frame.setVisible(true);
     }
 }

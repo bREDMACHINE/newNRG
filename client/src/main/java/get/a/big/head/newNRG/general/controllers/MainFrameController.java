@@ -3,8 +3,6 @@ package get.a.big.head.newNRG.general.controllers;
 import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.equipment.controllers.AddEquipmentFrameController;
 import get.a.big.head.newNRG.equipment.controllers.EquipmentFrameController;
-import get.a.big.head.newNRG.general.frames.AdminMainFrame;
-import get.a.big.head.newNRG.general.frames.ModeratorMainFrame;
 import get.a.big.head.newNRG.general.frames.UserMainFrame;
 import get.a.big.head.newNRG.type.TypeClient;
 import get.a.big.head.newNRG.users.controllers.UserAccountFrameController;
@@ -35,13 +33,12 @@ public class MainFrameController {
     private UserMainFrame frame;
 
     public void initMainFrameController() {
-
-        if (authorizationFrameController.getUser().getRole().equals(Role.USER.name())) {
-            frame = new UserMainFrame();
-        } else if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
-            frame = new ModeratorMainFrame();
+        frame = new UserMainFrame();
+        if (authorizationFrameController.getUser().getRole().equals(Role.MODERATOR.name())) {
+            frame.getPanelButtons().add(frame.getButtonAddEquipment());
         } else if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
-            frame = new AdminMainFrame();
+            frame.getPanelButtons().add(frame.getButtonAddEquipment());
+            frame.getPanelButtons().add(frame.getUserManager());
         }
 
         frame.getMenuItemLogout().addActionListener(event -> {
@@ -73,7 +70,6 @@ public class MainFrameController {
 
         frame.getButtonAddEquipment().addActionListener(e -> {
             if (addEquipmentFrameController.getFrame() == null) {
-
                 addEquipmentFrameController.initAddEquipmentFrameController();
             } else {
                 addEquipmentFrameController.getFrame().getFrame().toFront();
