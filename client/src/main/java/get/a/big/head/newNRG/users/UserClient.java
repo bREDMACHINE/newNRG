@@ -53,9 +53,9 @@ public class UserClient extends BaseClient {
         return delete("/admin/user?email=" + userName, userId);
     }
 
-    public ResponseEntity<Object> findAllUsers(String role, String status, String userId) {
-        log.info("Find all users with parameters role={} and status={}", role, status);
-        return get("/admin/users?role=" + role + "&status=" + status, userId);
+    public ResponseEntity<Object> findAllUsers(String role, String status, int from, int size, String userId) {
+        log.info("Find all users with parameters role={} and status={} from {}", role, status, from);
+        return get("/admin/users?role=" + role + "&status=" + status + "&from=" + from + "&size=" + size, userId);
     }
 
     public ResponseEntity<Object> updateUser(String userId, UserFullDto userFullDto) {

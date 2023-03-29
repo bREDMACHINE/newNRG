@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -17,7 +16,6 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@Lazy
 @Controller
 @Slf4j
 @Getter
@@ -41,20 +39,27 @@ public class UserRegistrationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Set userLogin {}, userPassword {}", userLogin, userPassword);
-            ResponseEntity<Object> registrationAnswer = userClient.userRegistration(new UserDto(userLogin, userPassword));
-
-            if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
-                User user = UserMapper.toUser(registrationAnswer.getHeaders(), userLogin);
-                frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        "Пользователь " + user.getEmail() + " зарегистрирован с ролью " + user.getRole()
-                );
-            } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), registrationAnswer.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            userRegistration(userLogin, userPassword);
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+    }
+
+    public void userRegistration(String userLogin, String userPassword) {
+        ResponseEntity<Object> registrationAnswer = userClient.userRegistration(new UserDto(userLogin, userPassword));
+
+        if (registrationAnswer.getStatusCode().is2xxSuccessful()) {
+            User user = UserMapper.toUser(registrationAnswer.getHeaders(), userLogin);
+            frame.getFrame().dispose();
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    "Пользователь " + user.getEmail() + " зарегистрирован с ролью " + user.getRole()
+            );
+        } else {
+            JOptionPane.showMessageDialog(frame.getFrame(),
+                    registrationAnswer.getStatusCode(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

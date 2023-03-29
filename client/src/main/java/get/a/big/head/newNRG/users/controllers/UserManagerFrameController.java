@@ -8,16 +8,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
-@Lazy
 @Controller
 @Slf4j
 @Getter
@@ -43,63 +40,53 @@ public class UserManagerFrameController {
         frame.getButtonFind().addActionListener(e -> {
             String userName = frame.getTextFieldFinder().getText();
             log.info("Get user userName {}", userName);
-            ResponseEntity<Object> getUserAnswer = userClient.getUser(
-                    userName,
-                    authorizationFrameController.getUser().getUserId()
-            );
-            if (getUserAnswer.getStatusCode().is2xxSuccessful() && getUserAnswer.getBody() != null) {
-                User user = UserMapper.toUser(getUserAnswer.getBody());
-                if (accountFrameController.getFrame() == null) {
-                    accountFrameController.initUserAccountFrameController(user);
-                } else {
-                    accountFrameController.getFrame().getFrame().toFront();
-                    accountFrameController.getFrame().getFrame().requestFocus();
-                }
+            if (accountFrameController.getFrame() == null) {
+                accountFrameController.initUserAccountFrameController(getUser(userName));
             } else {
-                JOptionPane.showMessageDialog(frame.getFrame(), getUserAnswer.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
+                accountFrameController.getFrame().getFrame().toFront();
+                accountFrameController.getFrame().getFrame().requestFocus();
             }
         });
 
         frame.getButtonAllUsers().addActionListener(e -> {
-            ResponseEntity<Object> findAllUsersAnswer = userClient.findAllUsers(
-                    frame.getRoleMenu().getSelectedItem().toString(),
-                    frame.getStatusMenu().getSelectedItem().toString(),
-                    authorizationFrameController.getUser().getUserId()
-            );
-            openListUsers(findAllUsersAnswer);
+            openListUsers(frame.getRoleMenu().getSelectedItem().toString(),
+                    frame.getStatusMenu().getSelectedItem().toString());
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
-        ResponseEntity<Object> findRequestRoleAnswer = findRequest();
-        if (findRequestRoleAnswer.getStatusCode().is2xxSuccessful() && findRequestRoleAnswer.getBody() != null) {
+        if (listFrameController.findAllUsers("Roles", "Requested", 0).size() > 0) {
             frame.getPanelButtons().remove(frame.getButtonCancel());
             frame.getPanelButtons().add(frame.getButtonRequest());
             frame.getPanelButtons().add(frame.getButtonCancel());
         }
 
-        frame.getButtonRequest().addActionListener(e -> openListUsers(findRequest()));
+        frame.getButtonRequest().addActionListener(e -> openListUsers("Roles", "Requested"));
     }
 
-    private ResponseEntity<Object> findRequest() {
-        return userClient.findAllUsers(
-                "Roles",
-                "Requested",
+    private void openListUsers(String role, String status) {
+        if (listFrameController.getFrame() == null) {
+            listFrameController.initUserListFrameController(role, status);
+        } else {
+            listFrameController.getFrame().getFrame().toFront();
+            listFrameController.getFrame().getFrame().requestFocus();
+        }
+    }
+
+    private User getUser(String userName) {
+        ResponseEntity<Object> getUserAnswer = userClient.getUser(
+                userName,
                 authorizationFrameController.getUser().getUserId()
         );
-    }
+        if (getUserAnswer.getStatusCode().is2xxSuccessful() && getUserAnswer.getBody() != null) {
+            return UserMapper.toUser(getUserAnswer.getBody());
 
-    private void openListUsers(ResponseEntity<Object> response) {
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            List<User> users = UserMapper.toUsers(response.getBody());
-            if (listFrameController.getFrame() == null) {
-                listFrameController.initUserListFrameController(users);
-            } else {
-                listFrameController.getFrame().getFrame().toFront();
-                listFrameController.getFrame().getFrame().requestFocus();
-            }
         } else {
-            JOptionPane.showMessageDialog(frame.getFrame(), response.getStatusCode(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame.getFrame(),
+                    getUserAnswer.getStatusCode(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
+        return  null;
     }
 }

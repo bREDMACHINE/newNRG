@@ -8,5 +8,5 @@ public interface EventService {
 
     EventDto addEvent(EventDto eventDto);
     void deleteEvent(Long id);
-    List<EventDto> findAllEvents(Long id);
+    List<EventDto> findAllEvents(Long id, int from, int size);
 }

@@ -4,7 +4,6 @@ import get.a.big.head.newNRG.type.TypeDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 @Controller
-@Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SpecificationValueListFrameController {
@@ -26,8 +24,8 @@ public class SpecificationValueListFrameController {
     private final int size = 15;
     private int maxSize;
     private int from;
-    private int pages = maxSize / size;
-    private int maxShow = pages * size;
+    private int pages = maxSize / size + 1;
+    private int maxShow = pages * size - 15;
     private Long typeId;
     private int page;
 

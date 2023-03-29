@@ -4,7 +4,6 @@ import get.a.big.head.newNRG.type.TypeDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 @Controller
-@Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SpareListFrameController {
@@ -27,14 +25,12 @@ public class SpareListFrameController {
     private int maxSize;
     private int from;
     private int pages = maxSize / size + 1;
-    private int maxShow = (pages - 1) * size;
+    private int maxShow = pages * size - 15;
     private Long typeId;
     private int page;
 
-    private List<SpareDto> list;
-
     public void initSpareListFrameController(TypeDto type) {
-        this.typeId = type.getTypeId();
+        typeId = type.getTypeId();
         maxSize = type.getSpares().size();
         from = 0;
         page = 1;
@@ -53,10 +49,10 @@ public class SpareListFrameController {
         });
 
         for (JButton button : frame.getDeleteButtons()) {
-            button.addActionListener(e -> spareClient.deleteSpare(
-                        list.get(Integer.parseInt(button.getActionCommand())).getSpareId(),
-                        authorizationFrameController.getUser().getUserId()
-            ));
+//            button.addActionListener(e -> spareClient.deleteSpare(
+//                        list.get(Integer.parseInt(button.getActionCommand())).getSpareId(),
+//                        authorizationFrameController.getUser().getUserId()
+//            ));
         }
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -67,7 +63,7 @@ public class SpareListFrameController {
         });
     }
 
-    private List<SpareDto> getSpares() {
+    private List<SpareDto> findAllSpares(Long typeId, int from) {
         ResponseEntity<Object> spareListResponse = spareClient.findAllSpares(
                 typeId,
                 from,
@@ -88,7 +84,7 @@ public class SpareListFrameController {
     }
 
     private void openPage() {
-        list = getSpares();
+        List<SpareDto> list = findAllSpares(typeId, from);
         if (frame != null) {
             frame.getFrame().dispose();
         }

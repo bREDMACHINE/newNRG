@@ -9,6 +9,7 @@ import get.a.big.head.newNRG.events.EventRepository;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> findAllEvents(Long id) {
-        return eventRepository.findAllByEquipmentEquipmentId(id).stream().map(EventMapper::toEventDto).collect(Collectors.toList());
+    public List<EventDto> findAllEvents(Long equipmentId, int from, int size) {
+        return eventRepository.findAllByEquipmentEquipmentId(equipmentId, PageRequest.of(from / size, size)).stream()
+                .map(EventMapper::toEventDto)
+                .collect(Collectors.toList());
     }
 }

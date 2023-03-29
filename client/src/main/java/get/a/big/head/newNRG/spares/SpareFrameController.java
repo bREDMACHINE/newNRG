@@ -3,7 +3,6 @@ package get.a.big.head.newNRG.spares;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 @Controller
-@Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SpareFrameController {

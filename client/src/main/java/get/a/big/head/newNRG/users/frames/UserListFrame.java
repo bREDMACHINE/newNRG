@@ -12,27 +12,33 @@ import java.util.List;
 @Setter
 public class UserListFrame extends JFrame {
     private JFrame frame;
-    private JButton buttonClose;
-    private JList<String> list;
+    private JButton buttonPrevious;
+    private JLabel labelPage;
+    private JButton buttonNext;
+    private JPanel panelButtons;
 
-    public UserListFrame(List<User> users) {
+    public UserListFrame(List<User> users, int page, int pages) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        JPanel panelUsers = new JPanel();
-        String[] usersString = new String[users.size()];
+
+        JPanel panelList = new JPanel(new GridLayout(0, 3, 12, 5));
+        panelList.add(new JLabel("Логин"));
+        panelList.add(new JLabel("Уровень доступа"));
+        panelList.add(new JLabel("Статус"));
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            usersString[i] = user.getEmail();
+            panelList.add(new JLabel(user.getEmail()));
+            panelList.add(new JLabel(user.getRole()));
+            panelList.add(new JLabel(user.getStatus()));
         }
-        list = new JList<>(usersString);
-        list.setLayoutOrientation(JList.VERTICAL);
-        list.setVisibleRowCount(0);
-        panelUsers.add(list);
-        frame.getContentPane().add(BorderLayout.CENTER, panelUsers);
 
-        buttonClose = new JButton("Закрыть");
-        JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonClose);
+        frame.getContentPane().add(BorderLayout.NORTH, panelList);
+
+        labelPage = new JLabel("Страница " + page + " из " + pages);
+        buttonPrevious = new JButton("< Предыдущая");
+        buttonNext = new JButton("Следующая >");
+        panelButtons = new JPanel();
+        panelButtons.add(labelPage);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
         frame.pack();
         frame.setVisible(true);

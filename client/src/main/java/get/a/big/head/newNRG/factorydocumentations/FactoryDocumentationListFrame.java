@@ -5,13 +5,14 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class FactoryDocumentationListFrame {
     private JFrame frame;
-    private List<JButton> openFileButtons;
+    private List<JButton> openFileButtons = new ArrayList<>();
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;

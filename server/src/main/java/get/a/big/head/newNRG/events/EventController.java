@@ -18,7 +18,9 @@ public class EventController {
     @PostMapping("/moderator/equipment/event")
     public EventDto addEvent(@RequestBody EventDto eventDto) {
         log.info("Получен Post запрос к эндпоинту /moderator/equipment/event, event={}", eventDto);
-        return eventService.addEvent(eventDto);
+        EventDto event = eventService.addEvent(eventDto);
+        log.info("Результат запроса {}", event);
+        return event;
     }
 
     @DeleteMapping("/moderator/equipment/event/{id}")
@@ -28,8 +30,12 @@ public class EventController {
     }
 
     @GetMapping("/user/equipment/{id}/events")
-    public List<EventDto> findAllEvents(@PathVariable Long id) {
-        log.info("Получен Get запрос к эндпоинту /equipment/{}/events", id);
-        return eventService.findAllEvents(id);
+    public List<EventDto> findAllEvents(@PathVariable Long id,
+                                        @RequestParam int from,
+                                        @RequestParam int size) {
+        log.info("Получен Get запрос к эндпоинту /equipment/{}/events с листа {}", id, from);
+        List<EventDto> list = eventService.findAllEvents(id, from, size);
+        log.info("Результат запроса {}", list);
+        return list;
     }
 }

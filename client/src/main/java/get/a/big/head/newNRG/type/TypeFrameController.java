@@ -1,11 +1,11 @@
 package get.a.big.head.newNRG.type;
 
+import get.a.big.head.newNRG.factorydocumentations.FactoryDocumentationListFrameController;
 import get.a.big.head.newNRG.spares.SpareListFrameController;
 import get.a.big.head.newNRG.specificationvalue.SpecificationValueListFrameController;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,6 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 @Controller
-@Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TypeFrameController {
@@ -26,6 +25,7 @@ public class TypeFrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private final SpareListFrameController spareListFrameController;
     private final SpecificationValueListFrameController specificationValueListFrameController;
+    private final FactoryDocumentationListFrameController factoryDocumentationListFrameController;
 
     public void initTypeFrameController(Long typeId) {
         TypeDto type = getType(typeId);
@@ -42,7 +42,12 @@ public class TypeFrameController {
         });
 
         frame.getButtonDocuments().addActionListener(e -> {
-            //открытие листа документов
+            if (factoryDocumentationListFrameController.getFrame() == null) {
+                factoryDocumentationListFrameController.initFactoryDocumentationListFrameController(type);
+            } else {
+                factoryDocumentationListFrameController.getFrame().getFrame().toFront();
+                factoryDocumentationListFrameController.getFrame().getFrame().requestFocus();
+            }
         });
 
         frame.getButtonDocuments().addActionListener(e -> {

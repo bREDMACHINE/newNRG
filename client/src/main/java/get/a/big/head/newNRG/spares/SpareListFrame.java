@@ -5,13 +5,14 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class SpareListFrame extends JFrame {
     private JFrame frame;
-    private List<JButton> deleteButtons;
+    private List<JButton> deleteButtons = new ArrayList<>();
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
