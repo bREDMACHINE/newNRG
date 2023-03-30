@@ -4,6 +4,7 @@ import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +44,8 @@ public class FactoryDocumentationServiceImpl implements FactoryDocumentationServ
     }
 
     @Override
-    public List<FactoryDocumentationDto> findAllDocuments(Long id) {
-        return factoryDocumentationRepository.findAll().stream()
+    public List<FactoryDocumentationDto> findAllDocuments(Long typeId, int from, int size) {
+        return factoryDocumentationRepository.findByTypesTypeId(typeId, PageRequest.of(from / size, size)).stream()
                 .map(FactoryDocumentationMapper::toFactoryDocumentationDto)
                 .collect(Collectors.toList());
     }

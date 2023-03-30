@@ -4,6 +4,7 @@ import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +42,9 @@ public class SpareServiceImpl implements SpareService {
     }
 
     @Override
-    public List<SpareDto> findAllSpares(Long typeId) {
-        return spareRepository.findAll().stream().map(SpareMapper::toSpareDto).collect(Collectors.toList());
+    public List<SpareDto> findAllSpares(Long typeId, int from, int size) {
+        return spareRepository.findByTypesTypeId(typeId, PageRequest.of(from / size, size)).stream()
+                .map(SpareMapper::toSpareDto)
+                .collect(Collectors.toList());
     }
 }

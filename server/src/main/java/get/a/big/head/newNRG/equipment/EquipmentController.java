@@ -18,13 +18,17 @@ public class EquipmentController {
     @PostMapping("/moderator/equipment")
     public EquipmentShortDto addEquipment(@RequestBody EquipmentShortDto equipmentShortDto) {
         log.info("Получен Post запрос к эндпоинту /moderator/equipment, equipment={}", equipmentShortDto);
-        return equipmentService.addEquipment(equipmentShortDto);
+        EquipmentShortDto equipment = equipmentService.addEquipment(equipmentShortDto);
+        log.info("Результат запроса {}", equipment);
+        return equipment;
     }
 
     @PatchMapping("/moderator/equipment")
     public EquipmentDto updateEquipment(@RequestBody EquipmentDto equipmentDto) {
         log.info("Получен Patch запрос к эндпоинту /moderator/equipment, equipment={}", equipmentDto);
-        return equipmentService.updateEquipment(equipmentDto);
+        EquipmentDto equipment = equipmentService.updateEquipment(equipmentDto);
+        log.info("Результат запроса {}", equipment);
+        return equipment;
     }
 
     @DeleteMapping("/moderator/equipment/{id}")
@@ -36,6 +40,8 @@ public class EquipmentController {
     @GetMapping("/user/equipment")
     public EquipmentDto getEquipment(@RequestParam String text) {
         log.info("Получен Get запрос к эндпоинту /user/equipment text={}", text);
-        return equipmentService.getEquipment(text);
+        EquipmentDto equipment = equipmentService.getEquipment(text);
+        log.info("Результат запроса {}", equipment);
+        return equipment;
     }
 }

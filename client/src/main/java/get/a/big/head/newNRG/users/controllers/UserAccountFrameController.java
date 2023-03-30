@@ -46,38 +46,14 @@ public class UserAccountFrameController {
 
         frame.getButtonDeleteUser().addActionListener(e -> {
             log.info("Delete user {}", user);
-            ResponseEntity<Object> deleteUserResponse = userClient.deleteUser(user.getEmail(),
-                    authorizationFrameController.getUser().getUserId());
-            if (deleteUserResponse.getStatusCode().is2xxSuccessful()) {
-                JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь удален");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        deleteUserResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+            deleteUser(user);
         });
 
         frame.getButtonRequestRole().addActionListener(e -> {
             UserFullDto userFullDto = UserMapper.toUserFullDto(user);
             userFullDto.setStatus("REQUESTED");
             log.info("Update user {}", userFullDto);
-            ResponseEntity<Object> updateUserResponse = userClient.updateUser(
-                    authorizationFrameController.getUser().getUserId(),
-                    userFullDto
-            );
-            if (updateUserResponse.getStatusCode().is2xxSuccessful()) {
-                JOptionPane.showMessageDialog(frame.getFrame(), "Запрос отправлен");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        updateUserResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+            updateUser(userFullDto);
         });
 
         frame.getButtonAcceptRole().addActionListener(e -> {
@@ -91,6 +67,38 @@ public class UserAccountFrameController {
         });
 
         frame.getButtonClose().addActionListener(e -> frame.getFrame().dispose());
+    }
+
+    private void updateUser(UserFullDto userFullDto) {
+        ResponseEntity<Object> updateUserResponse = userClient.updateUser(
+                authorizationFrameController.getUser().getUserId(),
+                userFullDto
+        );
+        if (updateUserResponse.getStatusCode().is2xxSuccessful()) {
+            JOptionPane.showMessageDialog(frame.getFrame(), "Запрос отправлен");
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    updateUserResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void deleteUser(User user) {
+        ResponseEntity<Object> deleteUserResponse = userClient.deleteUser(user.getEmail(),
+                authorizationFrameController.getUser().getUserId());
+        if (deleteUserResponse.getStatusCode().is2xxSuccessful()) {
+            JOptionPane.showMessageDialog(frame.getFrame(), "Пользователь удален");
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    deleteUserResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     private void resolution(String resolution, User user) {

@@ -7,6 +7,7 @@ import get.a.big.head.newNRG.types.Type;
 import get.a.big.head.newNRG.types.TypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +49,8 @@ public class SpecificationValueServiceImpl implements SpecificationValueService 
     }
 
     @Override
-    public List<SpecificationValueDto> findAllSpecificationValues(Long id, int from, int size) {
-        return specificationValueRepository.findByTypeTypeId(id).stream()
+    public List<SpecificationValueDto> findAllSpecificationValues(Long typeId, int from, int size) {
+        return specificationValueRepository.findByTypeTypeId(typeId, PageRequest.of(from / size, size)).stream()
                 .map(SpecificationValueMapper::toSpecificationValueDto)
                 .collect(Collectors.toList());
     }

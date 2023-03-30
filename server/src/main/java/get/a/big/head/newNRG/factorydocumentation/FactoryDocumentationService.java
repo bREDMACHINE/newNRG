@@ -7,5 +7,5 @@ public interface FactoryDocumentationService {
     FactoryDocumentationDto addDocument(FactoryDocumentationDto factoryDocumentationDto);
     void deleteDocument(Long id);
     FactoryDocumentationDto getDocument(Long id);
-    List<FactoryDocumentationDto> findAllDocuments(Long id);
+    List<FactoryDocumentationDto> findAllDocuments(Long id, int rom, int size);
 }

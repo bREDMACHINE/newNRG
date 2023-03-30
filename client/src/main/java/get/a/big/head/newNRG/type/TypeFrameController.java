@@ -60,20 +60,7 @@ public class TypeFrameController {
         });
 
         frame.getButtonOk().addActionListener(e -> {
-            ResponseEntity<Object> updateTypeResponse = typeClient.updateType(
-                    type,
-                    authorizationFrameController.getUser().getUserId()
-            );
-            if (updateTypeResponse.getStatusCode().is2xxSuccessful() && updateTypeResponse.getBody() != null) {
-                frame.getFrame().dispose();
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        updateTypeResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+            updateType(type);
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
@@ -87,6 +74,23 @@ public class TypeFrameController {
                 }
             }
         });
+    }
+
+    public void updateType(TypeDto type) {
+        ResponseEntity<Object> updateTypeResponse = typeClient.updateType(
+                type,
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (updateTypeResponse.getStatusCode().is2xxSuccessful() && updateTypeResponse.getBody() != null) {
+            frame.getFrame().dispose();
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    updateTypeResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     public void deleteType(Long typeId) {

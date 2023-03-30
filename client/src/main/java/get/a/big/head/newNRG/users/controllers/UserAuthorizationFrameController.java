@@ -42,19 +42,7 @@ public class UserAuthorizationFrameController {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
             log.info("Get user with userLogin {}, userPassword {}", userLogin, userPassword);
-            ResponseEntity<Object> authorizationResponse = userClient.userAuthorization(new UserDto(userLogin, userPassword));
-
-            if (authorizationResponse.getStatusCode().is2xxSuccessful()) {
-                user = UserMapper.toUser(authorizationResponse.getHeaders(), userLogin);
-                frame.getFrame().dispose();
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        authorizationResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+            authorization(userLogin, userPassword);
         });
 
         frame.getButtonRegistration().addActionListener(e -> {
@@ -67,6 +55,22 @@ public class UserAuthorizationFrameController {
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+    }
+
+    public void authorization(String userLogin, String userPassword) {
+        ResponseEntity<Object> authorizationResponse = userClient.userAuthorization(new UserDto(userLogin, userPassword));
+
+        if (authorizationResponse.getStatusCode().is2xxSuccessful()) {
+            user = UserMapper.toUser(authorizationResponse.getHeaders(), userLogin);
+            frame.getFrame().dispose();
+        } else {
+            JOptionPane.showMessageDialog(
+                    frame.getFrame(),
+                    authorizationResponse.getStatusCode().toString(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     public void logout() {
