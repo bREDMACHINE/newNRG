@@ -13,13 +13,13 @@ public class EventMapper {
     }
 
     public static EventDto toEventDto(Long equipmentId,
-                                      String timeEvent,
+                                      String dateEvent,
                                       String nameEvent,
                                       String descriptionEvent,
-                                      String documentEvent) {
+                                      byte[] documentEvent) {
         return EventDto.builder()
                 .nameEvent(nameEvent)
-                .timeEvent(timeEvent)
+                .dateEvent(dateEvent)
                 .descriptionEvent(descriptionEvent)
                 .documentEvent(documentEvent)
                 .equipmentId(equipmentId)

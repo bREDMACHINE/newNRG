@@ -15,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Controller
 @Slf4j
@@ -25,6 +28,7 @@ public class AddEventFrameController {
     private AddEventFrame frame;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
+    private Path path = null;
 
     public void initAddEventFrameController(Long equipmentId) {
         frame = new AddEventFrame();
@@ -35,21 +39,41 @@ public class AddEventFrameController {
                 frame = null;
             }
         });
+
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
+        frame.getButtonFile().addActionListener(e -> {
+            int result = frame.getFileChooser().showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION ) {
+                path = Path.of(frame.getFileChooser().getSelectedFile().getAbsolutePath());
+                JOptionPane.showMessageDialog(frame,
+                        "Файл " + frame.getFileChooser().getSelectedFile() + " выбран");
+            }
+        });
+
         frame.getButtonOk().addActionListener(e -> {
-            String timeEvent = frame.getTextEventTime().getText();
+            String dateEvent = frame.getTextEventTime().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
-            String documentEvent = "file";
+            byte[] fileArray = null;
+            try {
+                fileArray = Files.readAllBytes(path);
+            } catch (IOException x) {
+                JOptionPane.showMessageDialog(
+                        frame.getFrame(),
+                        "Файл не загружен",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             log.info("Add event  with createEvent {}, nameEvent {}, description {}, document {}",
-                    timeEvent, nameEvent, descriptionEvent, documentEvent);
+                    dateEvent, nameEvent, descriptionEvent, fileArray);
             ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
                     equipmentId,
-                    timeEvent,
+                    dateEvent,
                     nameEvent,
                     descriptionEvent,
-                    documentEvent),
+                    fileArray),
                     authorizationFrameController.getUser().getUserId()
             );
 

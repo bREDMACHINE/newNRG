@@ -62,7 +62,7 @@ INSERT INTO equipment (operational_name, installation_year, type_id)
 VALUES ('Оборудование1', 1985, 1),
        ('Оборудование2', 2000, 2);
 
-INSERT INTO events (create_event, name_event, description_event, equipment_id, file)
+INSERT INTO events (date_event, name_event, description_event, equipment_id, file)
 VALUES ('2001-02-01 00:00:00', 'ТР', 'описание ТР', 1, 'file'),
        ('2001-03-01 00:00:00', 'Испытания', 'описание испытаний', 1, 'file'),
        ('2003-02-01 00:00:00', 'КР', 'описание КР', 1, 'file'),

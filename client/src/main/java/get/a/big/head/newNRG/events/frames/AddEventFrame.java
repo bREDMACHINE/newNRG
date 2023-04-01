@@ -11,39 +11,37 @@ import java.awt.*;
 public class AddEventFrame extends JFrame {
 
     private JFrame frame;
-    private JLabel labelEventTime;
     private JTextField textEventTime;
-    private JLabel labelEventName;
     private JTextField textEventName;
-    private JLabel labelDescription;
     private JTextField textDescription;
-    private JLabel labelFile;
     private JButton buttonFile;
+    private  JFileChooser fileChooser;
     private JButton buttonOk;
     private JButton buttonCancel;
 
     public AddEventFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 800);
+        frame.setFont(new Font("Arial", Font.PLAIN, 16));
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        frame.setLocationRelativeTo(null);
 
-        JPanel panelLabels = new JPanel();
-        labelEventTime = new JLabel("Дата события");
-        labelEventName = new JLabel("Наименование");
-        labelDescription = new JLabel("Описание");
-        labelFile = new JLabel("Документ");
+        JPanel panelLabels = new JPanel(new GridLayout(0, 4, 12, 5));
         textEventTime = new JTextField(15);
         textEventName = new JTextField(15);
         textDescription = new JTextField(15);
         buttonFile = new JButton("Прикрепить");
+        fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Выберите файл");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-        panelLabels.add(labelEventTime);
+        panelLabels.add(new JLabel("Дата события"));
         panelLabels.add(textEventTime);
-        panelLabels.add(labelEventName);
+        panelLabels.add(new JLabel("Наименование"));
         panelLabels.add(textEventName);
-        panelLabels.add(labelDescription);
+        panelLabels.add(new JLabel("Описание"));
         panelLabels.add(textDescription);
-        panelLabels.add(labelFile);
+        panelLabels.add(new JLabel("Документ"));
         panelLabels.add(buttonFile);
         frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
 
@@ -52,7 +50,9 @@ public class AddEventFrame extends JFrame {
         JPanel panelButtons = new JPanel();
         panelButtons.add(buttonOk);
         panelButtons.add(buttonCancel);
+
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+        frame.pack();
         frame.setVisible(true);
     }
 }

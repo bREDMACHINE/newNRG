@@ -32,14 +32,14 @@ public class EventListFrame extends JFrame {
         panelEvents.add(new JLabel("Удалить событие"));
         for (int i = 0; i < events.size(); i++) {
             EventDto event = events.get(i);
-            JButton openFileButton = new JButton(event.getDocumentEvent());
+            JButton openFileButton = new JButton("Открыть документ");
             openFileButton.setActionCommand(String.valueOf(i));
             openFileButtons.add(openFileButton);
             JButton deleteEventButton = new JButton("Удалить");
             deleteEventButton.setActionCommand(String.valueOf(i));
             deleteButtons.add(deleteEventButton);
 
-            panelEvents.add(new JLabel(event.getTimeEvent()));
+            panelEvents.add(new JLabel(event.getDateEvent()));
             panelEvents.add(new JLabel(event.getNameEvent()));
             panelEvents.add(new JLabel(event.getDescriptionEvent()));
             panelEvents.add(openFileButton);

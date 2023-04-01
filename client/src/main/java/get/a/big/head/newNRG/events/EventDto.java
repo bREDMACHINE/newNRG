@@ -2,17 +2,17 @@ package get.a.big.head.newNRG.events;
 
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
+import lombok.ToString;
 
 @Builder
 @Getter
+@ToString
 public class EventDto {
 
     private Long eventId;
-    private String timeEvent;
+    private String dateEvent;
     private String nameEvent;
     private String descriptionEvent;
     private Long equipmentId;
-    private String documentEvent;
+    private byte[] documentEvent;
 }
