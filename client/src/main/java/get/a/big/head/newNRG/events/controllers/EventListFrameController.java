@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,6 +34,7 @@ public class EventListFrameController {
     private final int maxShow = pages * size - 15;
     private Long equipmentId;
     private int page;
+    List<EventDto> list;
 
     public void initEventListFrameController(EquipmentDto equipment) {
         this.equipmentId = equipment.getEquipmentId();
@@ -61,7 +64,16 @@ public class EventListFrameController {
 
         for (JButton button : frame.getOpenFileButtons()) {
             button.addActionListener(e -> {
-                // открытие файла
+                try {
+                    Runtime.getRuntime().exec(list.get(Integer.parseInt(button.getActionCommand())).getDocumentEvent().toString());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(
+                            frame.getFrame(),
+                            "Ошибка открытия файла",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             });
         }
 
@@ -112,7 +124,7 @@ public class EventListFrameController {
     }
 
     private void openPage() {
-        List<EventDto> list = findAllEvents(equipmentId, from);
+        list = findAllEvents(equipmentId, from);
         if (frame != null) {
             frame.getFrame().dispose();
         }

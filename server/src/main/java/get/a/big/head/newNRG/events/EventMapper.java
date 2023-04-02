@@ -9,7 +9,7 @@ public class EventMapper {
         event.setDateEvent(eventDto.getDateEvent());
         event.setNameEvent(eventDto.getNameEvent());
         event.setDescriptionEvent(eventDto.getDescriptionEvent());
-        event.setDocumentEvent(event.getDocumentEvent());
+        event.setDocumentEvent(eventDto.getDocumentEvent());
         event.setEquipment(equipment);
         return event;
     }

@@ -24,15 +24,15 @@ public class EventListFrame extends JFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelEvents = new JPanel(new GridLayout(0, 4, 12, 5));
+        JPanel panelEvents = new JPanel(new GridLayout(0, 5, 12, 5));
         panelEvents.add(new JLabel("Дата события"));
         panelEvents.add(new JLabel("Событие"));
         panelEvents.add(new JLabel("Описание"));
-        panelEvents.add(new JLabel("Прикрепленный файл"));
+        panelEvents.add(new JLabel("Документы"));
         panelEvents.add(new JLabel("Удалить событие"));
         for (int i = 0; i < events.size(); i++) {
             EventDto event = events.get(i);
-            JButton openFileButton = new JButton("Открыть документ");
+            JButton openFileButton = new JButton("Открыть");
             openFileButton.setActionCommand(String.valueOf(i));
             openFileButtons.add(openFileButton);
             JButton deleteEventButton = new JButton("Удалить");

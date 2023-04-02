@@ -3,6 +3,7 @@ package get.a.big.head.newNRG.events;
 import get.a.big.head.newNRG.equipment.Equipment;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -28,6 +29,7 @@ public class Event {
     @JoinColumn (name="equipment_id")
     private Equipment equipment;
     @Column(name = "file")
+    @Type(type="org.hibernate.type.BinaryType")
     private byte[] documentEvent;
 
     @Override
