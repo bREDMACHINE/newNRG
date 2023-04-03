@@ -3,6 +3,7 @@ package get.a.big.head.newNRG.events;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
@@ -14,5 +15,5 @@ public class EventDto {
     private String nameEvent;
     private String descriptionEvent;
     private Long equipmentId;
-    private byte[] documentEvent;
+    private MultipartFile documentEvent;
 }

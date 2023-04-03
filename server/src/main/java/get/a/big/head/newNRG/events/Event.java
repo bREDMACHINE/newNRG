@@ -1,9 +1,9 @@
 package get.a.big.head.newNRG.events;
 
 import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.files.DataFile;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -28,9 +28,9 @@ public class Event {
     @ManyToOne (optional=false, cascade=CascadeType.ALL)
     @JoinColumn (name="equipment_id")
     private Equipment equipment;
-    @Column(name = "file")
-    @Type(type="org.hibernate.type.BinaryType")
-    private byte[] documentEvent;
+    @ManyToOne
+    @JoinColumn(name = "file_id")
+    private DataFile documentEvent;
 
     @Override
     public boolean equals(Object o) {

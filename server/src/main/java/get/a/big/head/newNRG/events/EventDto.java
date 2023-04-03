@@ -14,5 +14,5 @@ public class EventDto {
     private String nameEvent;
     private String descriptionEvent;
     private Long equipmentId;
-    private byte[] documentEvent;
+    private Long documentEvent;
 }
