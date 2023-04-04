@@ -61,7 +61,7 @@ public class AddEventFrameController {
 
             log.info("Add event  with dateEvent {}, nameEvent {}, description {}, document {}",
                     dateEvent, nameEvent, descriptionEvent, multipartFile);
-            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toAddEventDto(
                     equipmentId,
                     dateEvent,
                     nameEvent,

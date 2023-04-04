@@ -13,12 +13,12 @@ public class EventMapper {
         return gson.fromJson(object.toString(), EventDto.class);
     }
 
-    public static EventDto toEventDto(Long equipmentId,
+    public static AddEventDto toAddEventDto(Long equipmentId,
                                       String dateEvent,
                                       String nameEvent,
                                       String descriptionEvent,
                                       MultipartFile documentEvent) {
-        return EventDto.builder()
+        return AddEventDto.builder()
                 .nameEvent(nameEvent)
                 .dateEvent(dateEvent)
                 .descriptionEvent(descriptionEvent)

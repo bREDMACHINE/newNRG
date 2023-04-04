@@ -5,18 +5,23 @@ import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.events.frames.EventListFrame;
+import get.a.big.head.newNRG.files.FileClient;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.OutputStream;
 import java.util.List;
 
 @Controller
@@ -27,6 +32,7 @@ public class EventListFrameController {
     private EventListFrame frame;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
+    private final FileClient fileClient;
     private final int size = 15;
     private int maxSize;
     private int from;
@@ -64,15 +70,42 @@ public class EventListFrameController {
 
         for (JButton button : frame.getOpenFileButtons()) {
             button.addActionListener(e -> {
-                try {
-                    Runtime.getRuntime().exec(list.get(Integer.parseInt(button.getActionCommand())).getDocumentEvent().toString());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(
-                            frame.getFrame(),
-                            "Ошибка открытия файла",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
+                EventDto eventDto = list.get(Integer.parseInt(button.getActionCommand()));
+                MultipartFile multipartFile = fileClient.getFile(
+                        frame.getFrame(),
+                        eventDto.getDocumentId(),
+                        authorizationFrameController.getUser().getUserId()
+                );
+                if (Desktop.isDesktopSupported() && multipartFile != null) {
+                    String ext = "";
+                    String contentType = multipartFile.getContentType();
+                    if (contentType.equalsIgnoreCase("image/gif")) {
+                        ext = ".gif";
+                    } else if (contentType.equalsIgnoreCase("image/jpeg")) {
+                        ext = ".jpg";
+                    }else if (contentType.equalsIgnoreCase("image/png")) {
+                        ext = ".png";
+                    } else if (contentType.equalsIgnoreCase("image/bmp")) {
+                        ext = ".bmp";
+                    } else if (contentType.equalsIgnoreCase("application/pdf")
+                            || (contentType.equalsIgnoreCase("application/x-pdf"))) {
+                        ext = ".pdf";
+                    }
+                    try {
+
+                        File file = new File(multipartFile.getName() + ext);
+                        try (OutputStream os = new FileOutputStream(file)) {
+                            os.write(multipartFile.getBytes());
+                        }
+                        Desktop.getDesktop().open(file);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(
+                                frame.getFrame(),
+                                "Ошибка открытия файла",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
                 }
             });
         }
