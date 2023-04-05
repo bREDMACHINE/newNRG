@@ -2,7 +2,9 @@ package get.a.big.head.newNRG.events.controllers;
 
 import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventMapper;
-import get.a.big.head.newNRG.files.FileToMultipart;
+import get.a.big.head.newNRG.files.DataFile;
+import get.a.big.head.newNRG.files.FileClient;
+import get.a.big.head.newNRG.files.FileMapper;
 import get.a.big.head.newNRG.events.frames.AddEventFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -11,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -26,6 +27,7 @@ public class AddEventFrameController {
 
     private AddEventFrame frame;
     private final EventClient eventClient;
+    private final FileClient fileClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
@@ -54,19 +56,20 @@ public class AddEventFrameController {
             String dateEvent = frame.getTextEventTime().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
-            MultipartFile multipartFile = null;
+            DataFile dataFile = null;
             if (file != null) {
-                multipartFile = new FileToMultipart(file);
+                dataFile = FileMapper.toDataFile(file);
             }
 
             log.info("Add event  with dateEvent {}, nameEvent {}, description {}, document {}",
-                    dateEvent, nameEvent, descriptionEvent, multipartFile);
-            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toAddEventDto(
+                    dateEvent, nameEvent, descriptionEvent, dataFile);
+            Long fileId = fileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
                     equipmentId,
                     dateEvent,
                     nameEvent,
                     descriptionEvent,
-                    multipartFile),
+                    fileId),
                     authorizationFrameController.getUser().getUserId()
             );
 

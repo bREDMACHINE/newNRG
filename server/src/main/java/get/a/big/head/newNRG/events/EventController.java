@@ -4,7 +4,6 @@ import get.a.big.head.newNRG.events.services.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +16,9 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping("/moderator/equipment/event")
-    public ResponseEntity<?> addEvent(@RequestBody AddEventDto addEventDto) {
-        log.info("Получен Post запрос к эндпоинту /moderator/equipment/event, event={}", addEventDto);
-        ResponseEntity<?> response = eventService.addEvent(addEventDto);
+    public EventDto addEvent(@RequestBody EventDto eventDto) {
+        log.info("Получен Post запрос к эндпоинту /moderator/equipment/event, event={}", eventDto);
+        EventDto response = eventService.addEvent(eventDto);
         log.info("Результат запроса {}", response);
         return response;
     }

@@ -26,7 +26,7 @@ public class EventClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> addEvent(AddEventDto event, String userId) {
+    public ResponseEntity<Object> addEvent(EventDto event, String userId) {
         return post("/moderator/equipment/event",  userId, event);
     }
 

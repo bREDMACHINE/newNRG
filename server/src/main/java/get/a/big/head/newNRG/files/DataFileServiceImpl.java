@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -15,8 +14,13 @@ public class DataFileServiceImpl implements DataFileService {
     private final DataFileRepository dataFileRepository;
 
     @Override
-    public MultipartFile getFile(Long fileId) {
-        return new DataFileToMultipart(dataFileRepository.findById(fileId)
+    public DataFileDto getFile(Long fileId) {
+        return DataFileMapper.DataFileToDto(dataFileRepository.findById(fileId)
                 .orElseThrow(() -> new NotFoundException("Указанный fileId не существует")));
+    }
+
+    @Override
+    public DataFileDto addFile(DataFileDto dataFile) {
+        return DataFileMapper.toDataFileDto(dataFileRepository.save(DataFileMapper.toDataFile(dataFile)));
     }
 }

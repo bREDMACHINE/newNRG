@@ -5,11 +5,11 @@ import get.a.big.head.newNRG.files.DataFile;
 
 public class EventMapper {
 
-    public static Event toEvent(AddEventDto addEventDto, Equipment equipment, DataFile dataFile) {
+    public static Event toEvent(EventDto eventDto, Equipment equipment, DataFile dataFile) {
         Event event = new Event();
-        event.setDateEvent(addEventDto.getDateEvent());
-        event.setNameEvent(addEventDto.getNameEvent());
-        event.setDescriptionEvent(addEventDto.getDescriptionEvent());
+        event.setDateEvent(eventDto.getDateEvent());
+        event.setNameEvent(eventDto.getNameEvent());
+        event.setDescriptionEvent(eventDto.getDescriptionEvent());
         event.setDocumentEvent(dataFile);
         event.setEquipment(equipment);
         return event;
@@ -21,7 +21,7 @@ public class EventMapper {
                 .dateEvent(event.getDateEvent())
                 .nameEvent(event.getNameEvent())
                 .descriptionEvent(event.getDescriptionEvent())
-                .documentEvent(event.getDocumentEvent().getFileId())
+                .fileId(event.getDocumentEvent().getFileId())
                 .equipmentId(event.getEquipment().getEquipmentId())
                 .build();
     }

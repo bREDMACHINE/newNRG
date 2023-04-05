@@ -29,14 +29,12 @@ public class EventServiceImpl implements EventService {
     private final DataFileRepository dataFileRepository;
 
     @Override
-    public ResponseEntity<?> addEvent(AddEventDto addEventDto) {
-        Equipment equipment = equipmentRepository.findById(addEventDto.getEquipmentId())
+    public EventDto addEvent(EventDto eventDto) {
+        Equipment equipment = equipmentRepository.findById(eventDto.getEquipmentId())
                 .orElseThrow(() -> new NotFoundException("Указанный equipmentId не существует"));
-        DataFile dataFile = dataFileRepository.save(DataFileMapper.toDataFile(addEventDto));
-        Event event = eventRepository.save(EventMapper.toEvent(addEventDto, equipment, dataFile));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("EventName", event.getNameEvent());
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+        DataFile dataFile = dataFileRepository.findById(eventDto.getFileId())
+                .orElseThrow(() -> new NotFoundException("Указанный fileId не существует"));
+        return EventMapper.toEventDto(eventRepository.save(EventMapper.toEvent(eventDto, equipment, dataFile)));
     }
 
     @Override

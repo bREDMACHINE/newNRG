@@ -5,6 +5,7 @@ import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.events.frames.EventListFrame;
+import get.a.big.head.newNRG.files.DataFile;
 import get.a.big.head.newNRG.files.FileClient;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,14 +71,14 @@ public class EventListFrameController {
         for (JButton button : frame.getOpenFileButtons()) {
             button.addActionListener(e -> {
                 EventDto eventDto = list.get(Integer.parseInt(button.getActionCommand()));
-                MultipartFile multipartFile = fileClient.getFile(
+                DataFile dataFile = fileClient.getFile(
                         frame.getFrame(),
-                        eventDto.getDocumentId(),
+                        eventDto.getFileId(),
                         authorizationFrameController.getUser().getUserId()
                 );
-                if (Desktop.isDesktopSupported() && multipartFile != null) {
+                if (Desktop.isDesktopSupported() && dataFile != null) {
                     String ext = "";
-                    String contentType = multipartFile.getContentType();
+                    String contentType = dataFile.getContentType();
                     if (contentType.equalsIgnoreCase("image/gif")) {
                         ext = ".gif";
                     } else if (contentType.equalsIgnoreCase("image/jpeg")) {
@@ -93,9 +93,9 @@ public class EventListFrameController {
                     }
                     try {
 
-                        File file = new File(multipartFile.getName() + ext);
+                        File file = new File(dataFile.getName() + ext);
                         try (OutputStream os = new FileOutputStream(file)) {
-                            os.write(multipartFile.getBytes());
+                            os.write(dataFile.getContent());
                         }
                         Desktop.getDesktop().open(file);
                     } catch (IOException ex) {
