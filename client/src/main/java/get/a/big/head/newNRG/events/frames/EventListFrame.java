@@ -39,7 +39,7 @@ public class EventListFrame extends JFrame {
             deleteEventButton.setActionCommand(String.valueOf(i));
             deleteButtons.add(deleteEventButton);
 
-            panelEvents.add(new JLabel(event.getDateEvent()));
+            panelEvents.add(new JLabel(event.getDateEvent().toString()));
             panelEvents.add(new JLabel(event.getNameEvent()));
             panelEvents.add(new JLabel(event.getDescriptionEvent()));
             panelEvents.add(openFileButton);

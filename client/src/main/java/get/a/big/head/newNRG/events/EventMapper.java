@@ -2,8 +2,8 @@ package get.a.big.head.newNRG.events;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class EventMapper {
@@ -14,7 +14,7 @@ public class EventMapper {
     }
 
     public static EventDto toEventDto(Long equipmentId,
-                                      String dateEvent,
+                                      LocalDate dateEvent,
                                       String nameEvent,
                                       String descriptionEvent,
                                       Long fileId) {

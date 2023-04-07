@@ -23,10 +23,10 @@ public class FileMapper {
         } catch (IOException e) {
             throw new RuntimeException("Файл не загружен", e);
         }
-
+        String type = contentType.replace("/", "&");
         return DataFile.builder()
                 .name(file.getName())
-                .contentType(contentType)
+                .contentType(type)
                 .isEmpty(file.length() == 0)
                 .size(file.length())
                 .content(bytes)

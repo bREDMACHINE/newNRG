@@ -1,6 +1,7 @@
 package get.a.big.head.newNRG.events.controllers;
 
 import get.a.big.head.newNRG.events.EventClient;
+import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.files.DataFile;
 import get.a.big.head.newNRG.files.FileClient;
@@ -18,6 +19,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.time.LocalDate;
 
 @Controller
 @Slf4j
@@ -53,7 +55,7 @@ public class AddEventFrameController {
         });
 
         frame.getButtonOk().addActionListener(e -> {
-            String dateEvent = frame.getTextEventTime().getText();
+            LocalDate dateEvent = LocalDate.parse(frame.getTextEventDate().getText()); // , DateTimeFormatter.ofPattern("yyyy-MM-dd")
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
             DataFile dataFile = null;
@@ -73,10 +75,11 @@ public class AddEventFrameController {
                     authorizationFrameController.getUser().getUserId()
             );
 
-            if (addEventResponse.getStatusCode().is2xxSuccessful()) {
+            if (addEventResponse.getStatusCode().is2xxSuccessful() && addEventResponse.getBody() != null) {
                 frame.getFrame().dispose();
+                EventDto eventDto = EventMapper.toEventDto(addEventResponse.getBody());
                 JOptionPane.showMessageDialog(frame.getFrame(),
-                         "Событие" + addEventResponse.getHeaders().getFirst("EventName") + " успешно добавлено");
+                         "Событие " + eventDto.getNameEvent() + " успешно добавлено");
             } else {
                 JOptionPane.showMessageDialog(
                         frame.getFrame(),
