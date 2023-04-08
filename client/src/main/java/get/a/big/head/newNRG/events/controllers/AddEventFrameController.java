@@ -19,7 +19,6 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.time.LocalDate;
 
 @Controller
 @Slf4j
@@ -55,7 +54,7 @@ public class AddEventFrameController {
         });
 
         frame.getButtonOk().addActionListener(e -> {
-            LocalDate dateEvent = LocalDate.parse(frame.getTextEventDate().getText()); // , DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            String dateEvent = frame.getTextEventDate().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
             DataFile dataFile = null;

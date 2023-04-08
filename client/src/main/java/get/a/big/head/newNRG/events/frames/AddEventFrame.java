@@ -8,6 +8,9 @@ import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 
+import static javax.swing.GroupLayout.Alignment.*;
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+
 @Getter
 @Setter
 public class AddEventFrame extends JFrame {
@@ -15,7 +18,7 @@ public class AddEventFrame extends JFrame {
     private JFrame frame;
     private JFormattedTextField textEventDate;
     private JTextField textEventName;
-    private JTextField textDescription;
+    private JTextArea textDescription;
     private JButton buttonFile;
     private  JFileChooser fileChooser;
     private JButton buttonOk;
@@ -28,36 +31,68 @@ public class AddEventFrame extends JFrame {
         frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         frame.setLocationRelativeTo(null);
 
-        JPanel panelLabels = new JPanel(new GridLayout(0, 4, 12, 5));
-        DateFormatter dateFormatter = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd"));
-        dateFormatter.setAllowsInvalid(false);
+        JPanel panel = new JPanel();
+        DateFormatter dateFormatter = new DateFormatter(new SimpleDateFormat("yyyy.MM.dd"));
+        dateFormatter.setAllowsInvalid(true);
         dateFormatter.setOverwriteMode(true);
+        JLabel labelDate = new JLabel("Дата события");
         textEventDate = new JFormattedTextField(dateFormatter);
         textEventDate.setColumns(10);
+        JLabel labelName = new JLabel("Наименование");
         textEventName = new JTextField(15);
-        textDescription = new JTextField(15);
+        JLabel labelDescription = new JLabel("Описание");
+        textDescription = new JTextArea(30,5);
+        JLabel labelFile = new JLabel("Документ");
         buttonFile = new JButton("Прикрепить");
         fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Выберите файл");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
-        panelLabels.add(new JLabel("Дата события"));
-        panelLabels.add(textEventDate);
-        panelLabels.add(new JLabel("Наименование"));
-        panelLabels.add(textEventName);
-        panelLabels.add(new JLabel("Описание"));
-        panelLabels.add(textDescription);
-        panelLabels.add(new JLabel("Документ"));
-        panelLabels.add(buttonFile);
-        frame.getContentPane().add(BorderLayout.CENTER, panelLabels);
-
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
-        JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonOk);
-        panelButtons.add(buttonCancel);
 
-        frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(LEADING)
+                        .addComponent(labelDate)
+                        .addComponent(labelName)
+                        .addComponent(labelDescription)
+                        .addComponent(labelFile))
+                .addGroup(layout.createParallelGroup(TRAILING, false)
+                        .addComponent(textEventDate)
+                        .addComponent(textEventName)
+                        .addComponent(textDescription)
+                        .addComponent(buttonFile)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonOk)
+                                .addComponent(buttonCancel)))
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(labelDate)
+                        .addComponent(textEventDate))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(10)
+                        .addComponent(labelName)
+                        .addComponent(textEventName))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(10)
+                        .addComponent(labelDescription)
+                        .addComponent(textDescription))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(10)
+                        .addComponent(labelFile)
+                        .addComponent(buttonFile))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(buttonOk)
+                        .addComponent(buttonCancel))
+        );
+
+        frame.getContentPane().add(panel);
         frame.pack();
         frame.setVisible(true);
     }

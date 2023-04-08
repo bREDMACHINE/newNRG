@@ -4,10 +4,8 @@ import get.a.big.head.newNRG.equipment.Equipment;
 import get.a.big.head.newNRG.files.DataFile;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -21,9 +19,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long eventId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_event")
-    private LocalDate dateEvent;
+    private String dateEvent;
     @Column(name = "name_event")
     private String nameEvent;
     @Column(name = "description_event")
