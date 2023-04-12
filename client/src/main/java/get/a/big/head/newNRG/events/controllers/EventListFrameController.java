@@ -5,8 +5,8 @@ import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.events.frames.EventListFrame;
-import get.a.big.head.newNRG.files.DataFile;
-import get.a.big.head.newNRG.files.FileClient;
+import get.a.big.head.newNRG.files.DataFileDto;
+import get.a.big.head.newNRG.files.DataFileClient;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class EventListFrameController {
     private EventListFrame frame;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
-    private final FileClient fileClient;
+    private final DataFileClient dataFileClient;
     private final int size = 15;
     private int maxSize;
     private int from;
@@ -71,29 +71,15 @@ public class EventListFrameController {
         for (JButton button : frame.getOpenFileButtons()) {
             button.addActionListener(e -> {
                 EventDto eventDto = list.get(Integer.parseInt(button.getActionCommand()));
-                DataFile dataFile = fileClient.getFile(
+                DataFileDto dataFile = dataFileClient.getFile(
                         frame.getFrame(),
                         eventDto.getFileId(),
                         authorizationFrameController.getUser().getUserId()
                 );
                 if (Desktop.isDesktopSupported() && dataFile != null) {
-                    String ext = "";
-                    String contentType = dataFile.getContentType();
-                    if (contentType.equalsIgnoreCase("image/gif")) {
-                        ext = ".gif";
-                    } else if (contentType.equalsIgnoreCase("image/jpeg")) {
-                        ext = ".jpg";
-                    }else if (contentType.equalsIgnoreCase("image/png")) {
-                        ext = ".png";
-                    } else if (contentType.equalsIgnoreCase("image/bmp")) {
-                        ext = ".bmp";
-                    } else if (contentType.equalsIgnoreCase("application/pdf")
-                            || (contentType.equalsIgnoreCase("application/x-pdf"))) {
-                        ext = ".pdf";
-                    }
                     try {
 
-                        File file = new File(dataFile.getName() + ext);
+                        File file = new File(dataFile.getName());
                         try (OutputStream os = new FileOutputStream(file)) {
                             os.write(dataFile.getContent());
                         }

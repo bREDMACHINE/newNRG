@@ -3,9 +3,9 @@ package get.a.big.head.newNRG.events.controllers;
 import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
-import get.a.big.head.newNRG.files.DataFile;
-import get.a.big.head.newNRG.files.FileClient;
-import get.a.big.head.newNRG.files.FileMapper;
+import get.a.big.head.newNRG.files.DataFileDto;
+import get.a.big.head.newNRG.files.DataFileClient;
+import get.a.big.head.newNRG.files.DataFileMapper;
 import get.a.big.head.newNRG.events.frames.AddEventFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class AddEventFrameController {
 
     private AddEventFrame frame;
     private final EventClient eventClient;
-    private final FileClient fileClient;
+    private final DataFileClient dataFileClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
@@ -57,14 +57,14 @@ public class AddEventFrameController {
             String dateEvent = frame.getTextEventDate().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
-            DataFile dataFile = null;
+            DataFileDto dataFile = null;
             if (file != null) {
-                dataFile = FileMapper.toDataFile(file);
+                dataFile = DataFileMapper.toDataFileDto(file);
             }
 
             log.info("Add event  with dateEvent {}, nameEvent {}, description {}, document {}",
                     dateEvent, nameEvent, descriptionEvent, dataFile);
-            Long fileId = fileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
             ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
                     equipmentId,
                     dateEvent,

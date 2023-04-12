@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class DataFile {
+public class DataFileFullDto {
 
     private Long fileId;
     private String name;
     private String contentType;
     private Boolean isEmpty;
     private Long size;
-    private byte[] content;
+    private String content;
 }

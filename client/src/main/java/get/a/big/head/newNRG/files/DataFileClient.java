@@ -15,12 +15,12 @@ import java.awt.*;
 
 @Service
 @Slf4j
-public class FileClient extends BaseClient {
+public class DataFileClient extends BaseClient {
 
     private static final String API_PREFIX = "";
 
     @Autowired
-    public FileClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public DataFileClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
@@ -29,33 +29,26 @@ public class FileClient extends BaseClient {
         );
     }
 
-    public DataFile addFile(Frame frame, DataFile dataFile, String userId) {
+    public DataFileDto addFile(Frame frame, DataFileDto dataFile, String userId) {
         log.info("Add file {}",  dataFile);
-        ResponseEntity<Object> fileResponse = post("/user/file/", userId, dataFile);
-        if (fileResponse.getStatusCode().is2xxSuccessful() && fileResponse.getBody() != null) {
-            log.info("Result {}",  fileResponse.getBody().toString());
-            return FileMapper.toDataFile(fileResponse.getBody());
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame,
-                    fileResponse.getStatusCode().toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-        return null;
+        ResponseEntity<Object> fileAddResponse = post("/user/file/", userId, dataFile);
+        return response(fileAddResponse, frame);
     }
 
-    public DataFile getFile(Frame frame, Long fileId, String userId) {
+    public DataFileDto getFile(Frame frame, Long fileId, String userId) {
         log.info("Get file {}",  fileId);
         ResponseEntity<Object> getFileResponse = get("/user/file/" + fileId,  userId);
-        if (getFileResponse.getStatusCode().is2xxSuccessful() && getFileResponse.getBody() != null) {
-            log.info("Result {}",  getFileResponse.getBody().toString());
-            return FileMapper.toDataFile(getFileResponse.getBody());
+        return response(getFileResponse, frame);
+    }
+
+    private DataFileDto response(ResponseEntity<Object> response, Frame frame) {
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            log.info("Result {}",  response.getBody().toString());
+            return DataFileMapper.toDataFileDto(response.getBody());
         } else {
             JOptionPane.showMessageDialog(
                     frame,
-                    getFileResponse.getStatusCode().toString(),
+                    response.getStatusCode().toString(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );

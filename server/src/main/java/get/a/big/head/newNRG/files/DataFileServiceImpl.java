@@ -14,8 +14,8 @@ public class DataFileServiceImpl implements DataFileService {
     private final DataFileRepository dataFileRepository;
 
     @Override
-    public DataFileDto getFile(Long fileId) {
-        return DataFileMapper.DataFileToDto(dataFileRepository.findById(fileId)
+    public DataFileFullDto getFile(Long fileId) {
+        return DataFileMapper.toDataFileFullDto(dataFileRepository.findById(fileId)
                 .orElseThrow(() -> new NotFoundException("Указанный fileId не существует")));
     }
 

@@ -1,5 +1,7 @@
 package get.a.big.head.newNRG.files;
 
+import java.util.Arrays;
+
 public class DataFileMapper {
 
     public static DataFile toDataFile(DataFileDto dataFileDto) {
@@ -11,14 +13,14 @@ public class DataFileMapper {
         return dataFile;
     }
 
-    public static DataFileDto DataFileToDto(DataFile dataFile) {
-        return DataFileDto.builder()
+    public static DataFileFullDto toDataFileFullDto(DataFile dataFile) {
+        return DataFileFullDto.builder()
                 .fileId(dataFile.getFileId())
                 .name(dataFile.getName())
                 .contentType(dataFile.getType())
                 .isEmpty(dataFile.getSize() == 0)
                 .size(dataFile.getSize())
-                .content(dataFile.getContent())
+                .content(Arrays.toString(dataFile.getContent()))
                 .build();
     }
 
