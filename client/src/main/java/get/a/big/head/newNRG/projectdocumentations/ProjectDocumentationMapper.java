@@ -7,21 +7,20 @@ import java.util.List;
 
 public class ProjectDocumentationMapper {
 
-    public static ProjectDocumentationDto toProjectDto(String projectName, String projectCode, String projectFile) {
+    public static ProjectDocumentationDto toProjectDto(String projectName, String projectCode, Long equipmentId, Long fileId) {
         return ProjectDocumentationDto.builder()
                 .nameProjectDocumentation(projectName)
                 .codeProjectDocumentation(projectCode)
-                .projectDocumentation(projectFile)
+                .equipmentId(equipmentId)
+                .fileId(fileId)
                 .build();
     }
 
     public static ProjectDocumentationDto toProjectDto(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), ProjectDocumentationDto.class);
+        return new Gson().fromJson(object.toString(), ProjectDocumentationDto.class);
     }
 
     public static List<ProjectDocumentationDto> toProjectDtos(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), new TypeToken<List<ProjectDocumentationDto>>(){}.getType());
+        return new Gson().fromJson(object.toString(), new TypeToken<List<ProjectDocumentationDto>>(){}.getType());
     }
 }

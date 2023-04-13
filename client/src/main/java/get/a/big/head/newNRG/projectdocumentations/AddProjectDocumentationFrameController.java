@@ -1,18 +1,22 @@
 package get.a.big.head.newNRG.projectdocumentations;
 
+import get.a.big.head.newNRG.files.DataFileClient;
+import get.a.big.head.newNRG.files.DataFileDto;
+import get.a.big.head.newNRG.files.DataFileMapper;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
-@Controller
+@Component
 @Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -21,8 +25,10 @@ public class AddProjectDocumentationFrameController {
     private AddProjectDocumentationFrame frame;
     private final ProjectDocumentationClient projectDocumentationClient;
     private final UserAuthorizationFrameController authorizationFrameController;
+    private final DataFileClient dataFileClient;
+    private File file = null;
 
-    public void initAddProjectDocumentationFrameController() {
+    public void initAddProjectDocumentationFrameController(Long equipmentId) {
         frame = new AddProjectDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -31,15 +37,28 @@ public class AddProjectDocumentationFrameController {
             }
         });
 
+        frame.getButtonFile().addActionListener(e -> {
+            int result = frame.getFileChooser().showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION ) {
+                file = frame.getFileChooser().getSelectedFile();
+                JOptionPane.showMessageDialog(frame,
+                        "Файл " + frame.getFileChooser().getSelectedFile() + " выбран");
+            }
+        });
+
         frame.getButtonOk().addActionListener(e -> {
             String projectName = frame.getTextNameProject().getText();
             String projectCode = frame.getTextCodeProject().getText();
-            String projectFile = "Считанный файл";
-            log.info("Add project  with projectName {}, projectCode {}, project {}",
-                    projectName, projectCode, projectFile);
+            DataFileDto dataFile = null;
+            if (file != null) {
+                dataFile = DataFileMapper.toDataFileDto(file);
+            }
 
+            log.info("Add project  with projectName {}, projectCode {}, project {}",
+                    projectName, projectCode, dataFile);
+            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
             ResponseEntity<Object> addProjectResponse = projectDocumentationClient.addProject(
-                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, projectFile),
+                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipmentId, fileId),
                     authorizationFrameController.getUser().getUserId()
             );
             if (addProjectResponse.getStatusCode().is2xxSuccessful() && addProjectResponse.getBody() != null) {

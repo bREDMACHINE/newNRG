@@ -10,5 +10,6 @@ public class ProjectDocumentationDto {
     private Long projectId;
     private String nameProjectDocumentation;
     private String codeProjectDocumentation;
-    private String projectDocumentation;
+    private Long equipmentId;
+    private Long fileId;
 }

@@ -66,7 +66,7 @@ public class EquipmentFrameController {
 
         frame.getButtonAddProject().addActionListener(e -> {
             if (addProjectDocumentationFrameController.getFrame() == null) {
-                addProjectDocumentationFrameController.initAddProjectDocumentationFrameController();
+                addProjectDocumentationFrameController.initAddProjectDocumentationFrameController(equipment.getEquipmentId());
             } else {
                 addProjectDocumentationFrameController.getFrame().getFrame().toFront();
                 addProjectDocumentationFrameController.getFrame().getFrame().requestFocus();

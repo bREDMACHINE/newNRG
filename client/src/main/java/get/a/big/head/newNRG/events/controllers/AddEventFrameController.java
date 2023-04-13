@@ -13,14 +13,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-@Controller
+@Component
 @Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -65,12 +65,8 @@ public class AddEventFrameController {
             log.info("Add event  with dateEvent {}, nameEvent {}, description {}, document {}",
                     dateEvent, nameEvent, descriptionEvent, dataFile);
             Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
-            ResponseEntity<Object> addEventResponse = eventClient.addEvent(EventMapper.toEventDto(
-                    equipmentId,
-                    dateEvent,
-                    nameEvent,
-                    descriptionEvent,
-                    fileId),
+            ResponseEntity<Object> addEventResponse = eventClient.addEvent(
+                    EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, fileId),
                     authorizationFrameController.getUser().getUserId()
             );
 
