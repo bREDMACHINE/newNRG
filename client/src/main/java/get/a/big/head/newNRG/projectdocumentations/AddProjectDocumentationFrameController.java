@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -57,8 +59,10 @@ public class AddProjectDocumentationFrameController {
             log.info("Add project  with projectName {}, projectCode {}, project {}",
                     projectName, projectCode, dataFile);
             Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            List<Long> equipment = new ArrayList<>();
+            equipment.add(equipmentId);
             ResponseEntity<Object> addProjectResponse = projectDocumentationClient.addProject(
-                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipmentId, fileId),
+                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, fileId),
                     authorizationFrameController.getUser().getUserId()
             );
             if (addProjectResponse.getStatusCode().is2xxSuccessful() && addProjectResponse.getBody() != null) {

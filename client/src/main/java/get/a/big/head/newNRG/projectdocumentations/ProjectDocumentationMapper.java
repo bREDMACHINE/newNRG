@@ -7,11 +7,11 @@ import java.util.List;
 
 public class ProjectDocumentationMapper {
 
-    public static ProjectDocumentationDto toProjectDto(String projectName, String projectCode, Long equipmentId, Long fileId) {
+    public static ProjectDocumentationDto toProjectDto(String projectName, String projectCode, List<Long> equipment, Long fileId) {
         return ProjectDocumentationDto.builder()
                 .nameProjectDocumentation(projectName)
                 .codeProjectDocumentation(projectCode)
-                .equipmentId(equipmentId)
+                .equipment(equipment)
                 .fileId(fileId)
                 .build();
     }

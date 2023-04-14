@@ -7,11 +7,12 @@ import java.util.List;
 
 public class FactoryDocumentationMapper {
 
-    public static FactoryDocumentationDto toDocumentDto(String documentName, String documentCode, String documentFile) {
+    public static FactoryDocumentationDto toDocumentDto(String documentName, String documentCode, List<Long> types, Long fileId) {
         return FactoryDocumentationDto.builder()
                 .nameFactoryDocumentation(documentName)
                 .codeFactoryDocumentation(documentCode)
-                .factoryDocumentation(documentFile)
+                .types(types)
+                .fileId(fileId)
                 .build();
     }
 

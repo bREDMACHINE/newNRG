@@ -1,15 +1,15 @@
 INSERT INTO users (email, user_password, user_role, status)
 VALUES ('admin@admin.ru', '$2a$10$vzsa0LPrAMZb8rg..fssiuaQ2cKjW7BPOTDU3lQ0T8eiu6GAlqxUy', 'ADMIN', 'ACCEPTED');
 
-INSERT INTO documents (document_name, document_code, file)
-VALUES ('Руководство по эксплуатации1', '1РЭ', 'file1'),
-       ('Руководство по эксплуатации2', '2РЭ', 'file2'),
-       ('Руководство по эксплуатации3', '3РЭ', 'file3');
+INSERT INTO documents (document_name, document_code, file_id)
+VALUES ('Руководство по эксплуатации1', '1РЭ', null),
+       ('Руководство по эксплуатации2', '2РЭ', null),
+       ('Руководство по эксплуатации3', '3РЭ', null);
 
-INSERT INTO projects (project_name, project_code, file)
-VALUES ('ПРОЕКТ1', 'ШИФР ПРОЕКТА1', 'file1'),
-       ('ПРОЕКТ2', 'ШИФР ПРОЕКТА2', 'file2'),
-       ('ПРОЕКТ3', 'ШИФР ПРОЕКТА3', 'file3');
+INSERT INTO projects (project_name, project_code, file_id)
+VALUES ('ПРОЕКТ1', 'ШИФР ПРОЕКТА1', null),
+       ('ПРОЕКТ2', 'ШИФР ПРОЕКТА2', null),
+       ('ПРОЕКТ3', 'ШИФР ПРОЕКТА3', null);
 
 INSERT INTO factories (factory_name)
 VALUES ('завод1'),
@@ -63,28 +63,28 @@ VALUES ('Оборудование1', 1985, 1),
        ('Оборудование2', 2000, 2);
 
 INSERT INTO events (date_event, name_event, description_event, equipment_id, file_id)
-VALUES ('2001-02-01', 'TR', 'TR', 1, 1),
-       ('2001-03-01', 'Test', 'Test', 1, 2),
-       ('2003-02-01', 'KR', 'KR', 1, 3),
-       ('2003-03-01', 'Test', 'Test', 1, 4),
-       ('2006-02-01', 'TR', 'TR', 1, 5),
-       ('2006-03-01', 'Test', 'Test', 1, 6),
-       ('2008-02-01', 'KR', 'KR', 1, 7),
-       ('2008-03-01', 'Test', 'Test', 1, 7),
-       ('2011-02-01', 'TR', 'TR', 1, 8),
-       ('2011-03-01', 'Test', 'Test', 1, 9),
-       ('2013-02-01', 'KR', 'KR', 1, 10),
-       ('2013-03-01', 'Test', 'Test', 1, 11),
-       ('2016-02-01', 'TR', 'TR', 1, 12),
-       ('2016-03-01', 'Test', 'Test', 1, 13),
-       ('2018-02-01', 'KR', 'KR', 1, 14),
-       ('2018-03-01', 'Test', 'Test', 1, 15),
-       ('2021-02-01', 'TR', 'TR', 1, 16),
-       ('2021-03-01', 'Test', 'Test', 1, 17),
-       ('2023-02-01', 'KR', 'KR', 1, 18),
-       ('2023-03-01', 'Test', 'Test', 1, 19),
-       ('2023-04-01', 'TR', 'TR', 2, 20),
-       ('2023-05-01', 'Test', 'Test', 2, 21);
+VALUES ('2001-02-01', 'TR', 'TR', 1, null),
+       ('2001-03-01', 'Test', 'Test', 1, null),
+       ('2003-02-01', 'KR', 'KR', 1, null),
+       ('2003-03-01', 'Test', 'Test', 1, null),
+       ('2006-02-01', 'TR', 'TR', 1, null),
+       ('2006-03-01', 'Test', 'Test', 1, null),
+       ('2008-02-01', 'KR', 'KR', 1, null),
+       ('2008-03-01', 'Test', 'Test', 1, null),
+       ('2011-02-01', 'TR', 'TR', 1, null),
+       ('2011-03-01', 'Test', 'Test', 1, null),
+       ('2013-02-01', 'KR', 'KR', 1, null),
+       ('2013-03-01', 'Test', 'Test', 1, null),
+       ('2016-02-01', 'TR', 'TR', 1, null),
+       ('2016-03-01', 'Test', 'Test', 1, null),
+       ('2018-02-01', 'KR', 'KR', 1, null),
+       ('2018-03-01', 'Test', 'Test', 1, null),
+       ('2021-02-01', 'TR', 'TR', 1, null),
+       ('2021-03-01', 'Test', 'Test', 1, null),
+       ('2023-02-01', 'KR', 'KR', 1, null),
+       ('2023-03-01', 'Test', 'Test', 1, null),
+       ('2023-04-01', 'TR', 'TR', 2, null),
+       ('2023-05-01', 'Test', 'Test', 2, null);
 
 INSERT INTO equipment_projects (equipment_id, project_id)
 VALUES (1, 1),

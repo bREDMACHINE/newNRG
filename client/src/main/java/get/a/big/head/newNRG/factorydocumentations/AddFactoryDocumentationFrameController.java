@@ -1,5 +1,8 @@
 package get.a.big.head.newNRG.factorydocumentations;
 
+import get.a.big.head.newNRG.files.DataFileClient;
+import get.a.big.head.newNRG.files.DataFileDto;
+import get.a.big.head.newNRG.files.DataFileMapper;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -21,8 +27,10 @@ public class AddFactoryDocumentationFrameController {
     private AddFactoryDocumentationFrame frame;
     private final FactoryDocumentationClient factoryDocumentationClient;
     private final UserAuthorizationFrameController authorizationFrameController;
+    private final DataFileClient dataFileClient;
+    private File file = null;
 
-    public void initAddFactoryDocumentationFrameController() {
+    public void initAddFactoryDocumentationFrameController(Long typeId) {
         frame = new AddFactoryDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -31,15 +39,30 @@ public class AddFactoryDocumentationFrameController {
             }
         });
 
+        frame.getButtonFile().addActionListener(e -> {
+            int result = frame.getFileChooser().showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION ) {
+                file = frame.getFileChooser().getSelectedFile();
+                JOptionPane.showMessageDialog(frame,
+                        "Файл " + frame.getFileChooser().getSelectedFile() + " выбран");
+            }
+        });
+
         frame.getButtonOk().addActionListener(e -> {
             String documentName = frame.getTextNameDocument().getText();
             String documentCode = frame.getTextCodeDocument().getText();
-            String documentFile = "Считанный файл";
-            log.info("Add document  with documentName {}, documentCode {}, document {}",
-                    documentName, documentCode, documentFile);
+            DataFileDto dataFile = null;
+            if (file != null) {
+                dataFile = DataFileMapper.toDataFileDto(file);
+            }
 
+            log.info("Add document  with documentName {}, documentCode {}, document {}",
+                    documentName, documentCode, dataFile);
+            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            List<Long> types = new ArrayList<>();
+            types.add(typeId);
             ResponseEntity<Object> addDocumentResponse = factoryDocumentationClient.addDocument(
-                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, documentFile),
+                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, types, fileId),
                     authorizationFrameController.getUser().getUserId()
             );
             if (addDocumentResponse.getStatusCode().is2xxSuccessful() && addDocumentResponse.getBody() != null) {

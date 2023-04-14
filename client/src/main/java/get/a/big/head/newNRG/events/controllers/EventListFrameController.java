@@ -40,7 +40,7 @@ public class EventListFrameController {
     private final int maxShow = pages * size - 15;
     private Long equipmentId;
     private int page;
-    List<EventDto> list;
+    private List<EventDto> list;
 
     public void initEventListFrameController(EquipmentDto equipment) {
         this.equipmentId = equipment.getEquipmentId();

@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.factorydocumentation;
 
+import get.a.big.head.newNRG.files.DataFile;
 import get.a.big.head.newNRG.types.Type;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -23,8 +24,9 @@ public class FactoryDocumentation {
     private String nameFactoryDocumentation;
     @Column(name = "document_code")
     private String codeFactoryDocumentation;
-    @Column(name = "file")
-    private String factoryDocumentation;
+    @ManyToOne
+    @JoinColumn(name = "file_id")
+    private DataFile file;
     @ManyToMany(mappedBy = "factoryDocuments")
     @ToString.Exclude
     private List<Type> types;

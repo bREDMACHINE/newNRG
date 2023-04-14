@@ -1,6 +1,7 @@
 package get.a.big.head.newNRG.projectdocumentation;
 
 import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.files.DataFile;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,8 +24,9 @@ public class ProjectDocumentation {
     private String nameProjectDocumentation;
     @Column(name = "project_code")
     private String codeProjectDocumentation;
-    @Column(name = "file")
-    private String projectDocumentation;
+    @ManyToOne
+    @JoinColumn(name = "file_id")
+    private DataFile file;
     @ManyToMany(mappedBy = "projectDocuments")
     @ToString.Exclude
     private List<Equipment> equipment;

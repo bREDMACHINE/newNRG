@@ -1,12 +1,18 @@
 package get.a.big.head.newNRG.factorydocumentation;
 
+import get.a.big.head.newNRG.files.DataFile;
+import get.a.big.head.newNRG.types.Type;
+
+import java.util.stream.Collectors;
+
 public class FactoryDocumentationMapper {
 
-    public static FactoryDocumentation toFactoryDocumentation(FactoryDocumentationDto factoryDocumentationDto) {
+    public static FactoryDocumentation toFactoryDocumentation(FactoryDocumentationDto factoryDocumentationDto,
+                                                              DataFile dataFile) {
         FactoryDocumentation factoryDocumentation = new FactoryDocumentation();
         factoryDocumentation.setNameFactoryDocumentation(factoryDocumentationDto.getNameFactoryDocumentation());
         factoryDocumentation.setCodeFactoryDocumentation(factoryDocumentation.getCodeFactoryDocumentation());
-        factoryDocumentation.setFactoryDocumentation(factoryDocumentation.getFactoryDocumentation());
+        factoryDocumentation.setFile(dataFile);
         return factoryDocumentation;
     }
 
@@ -15,7 +21,8 @@ public class FactoryDocumentationMapper {
                 .documentId(factoryDocumentation.getDocumentId())
                 .nameFactoryDocumentation(factoryDocumentation.getNameFactoryDocumentation())
                 .codeFactoryDocumentation(factoryDocumentation.getCodeFactoryDocumentation())
-                .factoryDocumentation(factoryDocumentation.getFactoryDocumentation())
+                .types(factoryDocumentation.getTypes().stream().map(Type::getTypeId).collect(Collectors.toList()))
+                .fileId(factoryDocumentation.getFile().getFileId())
                 .build();
     }
 }

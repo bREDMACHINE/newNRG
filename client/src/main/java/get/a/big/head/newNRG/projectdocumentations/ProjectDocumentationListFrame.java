@@ -14,6 +14,7 @@ public class ProjectDocumentationListFrame {
 
     private JFrame frame;
     private List<JButton> openFileButtons = new ArrayList<>();
+    private List<JButton> deleteButtons = new ArrayList<>();
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
@@ -23,26 +24,32 @@ public class ProjectDocumentationListFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelList = new JPanel(new GridLayout(0, 3, 12, 5));
+        JPanel panelList = new JPanel(new GridLayout(0, 4, 12, 5));
         panelList.add(new JLabel("Наименование проекта"));
         panelList.add(new JLabel("Шифр проекта"));
         panelList.add(new JLabel("Прикрепленный файл"));
 
         for (int i = 0; i < projects.size(); i++) {
             ProjectDocumentationDto project = projects.get(i);
-            JButton openFileButton = new JButton(project.getProjectDocumentation());
+            JButton openFileButton = new JButton("Открыть");
             openFileButton.setActionCommand(String.valueOf(i));
             openFileButtons.add(openFileButton);
+            JButton deleteEventButton = new JButton("Удалить");
+            deleteEventButton.setActionCommand(String.valueOf(i));
+            deleteButtons.add(deleteEventButton);
 
             panelList.add(new JLabel(project.getNameProjectDocumentation()));
             panelList.add(new JLabel(project.getCodeProjectDocumentation()));
             panelList.add(openFileButton);
+            panelList.add(deleteEventButton);
         }
+        buttonPrevious = new JButton("< Предыдущая");
+        buttonNext = new JButton("Следующая >");
+        panelList.add(new JLabel());
+        panelList.add(new JLabel());
         frame.getContentPane().add(BorderLayout.NORTH, panelList);
 
         labelPage = new JLabel("Страница " + page + " из " + pages);
-        buttonPrevious = new JButton("< Предыдущая");
-        buttonNext = new JButton("Следующая >");
         panelButtons = new JPanel();
         panelButtons.add(labelPage);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);

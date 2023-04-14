@@ -2,6 +2,8 @@ package get.a.big.head.newNRG.projectdocumentation;
 
 import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
+import get.a.big.head.newNRG.files.DataFile;
+import get.a.big.head.newNRG.files.DataFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,14 +19,17 @@ import java.util.stream.Collectors;
 public class ProjectDocumentationServiceImpl implements ProjectDocumentationService {
 
     private final ProjectDocumentationRepository projectDocumentationRepository;
+    private final DataFileRepository dataFileRepository;
 
     @Override
     public ProjectDocumentationDto addProject(ProjectDocumentationDto projectDocumentationDto) {
+        DataFile dataFile = dataFileRepository.findById(projectDocumentationDto.getFileId())
+                .orElseThrow(() -> new NotFoundException("Указанный fileId не существует"));
         if (projectDocumentationRepository.findByNameProjectDocumentation(
                 projectDocumentationDto.getNameProjectDocumentation()
         ).isEmpty()) {
             return ProjectDocumentationMapper.toProjectDocumentationDto(projectDocumentationRepository.save(
-                    ProjectDocumentationMapper.toProjectDocumentation(projectDocumentationDto)
+                    ProjectDocumentationMapper.toProjectDocumentation(projectDocumentationDto, dataFile)
             ));
         }
         throw  new BadRequestException("Указанный проект уже используется");
