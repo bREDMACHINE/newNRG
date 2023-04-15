@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Transactional
@@ -21,6 +23,13 @@ public class DataFileServiceImpl implements DataFileService {
 
     @Override
     public DataFileDto addFile(DataFileDto dataFile) {
-        return DataFileMapper.toDataFileDto(dataFileRepository.save(DataFileMapper.toDataFile(dataFile)));
+        Optional<DataFile> fileOptional = dataFileRepository.findByName(dataFile.getName());
+        DataFile newFile = DataFileMapper.toDataFile(dataFile);
+        if (fileOptional.isPresent()) {
+            if (fileOptional.get().equals(newFile)) {
+                return DataFileMapper.toDataFileDto(fileOptional.get());
+            }
+        }
+        return DataFileMapper.toDataFileDto(dataFileRepository.save(newFile));
     }
 }

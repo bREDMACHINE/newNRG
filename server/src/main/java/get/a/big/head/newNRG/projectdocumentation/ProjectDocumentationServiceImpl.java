@@ -1,5 +1,7 @@
 package get.a.big.head.newNRG.projectdocumentation;
 
+import get.a.big.head.newNRG.equipment.Equipment;
+import get.a.big.head.newNRG.equipment.EquipmentRepository;
 import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import get.a.big.head.newNRG.files.DataFile;
@@ -19,17 +21,19 @@ import java.util.stream.Collectors;
 public class ProjectDocumentationServiceImpl implements ProjectDocumentationService {
 
     private final ProjectDocumentationRepository projectDocumentationRepository;
+    private final EquipmentRepository  equipmentRepository;
     private final DataFileRepository dataFileRepository;
 
     @Override
     public ProjectDocumentationDto addProject(ProjectDocumentationDto projectDocumentationDto) {
+        List<Equipment> equipment = equipmentRepository.findAllById(projectDocumentationDto.getEquipment());
         DataFile dataFile = dataFileRepository.findById(projectDocumentationDto.getFileId())
                 .orElseThrow(() -> new NotFoundException("Указанный fileId не существует"));
         if (projectDocumentationRepository.findByNameProjectDocumentation(
                 projectDocumentationDto.getNameProjectDocumentation()
         ).isEmpty()) {
             return ProjectDocumentationMapper.toProjectDocumentationDto(projectDocumentationRepository.save(
-                    ProjectDocumentationMapper.toProjectDocumentation(projectDocumentationDto, dataFile)
+                    ProjectDocumentationMapper.toProjectDocumentation(projectDocumentationDto, equipment, dataFile)
             ));
         }
         throw  new BadRequestException("Указанный проект уже используется");

@@ -66,7 +66,7 @@ public class AddProjectDocumentationFrame extends JFrame {
                         .addComponent(textNameProject))
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)
-                        .addComponent(labelName)
+                        .addComponent(labelCode)
                         .addComponent(textCodeProject))
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)

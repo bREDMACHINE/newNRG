@@ -3,7 +3,6 @@ package get.a.big.head.newNRG.events.controllers;
 import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
-import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.events.frames.EventListFrame;
 import get.a.big.head.newNRG.files.DataFileDto;
 import get.a.big.head.newNRG.files.DataFileClient;
@@ -11,8 +10,7 @@ import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-@Controller
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventListFrameController {
@@ -43,7 +41,7 @@ public class EventListFrameController {
     private List<EventDto> list;
 
     public void initEventListFrameController(EquipmentDto equipment) {
-        this.equipmentId = equipment.getEquipmentId();
+        equipmentId = equipment.getEquipmentId();
         maxSize = equipment.getEvents().size();
         from = 0;
         page = 1;
@@ -98,52 +96,22 @@ public class EventListFrameController {
 
         for (JButton button : frame.getDeleteButtons()) {
             button.addActionListener(e -> {
-                deleteEvent(Long.parseLong(button.getActionCommand()));
+                eventClient.deleteEvent(frame,
+                        Long.parseLong(button.getActionCommand()),
+                        authorizationFrameController.getUser().getUserId());
                 openPage();
             });
         }
     }
 
-    private void deleteEvent(Long eventId) {
-        ResponseEntity<Object> deleteEventResponse = eventClient.deleteEvent(
-                eventId,
-                authorizationFrameController.getUser().getUserId()
-        );
-        if (deleteEventResponse.getStatusCode().is2xxSuccessful() && deleteEventResponse.getBody() != null) {
-            frame.getFrame().dispose();
-            JOptionPane.showMessageDialog(frame.getFrame(),"Событие удалено");
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame.getFrame(),
-                    deleteEventResponse.getStatusCode().toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
-
-    private List<EventDto> findAllEvents(Long equipmentId, int from) {
-        ResponseEntity<Object> eventListResponse = eventClient.findAllEvents(
+    private void openPage() {
+        list = eventClient.findAllEvents(
+                frame,
                 equipmentId,
                 from,
                 size,
                 authorizationFrameController.getUser().getUserId()
         );
-        if (eventListResponse.getStatusCode().is2xxSuccessful() && eventListResponse.getBody() != null) {
-            return EventMapper.toEventDtos(eventListResponse.getBody());
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame.getFrame(),
-                    eventListResponse.getStatusCode().toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-        return null;
-    }
-
-    private void openPage() {
-        list = findAllEvents(equipmentId, from);
         if (frame != null) {
             frame.getFrame().dispose();
         }

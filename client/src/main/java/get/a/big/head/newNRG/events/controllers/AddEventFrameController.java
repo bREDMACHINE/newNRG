@@ -1,7 +1,6 @@
 package get.a.big.head.newNRG.events.controllers;
 
 import get.a.big.head.newNRG.events.EventClient;
-import get.a.big.head.newNRG.events.EventDto;
 import get.a.big.head.newNRG.events.EventMapper;
 import get.a.big.head.newNRG.files.DataFileDto;
 import get.a.big.head.newNRG.files.DataFileClient;
@@ -10,9 +9,7 @@ import get.a.big.head.newNRG.events.frames.AddEventFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -20,9 +17,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-@Component
-@Slf4j
 @Getter
+@Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddEventFrameController {
 
@@ -62,27 +58,10 @@ public class AddEventFrameController {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            log.info("Add event  with dateEvent {}, nameEvent {}, description {}, document {}",
-                    dateEvent, nameEvent, descriptionEvent, dataFile);
             Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
-            ResponseEntity<Object> addEventResponse = eventClient.addEvent(
+            eventClient.addEvent(frame,
                     EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, fileId),
-                    authorizationFrameController.getUser().getUserId()
-            );
-
-            if (addEventResponse.getStatusCode().is2xxSuccessful() && addEventResponse.getBody() != null) {
-                frame.getFrame().dispose();
-                EventDto eventDto = EventMapper.toEventDto(addEventResponse.getBody());
-                JOptionPane.showMessageDialog(frame.getFrame(),
-                         "Событие " + eventDto.getNameEvent() + " успешно добавлено");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        addEventResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+                    authorizationFrameController.getUser().getUserId());
         });
     }
 }

@@ -66,7 +66,7 @@ public class AddFactoryDocumentationFrame extends JFrame {
                         .addComponent(textNameDocument))
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)
-                        .addComponent(labelName)
+                        .addComponent(labelCode)
                         .addComponent(textCodeDocument))
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)

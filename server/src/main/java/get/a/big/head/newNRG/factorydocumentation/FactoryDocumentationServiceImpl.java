@@ -4,6 +4,8 @@ import get.a.big.head.newNRG.exception.BadRequestException;
 import get.a.big.head.newNRG.exception.NotFoundException;
 import get.a.big.head.newNRG.files.DataFile;
 import get.a.big.head.newNRG.files.DataFileRepository;
+import get.a.big.head.newNRG.types.Type;
+import get.a.big.head.newNRG.types.TypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,17 +21,19 @@ import java.util.stream.Collectors;
 public class FactoryDocumentationServiceImpl implements FactoryDocumentationService {
 
     private final FactoryDocumentationRepository factoryDocumentationRepository;
+    private final TypeRepository typeRepository;
     private final DataFileRepository dataFileRepository;
 
     @Override
     public FactoryDocumentationDto addDocument(FactoryDocumentationDto factoryDocumentationDto) {
+        List<Type> types = typeRepository.findAllById(factoryDocumentationDto.getTypes());
         DataFile dataFile = dataFileRepository.findById(factoryDocumentationDto.getFileId())
                 .orElseThrow(() -> new NotFoundException("Указанный fileId не существует"));
         if (factoryDocumentationRepository.findByNameFactoryDocumentation(
                 factoryDocumentationDto.getNameFactoryDocumentation()
         ).isEmpty()) {
             return FactoryDocumentationMapper.toFactoryDocumentationDto(factoryDocumentationRepository.save(
-                    FactoryDocumentationMapper.toFactoryDocumentation(factoryDocumentationDto, dataFile)
+                    FactoryDocumentationMapper.toFactoryDocumentation(factoryDocumentationDto, types, dataFile)
             ));
         }
         throw  new BadRequestException("Указанный документ уже используется");

@@ -21,7 +21,7 @@ public class EventMapper {
                 .dateEvent(event.getDateEvent())
                 .nameEvent(event.getNameEvent())
                 .descriptionEvent(event.getDescriptionEvent())
-                .fileId(event.getDocumentEvent().getFileId())
+                .fileId(event.getDocumentEvent() != null ? event.getDocumentEvent().getFileId() : null)
                 .equipmentId(event.getEquipment().getEquipmentId())
                 .build();
     }
