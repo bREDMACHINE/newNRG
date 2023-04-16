@@ -58,7 +58,9 @@ public class AddEventFrameController {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            Long fileId = dataFileClient.addFile(frame,
+                    dataFile,
+                    authorizationFrameController.getUser().getUserId()).getFileId();
             eventClient.addEvent(frame,
                     EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, fileId),
                     authorizationFrameController.getUser().getUserId());

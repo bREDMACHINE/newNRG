@@ -31,11 +31,11 @@ public class EventListFrameController {
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final DataFileClient dataFileClient;
-    private final int size = 15;
+    private int size;
     private int maxSize;
     private int from;
-    private final int pages = maxSize / size + 1;
-    private final int maxShow = pages * size - 15;
+    private int pages;
+    private int maxShow;
     private Long equipmentId;
     private int page;
     private List<EventDto> list;
@@ -43,17 +43,57 @@ public class EventListFrameController {
     public void initEventListFrameController(EquipmentDto equipment) {
         equipmentId = equipment.getEquipmentId();
         maxSize = equipment.getEvents().size();
+        size = 15;
+        pages = maxSize / size + 1;
+        maxShow = pages * size - 15;
         from = 0;
         page = 1;
         openPage();
+    }
 
+    private void openPage() {
+        list = eventClient.findAllEvents(
+                frame,
+                equipmentId,
+                from,
+                size,
+                authorizationFrameController.getUser().getUserId()
+        );
+        if (list != null) {
+            if (maxSize <= size) {
+                frame = new EventListFrame(list, page, pages);
+                functionsFrame();
+            } else if (from < size) {
+                frame = new EventListFrame(list, page, pages);
+                frame.getPanelButtons().add(frame.getButtonNext());
+                functionsFrame();
+            } else if (from > 14 && from < maxShow) {
+                frame = new EventListFrame(list, page, pages);
+                frame.getPanelButtons().add(frame.getButtonPrevious());
+                frame.getPanelButtons().add(frame.getButtonNext());
+                functionsFrame();
+            } else if (from > 14 && from == maxShow) {
+                frame = new EventListFrame(list, page, pages);
+                frame.getPanelButtons().add(frame.getButtonPrevious());
+                functionsFrame();
+            }
+        }
+    }
+
+    private void functionsFrame() {
         frame.getButtonNext().addActionListener(e -> {
+            if (frame.getFrame() != null) {
+                frame.getFrame().dispose();
+            }
             from = from + 15;
             page = page + 1;
             openPage();
         });
 
         frame.getButtonPrevious().addActionListener(e -> {
+            if (frame.getFrame() != null) {
+                frame.getFrame().dispose();
+            }
             from = from - 15;
             page = page - 1;
             openPage();
@@ -61,7 +101,7 @@ public class EventListFrameController {
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
                 frame = null;
             }
         });
@@ -96,39 +136,14 @@ public class EventListFrameController {
 
         for (JButton button : frame.getDeleteButtons()) {
             button.addActionListener(e -> {
+                if (frame.getFrame() != null) {
+                    frame.getFrame().dispose();
+                }
                 eventClient.deleteEvent(frame,
-                        Long.parseLong(button.getActionCommand()),
+                        list.get(Integer.parseInt(button.getActionCommand())).getEventId(),
                         authorizationFrameController.getUser().getUserId());
                 openPage();
             });
-        }
-    }
-
-    private void openPage() {
-        list = eventClient.findAllEvents(
-                frame,
-                equipmentId,
-                from,
-                size,
-                authorizationFrameController.getUser().getUserId()
-        );
-        if (frame != null) {
-            frame.getFrame().dispose();
-        }
-        if (list != null) {
-            if (maxSize <= size) {
-                frame = new EventListFrame(list, page, pages);
-            } else if (from < size) {
-                frame = new EventListFrame(list, page, pages);
-                frame.getPanelButtons().add(frame.getButtonNext());
-            } else if (from > size && from < maxShow) {
-                frame = new EventListFrame(list, page, pages);
-                frame.getPanelButtons().add(frame.getButtonPrevious());
-                frame.getPanelButtons().add(frame.getButtonNext());
-            } else if (from > size && from == maxShow) {
-                frame = new EventListFrame(list, page, pages);
-                frame.getPanelButtons().add(frame.getButtonPrevious());
-            }
         }
     }
 }

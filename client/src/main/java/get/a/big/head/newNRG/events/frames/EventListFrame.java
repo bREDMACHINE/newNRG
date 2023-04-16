@@ -23,33 +23,39 @@ public class EventListFrame extends JFrame {
     public EventListFrame(List<EventDto> events, int page, int pages) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setFont(new Font("Arial", Font.PLAIN, 16));
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        frame.setLocationRelativeTo(null);
 
-        JPanel panelEvents = new JPanel(new GridLayout(0, 5, 12, 5));
-        panelEvents.add(new JLabel("Дата события"));
-        panelEvents.add(new JLabel("Событие"));
-        panelEvents.add(new JLabel("Описание"));
-        panelEvents.add(new JLabel("Документы"));
-        panelEvents.add(new JLabel("Удалить событие"));
+        JPanel panel = new JPanel(new GridLayout(0, 5, 12, 5));
+        panel.add(new JLabel("Дата события"));
+        panel.add(new JLabel("Событие"));
+        panel.add(new JLabel("Описание"));
+        panel.add(new JLabel("Документы"));
+        panel.add(new JLabel("Удалить событие"));
         for (int i = 0; i < events.size(); i++) {
             EventDto event = events.get(i);
-            JButton openFileButton = new JButton("Открыть");
-            openFileButton.setActionCommand(String.valueOf(i));
-            openFileButtons.add(openFileButton);
+            panel.add(new JLabel(event.getDateEvent()));
+            panel.add(new JLabel(event.getNameEvent()));
+            panel.add(new JLabel(event.getDescriptionEvent()));
+            if (event.getFileId() != null) {
+                JButton openFileButton = new JButton("Открыть");
+                openFileButton.setActionCommand(String.valueOf(i));
+                openFileButtons.add(openFileButton);
+                panel.add(openFileButton);
+            } else {
+                panel.add(new JLabel("Файла нет"));
+            }
             JButton deleteEventButton = new JButton("Удалить");
             deleteEventButton.setActionCommand(String.valueOf(i));
             deleteButtons.add(deleteEventButton);
-
-            panelEvents.add(new JLabel(event.getDateEvent().toString()));
-            panelEvents.add(new JLabel(event.getNameEvent()));
-            panelEvents.add(new JLabel(event.getDescriptionEvent()));
-            panelEvents.add(openFileButton);
-            panelEvents.add(deleteEventButton);
+            panel.add(deleteEventButton);
         }
         buttonPrevious = new JButton("< Предыдущая");
         buttonNext = new JButton("Следующая >");
-        panelEvents.add(new JLabel());
-        panelEvents.add(new JLabel());
-        frame.getContentPane().add(BorderLayout.NORTH, panelEvents);
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+        frame.getContentPane().add(BorderLayout.NORTH, panel);
 
         labelPage = new JLabel("Страница " + page + " из " + pages);
         panelButtons = new JPanel();

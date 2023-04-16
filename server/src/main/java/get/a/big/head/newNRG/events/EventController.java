@@ -4,6 +4,7 @@ import get.a.big.head.newNRG.events.services.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public class EventController {
     }
 
     @DeleteMapping("/moderator/equipment/event/{id}")
-    public void deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEvent(@PathVariable Long id) {
         log.info("Получен Delete запрос к эндпоинту /moderator/equipment/event/{}", id);
-        eventService.deleteEvent(id);
+        return eventService.deleteEvent(id);
     }
 
     @GetMapping("/user/equipment/{id}/events")
