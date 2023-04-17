@@ -3,9 +3,9 @@ package get.a.big.head.newNRG.events.controllers;
 import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.events.EventDto;
-import get.a.big.head.newNRG.events.frames.EventListFrame;
 import get.a.big.head.newNRG.files.DataFileDto;
 import get.a.big.head.newNRG.files.DataFileClient;
+import get.a.big.head.newNRG.general.ListFrame;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EventListFrameController {
 
-    private EventListFrame frame;
+    private ListFrame frame;
     private final EventClient eventClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final DataFileClient dataFileClient;
@@ -59,21 +59,22 @@ public class EventListFrameController {
                 size,
                 authorizationFrameController.getUser().getUserId()
         );
+        List<String> labels = List.of("Дата события", "Событие", "Описание", "Документы", "Удалить событие");
         if (list != null) {
             if (maxSize <= size) {
-                frame = new EventListFrame(list, page, pages);
+                frame = new ListFrame(list, labels, page, pages);
                 functionsFrame();
             } else if (from < size) {
-                frame = new EventListFrame(list, page, pages);
+                frame = new ListFrame(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonNext());
                 functionsFrame();
             } else if (from > 14 && from < maxShow) {
-                frame = new EventListFrame(list, page, pages);
+                frame = new ListFrame(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
                 frame.getPanelButtons().add(frame.getButtonNext());
                 functionsFrame();
             } else if (from > 14 && from == maxShow) {
-                frame = new EventListFrame(list, page, pages);
+                frame = new ListFrame(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
                 functionsFrame();
             }
