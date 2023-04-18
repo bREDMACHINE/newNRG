@@ -1,6 +1,7 @@
 package get.a.big.head.newNRG.events;
 
 import com.google.gson.JsonParser;
+import get.a.big.head.newNRG.general.Client;
 import get.a.big.head.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class EventClient extends BaseClient {
+public class EventClient extends BaseClient implements Client {
 
     @Autowired
     public EventClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
@@ -41,7 +42,8 @@ public class EventClient extends BaseClient {
         }
     }
 
-    public void deleteEvent(Frame frame, Long eventId, String userId) {
+    @Override
+    public void delete(Frame frame, Long eventId, String userId) {
         log.info("Add event {}", eventId);
         Object object = response(delete("/moderator/equipment/event/" + eventId,  userId), frame);
         if (object != null) {
@@ -52,7 +54,8 @@ public class EventClient extends BaseClient {
         }
     }
 
-    public List<EventDto> findAllEvents(Frame frame, Long equipmentId, int from, int size, String userId) {
+    @Override
+    public List<EventDto> findAll(Frame frame, Long equipmentId, int from, int size, String userId) {
         log.info("Find all events for equipment {}, from {}", equipmentId, from);
         Object object = response(
                 get("/user/equipment/" + equipmentId + "/events?from=" + from + "&size=" + size,  userId),
