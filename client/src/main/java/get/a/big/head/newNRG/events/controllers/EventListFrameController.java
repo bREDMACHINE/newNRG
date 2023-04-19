@@ -1,28 +1,27 @@
 package get.a.big.head.newNRG.events.controllers;
 
-import get.a.big.head.newNRG.files.DataFileClient;
-import get.a.big.head.newNRG.general.Client;
+import get.a.big.head.newNRG.events.EventClient;
 import get.a.big.head.newNRG.general.ListFrameController;
-import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.util.List;
 
 @Component
-public class EventListFrameController extends ListFrameController {
+@RequiredArgsConstructor
+public class EventListFrameController {
 
-    private static final List<String> labels = List.of("Дата события", "Событие", "Описание", "Документы", "Удалить событие");
-    private final UserAuthorizationFrameController authorizationFrameController;
-    private final Client client;
-    private final DataFileClient dataFileClient;
+    private final ListFrameController controller;
+    private final EventClient client;
 
-    @Autowired
-    public EventListFrameController(int maxSize, Long parentObjectId) {
+    public void initEventListFrameController(int maxSize, Long parentObjectId) {
+        List<String> labels = List.of("Дата события", "Событие", "Описание", "Документы", "Удалить событие");
+        controller.initListFrameController(client, maxSize, labels, parentObjectId);
+    }
 
-        super(client, authorizationFrameController, dataFileClient, maxSize, labels, parentObjectId);
+    public Frame getFrame() {
+        return controller.getFrame();
     }
 }
 

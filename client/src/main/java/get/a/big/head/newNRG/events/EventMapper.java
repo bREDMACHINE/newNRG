@@ -16,13 +16,13 @@ public class EventMapper {
                                       String nameEvent,
                                       String descriptionEvent,
                                       Long fileId) {
-        return EventDto.builder()
-                .nameEvent(nameEvent)
-                .dateEvent(dateEvent)
-                .descriptionEvent(descriptionEvent)
-                .fileId(fileId)
-                .equipmentId(equipmentId)
-                .build();
+        EventDto eventDto = new EventDto();
+        eventDto.setDateEvent(dateEvent);
+        eventDto.setNameEvent(nameEvent);
+        eventDto.setDescriptionEvent(descriptionEvent);
+        eventDto.setEquipmentId(equipmentId);
+        eventDto.setFileId(fileId);
+        return eventDto;
     }
 
     public static List<EventDto> toEventDtos(Object object) {

@@ -101,10 +101,13 @@ public class EquipmentFrameController {
 
         frame.getButtonEvents().addActionListener(e -> {
             if (eventListFrameController.getFrame() == null) {
-                eventListFrameController.initEventListFrameController(equipment);
+                eventListFrameController.initEventListFrameController(
+                        equipment.getEvents().size(),
+                        equipment.getEquipmentId()
+                );
             } else {
-                eventListFrameController.getFrame().getFrame().toFront();
-                eventListFrameController.getFrame().getFrame().requestFocus();
+                eventListFrameController.getFrame().toFront();
+                eventListFrameController.getFrame().requestFocus();
             }
         });
     }

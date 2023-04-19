@@ -3,7 +3,11 @@ package get.a.big.head.newNRG.general;
 import get.a.big.head.newNRG.files.DataFileClient;
 import get.a.big.head.newNRG.files.DataFileDto;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,31 +20,26 @@ import java.io.OutputStream;
 import java.util.List;
 
 @Getter
+@Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ListFrameController {
 
     private ListFrame frame;
-    private final Client client;
+    private Client client;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final DataFileClient dataFileClient;
-    private final int size;
-    private final int maxSize;
+    private int size;
+    private int maxSize;
     private int from;
-    private final int pages;
-    private final int maxShow;
-    private final Long parentObjectId;
+    private int pages;
+    private int maxShow;
+    private Long parentObjectId;
     private int page;
     private List<? extends WithFile> list;
-    private final List<String> labels;
+    private List<String> labels;
 
-    public ListFrameController(Client client,
-                               UserAuthorizationFrameController authorizationFrameController,
-                               DataFileClient dataFileClient,
-                               int maxSize,
-                               List<String> labels,
-                               Long parentObjectId) {
+    public void initListFrameController(Client client, int maxSize, List<String> labels, Long parentObjectId) {
         this.client = client;
-        this.authorizationFrameController = authorizationFrameController;
-        this.dataFileClient = dataFileClient;
         this.maxSize = maxSize;
         this.labels = labels;
         this.parentObjectId = parentObjectId;
