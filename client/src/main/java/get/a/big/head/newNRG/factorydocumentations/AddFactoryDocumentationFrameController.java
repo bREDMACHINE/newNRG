@@ -6,21 +6,18 @@ import get.a.big.head.newNRG.files.DataFileMapper;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-@Controller
-@Slf4j
 @Getter
+@Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddFactoryDocumentationFrameController {
 
@@ -39,6 +36,8 @@ public class AddFactoryDocumentationFrameController {
             }
         });
 
+        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+
         frame.getButtonFile().addActionListener(e -> {
             int result = frame.getFileChooser().showOpenDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION ) {
@@ -56,30 +55,11 @@ public class AddFactoryDocumentationFrameController {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            log.info("Add document  with documentName {}, documentCode {}, document {}",
-                    documentName, documentCode, dataFile);
             Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
-            List<Long> types = new ArrayList<>();
-            types.add(typeId);
-            ResponseEntity<Object> addDocumentResponse = factoryDocumentationClient.addDocument(
+            List<Long> types = Collections.singletonList(typeId);
+            factoryDocumentationClient.addDocument(frame,
                     FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, types, fileId),
-                    authorizationFrameController.getUser().getUserId()
-            );
-            if (addDocumentResponse.getStatusCode().is2xxSuccessful() && addDocumentResponse.getBody() != null) {
-                FactoryDocumentationDto document = FactoryDocumentationMapper.toDocumentDto(addDocumentResponse.getBody());
-                frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(frame.getFrame(),
-                        "Документ " + document.getNameFactoryDocumentation() + " успешно добавлен");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        addDocumentResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
+                    authorizationFrameController.getUser().getUserId());
         });
-
-        frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }
 }

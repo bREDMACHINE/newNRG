@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -32,9 +33,13 @@ public class ListFrame extends JFrame {
             panel.add(new JLabel(label));
         }
         Class<?> clazz = list.get(0).getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        Field[] fileFields = clazz.getSuperclass().getDeclaredFields();
+        Field[] allFields = new Field[fields.length + fileFields.length];
+        Arrays.setAll(allFields, j -> (j < fields.length ? fields[j] : fileFields[j - fields.length]));
         for (int i = 0; i < list.size(); i++) {
             var object = list.get(i);
-            for (Field field : clazz.getDeclaredFields()) {
+            for (Field field : allFields) {
                 try {
                     field.setAccessible(true);
                     if (field.getType().equals(String.class)) {

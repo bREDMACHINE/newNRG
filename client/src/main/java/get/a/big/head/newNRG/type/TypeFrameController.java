@@ -43,10 +43,13 @@ public class TypeFrameController {
 
         frame.getButtonDocuments().addActionListener(e -> {
             if (factoryDocumentationListFrameController.getFrame() == null) {
-                factoryDocumentationListFrameController.initFactoryDocumentationListFrameController(type);
+                factoryDocumentationListFrameController.initFactoryDocumentationListFrameController(
+                        type.getFactoryDocuments().size(),
+                        type.getTypeId()
+                );
             } else {
-                factoryDocumentationListFrameController.getFrame().getFrame().toFront();
-                factoryDocumentationListFrameController.getFrame().getFrame().requestFocus();
+                factoryDocumentationListFrameController.getFrame().toFront();
+                factoryDocumentationListFrameController.getFrame().requestFocus();
             }
         });
 

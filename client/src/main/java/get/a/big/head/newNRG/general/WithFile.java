@@ -3,8 +3,8 @@ package get.a.big.head.newNRG.general;
 import lombok.Data;
 
 @Data
-public abstract class WithFile {
+public class WithFile {
 
-    private Long id;
-    private Long fileId;
+    protected Long id;
+    protected Long fileId;
 }
