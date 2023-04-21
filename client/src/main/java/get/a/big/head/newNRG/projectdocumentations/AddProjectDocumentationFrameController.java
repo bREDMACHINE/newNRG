@@ -6,9 +6,7 @@ import get.a.big.head.newNRG.files.DataFileMapper;
 import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Slf4j
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddProjectDocumentationFrameController {
@@ -56,28 +53,14 @@ public class AddProjectDocumentationFrameController {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            log.info("Add project  with projectName {}, projectCode {}, project {}",
-                    projectName, projectCode, dataFile);
             Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
             List<Long> equipment = new ArrayList<>();
             equipment.add(equipmentId);
-            ResponseEntity<Object> addProjectResponse = projectDocumentationClient.addProject(
+            projectDocumentationClient.addProject(
+                    frame,
                     ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, fileId),
                     authorizationFrameController.getUser().getUserId()
             );
-            if (addProjectResponse.getStatusCode().is2xxSuccessful() && addProjectResponse.getBody() != null) {
-                ProjectDocumentationDto project = ProjectDocumentationMapper.toProjectDto(addProjectResponse.getBody());
-                frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(frame.getFrame(),
-                        "Проект " + project.getNameProjectDocumentation() + " успешно добавлен");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        addProjectResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());

@@ -8,12 +8,12 @@ import java.util.List;
 public class ProjectDocumentationMapper {
 
     public static ProjectDocumentationDto toProjectDto(String projectName, String projectCode, List<Long> equipment, Long fileId) {
-        return ProjectDocumentationDto.builder()
-                .nameProjectDocumentation(projectName)
-                .codeProjectDocumentation(projectCode)
-                .equipment(equipment)
-                .fileId(fileId)
-                .build();
+        ProjectDocumentationDto project = new ProjectDocumentationDto();
+        project.setNameProjectDocumentation(projectName);
+        project.setCodeProjectDocumentation(projectCode);
+        project.setEquipment(equipment);
+        project.setFileId(fileId);
+        return project;
     }
 
     public static ProjectDocumentationDto toProjectDto(Object object) {

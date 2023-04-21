@@ -8,12 +8,12 @@ import java.util.List;
 public class FactoryDocumentationMapper {
 
     public static FactoryDocumentationDto toDocumentDto(String documentName, String documentCode, List<Long> types, Long fileId) {
-        return FactoryDocumentationDto.builder()
-                .nameFactoryDocumentation(documentName)
-                .codeFactoryDocumentation(documentCode)
-                .types(types)
-                .fileId(fileId)
-                .build();
+        FactoryDocumentationDto document = new FactoryDocumentationDto();
+        document.setNameFactoryDocumentation(documentName);
+        document.setCodeFactoryDocumentation(documentCode);
+        document.setTypes(types);
+        document.setFileId(fileId);
+        return document;
     }
 
     public static FactoryDocumentationDto toDocumentDto(Object object) {

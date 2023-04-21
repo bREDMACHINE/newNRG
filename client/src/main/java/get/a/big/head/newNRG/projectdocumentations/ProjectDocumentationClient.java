@@ -1,5 +1,7 @@
 package get.a.big.head.newNRG.projectdocumentations;
 
+import com.google.gson.JsonParser;
+import get.a.big.head.newNRG.general.Client;
 import get.a.big.head.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,37 +9,78 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-@Service
-@Slf4j
-public class ProjectDocumentationClient extends BaseClient {
+import javax.swing.*;
+import java.awt.*;
+import java.io.StringReader;
+import java.util.List;
 
-    private static final String API_PREFIX = "";
+@Component
+@Slf4j
+public class ProjectDocumentationClient extends BaseClient implements Client {
 
     @Autowired
     public ProjectDocumentationClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
     }
 
-    public ResponseEntity<Object> addProject(ProjectDocumentationDto project, String userId) {
+    public void addProject(Frame frame, ProjectDocumentationDto project, String userId) {
         log.info("Add project {}",  project);
-        return post("/moderator/equipment/project", userId, project);
+        Object object = response(post("/moderator/equipment/project", userId, project), frame);
+        if (object != null) {
+            ProjectDocumentationDto projectResponse = ProjectDocumentationMapper.toProjectDto(object);
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,
+                    "Проект " + projectResponse.getNameProjectDocumentation() + " успешно добавлен");
+        }
     }
 
-    public ResponseEntity<Object> deleteProject(Long projectId, String userId) {
+    @Override
+    public void delete(Frame frame, Long projectId, String userId) {
         log.info("Delete project {}",  projectId);
-        return delete("/moderator/equipment/project/" + projectId, userId);
+        Object object = response(delete("/moderator/equipment/project/" + projectId, userId), frame);
+        if (object != null) {
+            String name = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("name").getAsString();
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,"Проект " + name + " удален");
+        }
     }
 
-    public ResponseEntity<Object> findAllProjects(Long equipmentId, int from, int size, String userId) {
-        log.info("Find all projects for equipmentId {}", equipmentId);
-        return get("/user/equipment/" + equipmentId + "/projects?from=" + from + "&size=" + size, userId);
+    @Override
+    public List<ProjectDocumentationDto> findAll(Frame frame, Long equipmentId, int from, int size, String userId) {
+        log.info("Find all projects for equipment {}, from {}", equipmentId, from);
+        Object object = response(
+                get("/user/equipment/" + equipmentId + "/projects?from=" + from + "&size=" + size, userId),
+                frame
+        );
+        if (object != null) {
+            return ProjectDocumentationMapper.toProjectDtos(object);
+        }
+        return null;
+    }
+
+    private <T> T response(ResponseEntity<T> response, Frame frame) {
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            log.info("Result {}",  response.getBody().toString());
+            return response.getBody();
+        } else {
+            if (frame != null) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        response.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        return null;
     }
 }

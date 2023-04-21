@@ -2,7 +2,6 @@ package get.a.big.head.newNRG.equipment.controllers;
 
 import get.a.big.head.newNRG.equipment.EquipmentClient;
 import get.a.big.head.newNRG.equipment.EquipmentDto;
-import get.a.big.head.newNRG.equipment.EquipmentMapper;
 import get.a.big.head.newNRG.equipment.frames.EquipmentFrame;
 import get.a.big.head.newNRG.events.controllers.AddEventFrameController;
 import get.a.big.head.newNRG.events.controllers.EventListFrameController;
@@ -13,14 +12,12 @@ import get.a.big.head.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@Controller
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EquipmentFrameController {
@@ -74,28 +71,22 @@ public class EquipmentFrameController {
         });
 
         frame.getButtonOk().addActionListener(e -> {
-            ResponseEntity<Object> updateEquipmentResponse = equipmentClient.updateEquipment(
+            equipmentClient.updateEquipment(
+                    frame,
                     equipment,
                     authorizationFrameController.getUser().getUserId()
             );
-            if (updateEquipmentResponse.getStatusCode().is2xxSuccessful() && updateEquipmentResponse.getBody() != null) {
-                frame.getFrame().dispose();
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        updateEquipmentResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
         });
 
         frame.getButtonProjects().addActionListener(e -> {
             if (projectDocumentationListFrameController.getFrame() == null) {
-                projectDocumentationListFrameController.initProjectDocumentationListFrameController(equipment);
+                projectDocumentationListFrameController.initProjectDocumentationListFrameController(
+                        equipment.getEvents().size(),
+                        equipment.getEquipmentId()
+                );
             } else {
-                projectDocumentationListFrameController.getFrame().getFrame().toFront();
-                projectDocumentationListFrameController.getFrame().getFrame().requestFocus();
+                projectDocumentationListFrameController.getFrame().toFront();
+                projectDocumentationListFrameController.getFrame().requestFocus();
             }
         });
 
@@ -110,20 +101,5 @@ public class EquipmentFrameController {
                 eventListFrameController.getFrame().requestFocus();
             }
         });
-    }
-
-    public EquipmentDto getEquipment(String text, String userId) {
-        ResponseEntity<Object> equipmentResponse = equipmentClient.getEquipment(text, userId);
-        if (equipmentResponse.getStatusCode().is2xxSuccessful() && equipmentResponse.getBody() != null) {
-            return EquipmentMapper.toEquipmentDto(equipmentResponse.getBody());
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame.getFrame(),
-                    equipmentResponse.getStatusCode().toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-        return null;
     }
 }

@@ -1,17 +1,16 @@
 package get.a.big.head.newNRG.projectdocumentations;
 
-import lombok.Builder;
-import lombok.Getter;
+import get.a.big.head.newNRG.general.WithFile;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@Builder
-@Getter
-public class ProjectDocumentationDto {
+@Data
+@EqualsAndHashCode(callSuper=true)
+public class ProjectDocumentationDto extends WithFile {
 
-    private Long projectId;
     private String nameProjectDocumentation;
     private String codeProjectDocumentation;
     private List<Long> equipment;
-    private Long fileId;
 }

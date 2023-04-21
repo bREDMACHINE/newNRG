@@ -1,5 +1,6 @@
 package get.a.big.head.newNRG.general.controllers;
 
+import get.a.big.head.newNRG.equipment.EquipmentClient;
 import get.a.big.head.newNRG.equipment.EquipmentDto;
 import get.a.big.head.newNRG.equipment.controllers.AddEquipmentFrameController;
 import get.a.big.head.newNRG.equipment.controllers.EquipmentFrameController;
@@ -11,18 +12,19 @@ import get.a.big.head.newNRG.users.models.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@Controller
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MainFrameController {
 
     private final UserAccountFrameController accountFrameController;
     private final EquipmentFrameController equipmentFrameController;
+    private final EquipmentClient equipmentClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final AddEquipmentFrameController addEquipmentFrameController;
     private final UserManagerFrameController userManagerFrameController;
@@ -55,7 +57,8 @@ public class MainFrameController {
 
         frame.getButtonFind().addActionListener(e -> {
             if (equipmentFrameController.getFrame() == null) {
-                EquipmentDto equipment = equipmentFrameController.getEquipment(
+                EquipmentDto equipment = equipmentClient.getEquipment(
+                        frame,
                         frame.getTextField().getText(),
                         authorizationFrameController.getUser().getUserId()
                 );
