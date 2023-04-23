@@ -33,9 +33,7 @@ public class UserManagerFrameController {
         frame = new UserManagerFrame();
 
         if (size > 0) {
-            frame.getPanelButtons().remove(frame.getButtonCancel());
-            frame.getPanelButtons().add(frame.getButtonRequest());
-            frame.getPanelButtons().add(frame.getButtonCancel());
+            frame.getButtonRequest().setVisible(true);
         }
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -63,6 +61,13 @@ public class UserManagerFrameController {
             if (frame.getRoleMenu().getSelectedItem() != null && frame.getStatusMenu().getSelectedItem() != null) {
                 openListUsers(frame.getRoleMenu().getSelectedItem().toString(),
                         frame.getStatusMenu().getSelectedItem().toString());
+            }
+        });
+
+        frame.getButtonLogout().addActionListener(e -> {
+            boolean logout = userClient.logout(frame, authorizationFrameController.getUser().getUserId());
+            if (logout) {
+                frame.getFrame().dispose();
             }
         });
 

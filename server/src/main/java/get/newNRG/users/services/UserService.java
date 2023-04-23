@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface UserService {
 
-    ResponseEntity<?> addUser(UserDto userDto);
-    void deleteUser(String email);
+    ResponseEntity<Object> addUser(UserDto userDto);
+    ResponseEntity<Object> deleteUser(String email);
     UserFullDto getUser(String email);
     List<UserFullDto> findAllUsers(String role, String status);
     UserFullDto updateUser(UserFullDto userFullDto);
-    ResponseEntity<?> authenticateUser(UserDto userDto);
-    void logoutUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
+    ResponseEntity<Object> authenticateUser(UserDto userDto);
+    ResponseEntity<Object> logoutUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
     UserFullDto resolutionUser(String resolution, String email);
 }

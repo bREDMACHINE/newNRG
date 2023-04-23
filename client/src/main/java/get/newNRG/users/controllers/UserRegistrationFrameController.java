@@ -32,7 +32,10 @@ public class UserRegistrationFrameController {
         frame.getButtonOk().addActionListener(e -> {
             String userLogin = frame.getTextFieldLogin().getText();
             String userPassword = String.valueOf(frame.getPasswordField().getPassword());
-            userClient.userRegistration(frame, new UserDto(userLogin, userPassword));
+            String role = userClient.userRegistration(frame, new UserDto(userLogin, userPassword));
+            if (role != null) {
+                frame.getFrame().dispose();
+            }
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());

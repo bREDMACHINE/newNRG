@@ -2,7 +2,6 @@ package get.newNRG.events.services;
 
 import get.newNRG.equipment.Equipment;
 import get.newNRG.equipment.EquipmentRepository;
-import get.a.big.head.newNRG.events.*;
 import get.newNRG.events.Event;
 import get.newNRG.events.EventMapper;
 import get.newNRG.events.EventRepository;

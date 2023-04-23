@@ -1,7 +1,6 @@
 package get.newNRG.users;
 
 import com.google.gson.JsonParser;
-import get.newNRG.general.Client;
 import get.newNRG.httpclients.BaseClient;
 import get.newNRG.users.dtos.UserDto;
 import get.newNRG.users.dtos.UserFullDto;
@@ -34,43 +33,38 @@ public class UserClient extends BaseClient {
         );
     }
 
-    public void userRegistration(Frame frame, UserDto userDto) {
-        log.info("Registration user {}",  userDto);
-        Object object = response(post("/authorization/registration", null, userDto), frame);
+    public String userRegistration(Frame frame, UserDto user) {
+        log.info("Registration user {}",  user);
+        Object object = response(post("/authorization/registration", null, user), frame);
         if (object != null) {
-            String userLogin = JsonParser.parseReader(new StringReader(object.toString()))
-                    .getAsJsonObject().get("userLogin").getAsString();
-            User user = UserMapper.toUser(object, userLogin);
-            frame.dispose();
+            String role = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("Role").getAsString();
             JOptionPane.showMessageDialog(
                     frame,
-                    "Пользователь " + userLogin + " зарегистрирован с ролью " + user.getRole()
+                    "Пользователь " + user.getEmail() + " зарегистрирован с ролью " + role
             );
+            return role;
         }
+        return null;
     }
 
     public User userAuthorization(Frame frame, UserDto userDto) {
         log.info("Authorization user {}",  userDto);
         Object object = response(post("/authorization", null, userDto), frame);
         if (object != null) {
-            User user = UserMapper.toUser(authorizationResponse.getHeaders(), userLogin);
-            frame.dispose();
-            JOptionPane.showMessageDialog(
-                    frame,
-                    "Пользователь " + userLogin + " зарегистрирован с ролью " + user.getRole()
-            );
-            return user;
+            return UserMapper.toUser(object, userDto.getEmail());
         }
         return null;
     }
 
-    public User logout(Frame frame, String userId) {
+    public Boolean logout(Frame frame, String userId) {
         log.info("Logout user {}",  userId);
         Object object = response(post("/authorization/logout", userId), frame);
         if (object != null) {
-            User user = UserMapper.toUser(authorizationResponse.getHeaders(), userLogin);
-            frame.dispose();
+            boolean isAuthenticated = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("isAuthenticated").getAsBoolean();
             JOptionPane.showMessageDialog(frame, "Вы вышли из аккаунта");
+            return isAuthenticated;
         }
         return null;
     }
@@ -91,10 +85,9 @@ public class UserClient extends BaseClient {
         log.info("Delete user {}",  userName);
         Object object = response(delete("/admin/user?email=" + userName, userId), frame);
         if (object != null) {
-            String name = JsonParser.parseReader(new StringReader(object.toString()))
-                    .getAsJsonObject().get("name").getAsString();
-            frame.dispose();
-            JOptionPane.showMessageDialog(frame,"Пользователь " + name + " удален");
+            String email = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("email").getAsString();
+            JOptionPane.showMessageDialog(frame,"Пользователь " + email + " удален");
         }
     }
 
@@ -114,10 +107,9 @@ public class UserClient extends BaseClient {
         log.info("Update user {}",  userFullDto);
         Object object = response(patch("/user/update", userId, userFullDto), frame);
         if (object != null) {
-            String name = JsonParser.parseReader(new StringReader(object.toString()))
-                    .getAsJsonObject().get("name").getAsString();
-            frame.dispose();
-            JOptionPane.showMessageDialog(frame,"Пользователь " + name + " удален");
+            String email = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("email").getAsString();
+            JOptionPane.showMessageDialog(frame,"Запрос на роль пользователя " + email + " отправлен");
         }
     }
 
@@ -127,14 +119,13 @@ public class UserClient extends BaseClient {
         if (object != null) {
             String name = JsonParser.parseReader(new StringReader(object.toString()))
                     .getAsJsonObject().get("name").getAsString();
-            frame.dispose();
             JOptionPane.showMessageDialog(frame,"Пользователь " + name + " " + resolution);
         }
     }
 
     private <T> T response(ResponseEntity<T> response, Frame frame) {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            log.info("Result {}",  response.getBody().toString());
+            log.info("Result {}", response.getBody().toString());
             return response.getBody();
         } else {
             if (frame != null) {
@@ -145,7 +136,7 @@ public class UserClient extends BaseClient {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            return null;
         }
-        return null;
     }
 }

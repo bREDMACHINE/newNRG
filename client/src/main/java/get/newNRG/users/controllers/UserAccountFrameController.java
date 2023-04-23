@@ -38,7 +38,7 @@ public class UserAccountFrameController {
             }
         });
 
-        frame.getButtonDeleteUser().addActionListener(e -> userClient.delete(
+        frame.getButtonDeleteUser().addActionListener(e -> userClient.deleteUser(
                 frame,
                 user.getEmail(),
                 authorizationFrameController.getUser().getUserId()

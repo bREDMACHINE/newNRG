@@ -22,22 +22,22 @@ public class UserController {
 
 
     @PostMapping("/authorization/registration")
-    public ResponseEntity<?> registration(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> registration(@RequestBody UserDto userDto) {
         log.info("Получен Post запрос к эндпоинту /authorization/registration, user={}", userDto);
         return userService.addUser(userDto);
     }
 
     @PostMapping("/authorization")
-    public ResponseEntity<?> authorization(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> authorization(@RequestBody UserDto userDto) {
         log.info("Получен Post запрос к эндпоинту /authorization, user={}", userDto);
         return userService.authenticateUser(userDto);
     }
 
     @PostMapping("/authorization/logout")
-    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Object> logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         log.info("Получен Post запрос к эндпоинту /authorization/logout, HttpServletRequest={}, HttpServletResponse={}",
                 httpServletRequest, httpServletResponse);
-        userService.logoutUser(httpServletRequest, httpServletResponse);
+        return userService.logoutUser(httpServletRequest, httpServletResponse);
     }
 
     @PatchMapping("/user/update")
@@ -65,8 +65,8 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/user")
-    public void deleteUser(@RequestParam String email) {
+    public ResponseEntity<Object> deleteUser(@RequestParam String email) {
         log.info("Получен Delete запрос к эндпоинту /admin/{}", email);
-        userService.deleteUser(email);
+        return userService.deleteUser(email);
     }
 }

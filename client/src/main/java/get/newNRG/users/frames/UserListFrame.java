@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.util.List;
 
 @Getter
@@ -30,18 +29,10 @@ public class UserListFrame extends JFrame {
         for (String label : labels) {
             panel.add(new JLabel(label));
         }
-        Field[] fields = list.get(0).getClass().getDeclaredFields();
         for (User user : list) {
-            for (Field field : fields) {
-                try {
-                    field.setAccessible(true);
-                    if (field.getType().equals(String.class)) {
-                        panel.add(new JLabel(field.get(user).toString()));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            panel.add(new JLabel(user.getEmail()));
+            panel.add(new JLabel(user.getRole()));
+            panel.add(new JLabel(user.getStatus()));
         }
         buttonPrevious = new JButton("< Предыдущая");
         buttonNext = new JButton("Следующая >");
