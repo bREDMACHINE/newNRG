@@ -3,17 +3,15 @@ package get.newNRG.specification;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@Controller
-@Slf4j
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddSpecificationFrameController {
@@ -35,8 +33,6 @@ public class AddSpecificationFrameController {
         frame.getButtonOk().addActionListener(e -> {
             String specificationName = frame.getTextSpecificationName().getText();
             String specificationDescription = frame.getTextSpecificationDescription().getText();
-            log.info("Add specification  with specificationName {}, specificationDescription {}",
-                    specificationName, specificationDescription);
 
             ResponseEntity<Object> addSpecificationResponse = specificationClient.addSpecification(
                     SpecificationMapper.toSpecificationDto(specificationName, specificationDescription),

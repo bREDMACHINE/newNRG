@@ -1,16 +1,15 @@
 package get.newNRG.type;
 
-import get.newNRG.factories.AddFactoryFrameController;
+import get.newNRG.factories.FactoryClient;
 import get.newNRG.factories.FactoryDto;
 import get.newNRG.specification.SpecificationDto;
 import get.newNRG.specification.SpecificationFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -18,22 +17,23 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
-@Slf4j
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddTypeFrameController {
 
     private final TypeClient typeClient;
     private final SpecificationFrameController specificationFrameController;
-    private final AddFactoryFrameController addFactoryFrameController;
+    private final FactoryClient factoryClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddTypeFrame frame;
 
     public void initAddTypeFrameController() {
 
         List<SpecificationDto> specifications = specificationFrameController.findAllSpecifications();
-        List<FactoryDto> factories = addFactoryFrameController.findAllFactories();
+        List<FactoryDto> factories = factoryClient.findAllFactories(
+                frame,
+                authorizationFrameController.getUser().getUserId());
 
         frame = new AddTypeFrame(
                 specifications.stream().map(SpecificationDto::getSpecificationName).collect(Collectors.toList()),
@@ -50,8 +50,6 @@ public class AddTypeFrameController {
             String typeName = frame.getTextTypeName().getText();
             String factoryString = frame.getFactoryMenu().getSelectedItem().toString();
             String specificationString = frame.getSpecificationMenu().getSelectedItem().toString();
-            log.info("Add type  with typeName {}, factoryString {}, specificationString {}",
-                    typeName, factoryString, specificationString);
             Long factoryId = null;
             for (FactoryDto factory : factories) {
                 if (factory.getFactoryName().equalsIgnoreCase(factoryString)) {

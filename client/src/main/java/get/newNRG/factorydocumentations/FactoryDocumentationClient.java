@@ -1,7 +1,7 @@
 package get.newNRG.factorydocumentations;
 
 import com.google.gson.JsonParser;
-import get.newNRG.general.Client;
+import get.newNRG.general.ClientForListWithFile;
 import get.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class FactoryDocumentationClient extends BaseClient implements Client {
+public class FactoryDocumentationClient extends BaseClient implements ClientForListWithFile {
 
     @Autowired
     public FactoryDocumentationClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {

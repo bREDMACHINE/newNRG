@@ -6,6 +6,9 @@ import lombok.Setter;
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.GroupLayout.Alignment.*;
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+
 @Getter
 @Setter
 public class AddFactoryFrame extends JFrame {
@@ -18,19 +21,42 @@ public class AddFactoryFrame extends JFrame {
     public AddFactoryFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setFont(new Font("Arial", Font.PLAIN, 16));
+        frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        frame.setLocationRelativeTo(null);
 
-        JPanel panelLabels = new JPanel(new GridLayout(3, 2, 5, 0));
         textFactoryName = new JTextField(15);
-        panelLabels.add(new JLabel("Наименование завода"));
-        panelLabels.add(textFactoryName);
-        frame.getContentPane().add(BorderLayout.NORTH, panelLabels);
+        JLabel labelName = new JLabel("Наименование завода");
+        buttonOk = new JButton("Ок");
+        buttonCancel = new JButton("Закрыть");
 
-        buttonOk = new JButton("OK");
-        buttonCancel = new JButton("Отмена");
-        JPanel panelButtons = new JPanel();
-        panelButtons.add(buttonOk);
-        panelButtons.add(buttonCancel);
-        frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+        JPanel panel = new JPanel();
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(LEADING)
+                        .addComponent(labelName))
+                .addGroup(layout.createParallelGroup(TRAILING, false)
+                        .addComponent(textFactoryName)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonOk)
+                                .addComponent(buttonCancel)))
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(10)
+                        .addComponent(labelName)
+                        .addComponent(textFactoryName))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(buttonOk)
+                        .addComponent(buttonCancel))
+        );
+
+        frame.getContentPane().add(panel);
         frame.pack();
         frame.setVisible(true);
     }

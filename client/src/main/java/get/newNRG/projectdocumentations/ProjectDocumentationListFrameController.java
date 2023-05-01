@@ -1,6 +1,6 @@
 package get.newNRG.projectdocumentations;
 
-import get.newNRG.general.ListFrameController;
+import get.newNRG.general.ListFrameControllerWithFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ProjectDocumentationListFrameController {
 
-    private final ListFrameController controller;
+    private final ListFrameControllerWithFile controller;
     private final ProjectDocumentationClient client;
 
 
