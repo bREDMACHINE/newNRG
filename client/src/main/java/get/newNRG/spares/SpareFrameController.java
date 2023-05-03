@@ -13,15 +13,15 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class SpareFrameController extends CardFrameController<SpareDto> {
+public class SpareFrameController implements CardFrameController {
 
     private SpareFrame frame;
     private final SpareClient spareClient;
     private final UserAuthorizationFrameController authorizationFrameController;
 
     @Override
-    public void initCardFrameController(SpareDto spareDto) {
-        frame = new SpareFrame(spareDto);
+    public void initCardFrameController(Long spareId) {
+        frame = new SpareFrame(spareClient.get(frame, spareId, authorizationFrameController.getUser().getUserId()));
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             @Override
@@ -32,7 +32,7 @@ public class SpareFrameController extends CardFrameController<SpareDto> {
 
         frame.getButtonDelete().addActionListener(e -> spareClient.deleteSpare(
                 frame,
-                spareDto.getId(),
+                spareId,
                 authorizationFrameController.getUser().getUserId()
         ));
 

@@ -2,11 +2,8 @@ package get.newNRG.general;
 
 import java.awt.*;
 
-public abstract class AddCardFrameController {
+public interface AddCardFrameController {
 
-        Frame getFrame() {
-        return null;
-        }
-
-        public abstract void initAddCardFrameController();
+        Frame getFrame();
+        void initAddCardFrameController();
 }

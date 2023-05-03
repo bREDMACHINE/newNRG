@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddSpareFrameController extends AddCardFrameController {
+public class AddSpareFrameController implements AddCardFrameController {
 
     private final UserAuthorizationFrameController authorizationFrameController;
     private final SpareClient spareClient;

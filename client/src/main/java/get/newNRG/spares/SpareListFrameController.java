@@ -13,11 +13,13 @@ import java.util.List;
 public class SpareListFrameController {
 
     private final ListFrameControllerWithOpenCard controller;
+    private final AddSpareFrameController addSpareFrameController;
+    private final SpareFrameController spareFrameController;
     private final SpareClient client;
 
     public void initSpareListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Краткое наименование", "Полное описание", "Номер материала", "Открыть карточку");
-        controller.initListFrameController(client, maxSize, labels, parentObjectId);
+        controller.initListFrameController(client, maxSize, labels, parentObjectId, addSpareFrameController, spareFrameController);
     }
 
     public Frame getFrame() {

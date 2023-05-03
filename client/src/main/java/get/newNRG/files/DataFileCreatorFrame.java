@@ -19,7 +19,6 @@ public class DataFileCreatorFrame extends JFrame {
     private  JFileChooser fileChooser;
 
     private JButton buttonSave;
-    private JButton buttonOk;
     private JButton buttonCancel;
 
     public DataFileCreatorFrame() {
@@ -38,7 +37,6 @@ public class DataFileCreatorFrame extends JFrame {
         JLabel labelField = new JLabel("Вид ремонта");
         JLabel labelArea = new JLabel("Дата ремонта");
 
-        buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
@@ -54,7 +52,7 @@ public class DataFileCreatorFrame extends JFrame {
                         .addComponent(textField)
                         .addComponent(textArea)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonOk)
+                                .addComponent(buttonSave)
                                 .addComponent(buttonCancel)))
         );
 
@@ -67,7 +65,7 @@ public class DataFileCreatorFrame extends JFrame {
                         .addComponent(labelArea)
                         .addComponent(textArea))
                 .addGroup(layout.createParallelGroup(BASELINE)
-                        .addComponent(buttonOk)
+                        .addComponent(buttonSave)
                         .addComponent(buttonCancel))
         );
 

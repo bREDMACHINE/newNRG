@@ -19,8 +19,8 @@ public class ListFrameControllerWithOpenCard {
     private ListFrameWithOpenCard frame;
     private ClientWithOpenCard client;
     private final UserAuthorizationFrameController authorizationFrameController;
-    private final CardFrameController<Object> cardController;
-    private final AddCardFrameController addCardController;
+    private CardFrameController cardController;
+    private AddCardFrameController addCardController;
     private int size;
     private int maxSize;
     private int from;
@@ -31,11 +31,19 @@ public class ListFrameControllerWithOpenCard {
     private List<? extends WithOpenCard> list;
     private List<String> labels;
 
-    public void initListFrameController(ClientWithOpenCard client, int maxSize, List<String> labels, Long parentObjectId) {
+    public void initListFrameController(
+            ClientWithOpenCard client,
+            int maxSize,
+            List<String> labels,
+            Long parentObjectId,
+            AddCardFrameController addCardController,
+            CardFrameController cardController) {
         this.client = client;
         this.maxSize = maxSize;
         this.labels = labels;
         this.parentObjectId = parentObjectId;
+        this.addCardController = addCardController;
+        this.cardController = cardController;
         size = 15;
         pages = maxSize / size + 1;
         maxShow = pages * size - 15;
@@ -111,11 +119,9 @@ public class ListFrameControllerWithOpenCard {
         for (JButton button : frame.getOpenCardButtons()) {
             button.addActionListener(e -> {
                 if (cardController.getFrame() == null) {
-                    cardController.initCardFrameController(client.get(
-                                    frame,
-                                    list.get(Integer.parseInt(button.getActionCommand())).getId(),
-                                    authorizationFrameController.getUser().getUserId()
-                    ));
+                    cardController.initCardFrameController(
+                            list.get(Integer.parseInt(button.getActionCommand())).getId()
+                    );
                 } else {
                     cardController.getFrame().toFront();
                     cardController.getFrame().requestFocus();

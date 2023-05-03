@@ -19,8 +19,9 @@ public class AddEventFrame extends JFrame {
     private JFormattedTextField textEventDate;
     private JTextField textEventName;
     private JTextArea textDescription;
-    private JButton buttonFile;
+    private JButton buttonFileChooser;
     private  JFileChooser fileChooser;
+    private JButton buttonFileCreator;
     private JButton buttonOk;
     private JButton buttonCancel;
 
@@ -43,10 +44,11 @@ public class AddEventFrame extends JFrame {
         JLabel labelDescription = new JLabel("Описание");
         textDescription = new JTextArea(30,5);
         JLabel labelFile = new JLabel("Документ");
-        buttonFile = new JButton("Прикрепить");
+        buttonFileChooser = new JButton("Прикрепить");
         fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Выберите файл");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        buttonFileCreator = new JButton("Создать документ");
         buttonOk = new JButton("OK");
         buttonCancel = new JButton("Отмена");
 
@@ -65,7 +67,8 @@ public class AddEventFrame extends JFrame {
                         .addComponent(textEventDate)
                         .addComponent(textEventName)
                         .addComponent(textDescription)
-                        .addComponent(buttonFile)
+                        .addComponent(buttonFileChooser)
+                        .addComponent(buttonFileCreator)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(buttonOk)
                                 .addComponent(buttonCancel)))
@@ -86,7 +89,8 @@ public class AddEventFrame extends JFrame {
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)
                         .addComponent(labelFile)
-                        .addComponent(buttonFile))
+                        .addComponent(buttonFileChooser))
+                .addComponent(buttonFileCreator)
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addComponent(buttonOk)
                         .addComponent(buttonCancel))

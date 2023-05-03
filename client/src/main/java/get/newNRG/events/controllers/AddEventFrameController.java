@@ -2,6 +2,7 @@ package get.newNRG.events.controllers;
 
 import get.newNRG.events.EventClient;
 import get.newNRG.events.EventMapper;
+import get.newNRG.files.DataFileCreatorFrameController;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileMapper;
@@ -25,6 +26,7 @@ public class AddEventFrameController {
     private AddEventFrame frame;
     private final EventClient eventClient;
     private final DataFileClient dataFileClient;
+    private final DataFileCreatorFrameController dataFileCreatorFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
@@ -40,12 +42,21 @@ public class AddEventFrameController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
-        frame.getButtonFile().addActionListener(e -> {
+        frame.getButtonFileChooser().addActionListener(e -> {
             int result = frame.getFileChooser().showOpenDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION ) {
                 file = frame.getFileChooser().getSelectedFile();
                 JOptionPane.showMessageDialog(frame,
                         "Файл " + frame.getFileChooser().getSelectedFile() + " выбран");
+            }
+        });
+
+        frame.getButtonFileCreator().addActionListener(e -> {
+            if (dataFileCreatorFrameController.getFrame() == null) {
+                dataFileCreatorFrameController.initDataFileCreatorFrameController();
+            } else {
+                dataFileCreatorFrameController.getFrame().toFront();
+                dataFileCreatorFrameController.getFrame().requestFocus();
             }
         });
 

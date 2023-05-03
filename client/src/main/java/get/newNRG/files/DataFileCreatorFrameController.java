@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,36 +43,27 @@ public class DataFileCreatorFrameController {
             int result = frame.getFileChooser().showSaveDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION ) {
                 file = frame.getFileChooser().getSelectedFile();
-                JOptionPane.showMessageDialog(frame,
-                        "Директория " + frame.getFileChooser().getSelectedFile() + " выбрана");
             }
-        });
-
-        frame.getButtonOk().addActionListener(e -> {
             String textField = frame.getTextField().getText();
             String textArea = frame.getTextArea().getText();
             PDDocument document = new PDDocument();
             PDPage page = new PDPage();
             document.addPage(page);
 
-            PDPageContentStream contentStream = null;
+            PDPageContentStream contentStream;
             try {
                 contentStream = new PDPageContentStream(document, page);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
+                contentStream.beginText();
+                contentStream.showText(textField);
+                contentStream.showText(textArea);
+                contentStream.endText();
+                contentStream.close();
 
-
-            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
-            contentStream.beginText();
-            contentStream.showText(textField);
-            contentStream.showText(textArea);
-            contentStream.endText();
-            contentStream.close();
-
-            if (file != null) {
                 document.save(file);
-            } else {
-                document.save("UNTITLED");
-            }
-            document.close();
+                document.close();
+                JOptionPane.showMessageDialog(frame,"Файл " + frame.getFileChooser().getSelectedFile() + " сохранен");
+                frame.getFrame().dispose();
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
