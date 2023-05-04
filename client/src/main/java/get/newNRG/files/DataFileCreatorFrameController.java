@@ -53,9 +53,12 @@ public class DataFileCreatorFrameController {
             PDPageContentStream contentStream;
             try {
                 contentStream = new PDPageContentStream(document, page);
-                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
                 contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
+                contentStream.setLeading(14.5f);
+                contentStream.newLineAtOffset(25, 725);
                 contentStream.showText(textField);
+                contentStream.newLine();
                 contentStream.showText(textArea);
                 contentStream.endText();
                 contentStream.close();
