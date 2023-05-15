@@ -5,10 +5,9 @@ import get.newNRG.specification.SpecificationDto;
 import get.newNRG.specification.SpecificationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -16,8 +15,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
-@Slf4j
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AddSpecificationValueFrameController {
@@ -43,8 +41,6 @@ public class AddSpecificationValueFrameController {
         frame.getButtonOk().addActionListener(e -> {
             Long specificationValue = Long.parseLong(frame.getTextSpecificationValue().getText());
             String specificationString = frame.getSpecificationMenu().getSelectedItem().toString();
-            log.info("Add specification  with specificationValue {}, specificationId {}",
-                    specificationValue, specificationString);
             Long specificationId = null;
             for (SpecificationDto specification : specifications) {
                 if (specification.getSpecificationName().equalsIgnoreCase(specificationString)) {

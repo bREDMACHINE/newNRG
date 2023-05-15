@@ -8,12 +8,10 @@ import java.util.List;
 public class FactoryMapper {
 
     public static FactoryDto toFactoryDto(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), FactoryDto.class);
+        return new Gson().fromJson(object.toString(), FactoryDto.class);
     }
 
     public static List<FactoryDto> toFactoryDtos(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), new TypeToken<List<FactoryDto>>(){}.getType());
+        return new Gson().fromJson(object.toString(), new TypeToken<List<FactoryDto>>(){}.getType());
     }
 }

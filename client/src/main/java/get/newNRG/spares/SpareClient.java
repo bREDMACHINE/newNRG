@@ -1,5 +1,7 @@
 package get.newNRG.spares;
 
+import com.google.gson.JsonParser;
+import get.newNRG.general.ClientWithOpenCard;
 import get.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,38 +9,90 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-@Service
-@Slf4j
-public class SpareClient extends BaseClient {
+import javax.swing.*;
+import java.awt.*;
+import java.io.StringReader;
+import java.util.List;
 
-    private static final String API_PREFIX = "";
+@Component
+@Slf4j
+public class SpareClient extends BaseClient implements ClientWithOpenCard {
 
     @Autowired
     public SpareClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
     }
 
-    public ResponseEntity<Object> addSpare(SpareDto spare, String userId) {
-        return post("/moderator/equipment/type/spare",  userId, spare);
+    public void addSpare(Frame frame, SpareDto spare, String userId) {
+        log.info("Add spare {}", spare);
+        Object object = response(post("/moderator/equipment/type/spare",  userId, spare), frame);
+        if (object != null) {
+            SpareDto spareResponse = SpareMapper.toSpareDto(object);
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,
+                    "Деталь " + spareResponse.getSpareName() + " успешно добавлена");
+        }
     }
 
-    public ResponseEntity<Object> deleteSpare(Long spareId, String userId) {
-        return delete("/moderator/equipment/type/spare/" + spareId,  userId);
+    public void deleteSpare(Frame frame, Long spareId, String userId) {
+        log.info("Delete spare {}", spareId);
+        Object object = response(delete("/moderator/equipment/type/spare/" + spareId,  userId), frame);
+        if (object != null) {
+            String name = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("name").getAsString();
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,"Деталь " + name + " удалена");
+        }
     }
 
-    public ResponseEntity<Object> getSpare(Long spareId, String userId) {
-        return get("/moderator/equipment/type/spare/" + spareId,  userId);
+    @Override
+    public SpareDto get(Frame frame, Long spareId, String userId) {
+        log.info("Get spare {}", spareId);
+        Object object = response(
+                get("/moderator/equipment/type/spare/" + spareId,  userId),
+                frame
+        );
+        if (object != null) {
+            return SpareMapper.toSpareDto(object);
+        }
+        return null;
     }
 
-    public ResponseEntity<Object> findAllSpares(Long typeId, int from, int size, String userId) {
-        return get("/user/equipment/type/" + typeId + "/spares?from=" + from + "&size=" + size,  userId);
+    @Override
+    public List<SpareDto> findAll(Frame frame, Long typeId, int from, int size, String userId) {
+        log.info("Find all spares for type {}", typeId);
+        Object object = response(
+                get("/user/equipment/type/" + typeId + "/spares?from=" + from + "&size=" + size,  userId),
+                frame
+        );
+        if (object != null) {
+            return SpareMapper.toSpareDtos(object);
+        }
+        return null;
+    }
+
+    private <T> T response(ResponseEntity<T> response, Frame frame) {
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            log.info("Result {}",  response.getBody().toString());
+            return response.getBody();
+        } else {
+            if (frame != null) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        response.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        return null;
     }
 }

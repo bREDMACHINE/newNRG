@@ -1,4 +1,4 @@
-package get.newNRG.factories;
+package get.newNRG.files;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,25 +11,33 @@ import static javax.swing.GroupLayout.Alignment.BASELINE;
 
 @Getter
 @Setter
-public class AddFactoryFrame extends JFrame {
+public class DataFileCreatorFrame extends JFrame {
 
     private JFrame frame;
-    private JTextField textFactoryName;
-    private JButton buttonOk;
+    private JTextField textField;
+    private JTextArea textArea;
+    private  JFileChooser fileChooser;
+
+    private JButton buttonSave;
     private JButton buttonCancel;
 
-    public AddFactoryFrame() {
+    public DataFileCreatorFrame() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         frame.setFont(new Font("Arial", Font.PLAIN, 16));
         frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         frame.setLocationRelativeTo(null);
 
-        textFactoryName = new JTextField(15);
-        JLabel labelName = new JLabel("Наименование завода");
-        buttonOk = new JButton("Ок");
-        buttonCancel = new JButton("Закрыть");
+        buttonSave = new JButton("Сохранить на диске");
+        fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Сохранение файла");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        textField = new JTextField();
+        textArea = new JTextArea();
+        JLabel labelField = new JLabel("Вид ремонта");
+        JLabel labelArea = new JLabel("Дата ремонта");
 
+        buttonCancel = new JButton("Отмена");
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
@@ -38,21 +46,26 @@ public class AddFactoryFrame extends JFrame {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(LEADING)
-                        .addComponent(labelName))
+                        .addComponent(labelField)
+                        .addComponent(labelArea))
                 .addGroup(layout.createParallelGroup(TRAILING, false)
-                        .addComponent(textFactoryName)
+                        .addComponent(textField)
+                        .addComponent(textArea)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonOk)
+                                .addComponent(buttonSave)
                                 .addComponent(buttonCancel)))
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(BASELINE)
-                        .addGap(10)
-                        .addComponent(labelName)
-                        .addComponent(textFactoryName))
+                        .addComponent(labelField)
+                        .addComponent(textField))
                 .addGroup(layout.createParallelGroup(BASELINE)
-                        .addComponent(buttonOk)
+                        .addGap(10)
+                        .addComponent(labelArea)
+                        .addComponent(textArea))
+                .addGroup(layout.createParallelGroup(BASELINE)
+                        .addComponent(buttonSave)
                         .addComponent(buttonCancel))
         );
 

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>get.a.big.head</groupId>
+        <groupId>get</groupId>
         <artifactId>newnrg</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -73,6 +73,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.0-alpha3</version>
         </dependency>
     </dependencies>
 

@@ -21,10 +21,10 @@ import java.util.List;
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class ListFrameController {
+public class ListFrameControllerWithFile {
 
-    private ListFrame frame;
-    private Client client;
+    private ListFrameWithFile frame;
+    private ClientForListWithFile client;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final DataFileClient dataFileClient;
     private int size;
@@ -37,7 +37,7 @@ public class ListFrameController {
     private List<? extends WithFile> list;
     private List<String> labels;
 
-    public void initListFrameController(Client client, int maxSize, List<String> labels, Long parentObjectId) {
+    public void initListFrameController(ClientForListWithFile client, int maxSize, List<String> labels, Long parentObjectId) {
         this.client = client;
         this.maxSize = maxSize;
         this.labels = labels;
@@ -60,19 +60,19 @@ public class ListFrameController {
         );
         if (list != null) {
             if (maxSize <= size) {
-                frame = new ListFrame(list, labels, page, pages);
+                frame = new ListFrameWithFile(list, labels, page, pages);
                 functionsFrame();
             } else if (from < size) {
-                frame = new ListFrame(list, labels, page, pages);
+                frame = new ListFrameWithFile(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonNext());
                 functionsFrame();
             } else if (from > 14 && from < maxShow) {
-                frame = new ListFrame(list, labels, page, pages);
+                frame = new ListFrameWithFile(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
                 frame.getPanelButtons().add(frame.getButtonNext());
                 functionsFrame();
             } else if (from > 14 && from == maxShow) {
-                frame = new ListFrame(list, labels, page, pages);
+                frame = new ListFrameWithFile(list, labels, page, pages);
                 frame.getPanelButtons().add(frame.getButtonPrevious());
                 functionsFrame();
             }

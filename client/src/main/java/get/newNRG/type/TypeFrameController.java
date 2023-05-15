@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-@Controller
+@Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TypeFrameController {
@@ -53,12 +53,14 @@ public class TypeFrameController {
             }
         });
 
-        frame.getButtonDocuments().addActionListener(e -> {
+        frame.getButtonSpares().addActionListener(e -> {
             if (spareListFrameController.getFrame() == null) {
-                spareListFrameController.initSpareListFrameController(type);
+                spareListFrameController.initSpareListFrameController(
+                        type.getSpares().size(),
+                        type.getTypeId());
             } else {
-                spareListFrameController.getFrame().getFrame().toFront();
-                spareListFrameController.getFrame().getFrame().requestFocus();
+                spareListFrameController.getFrame().toFront();
+                spareListFrameController.getFrame().requestFocus();
             }
         });
 
@@ -73,7 +75,7 @@ public class TypeFrameController {
             public void windowClosed(WindowEvent e) {
                 frame = null;
                 if (spareListFrameController.getFrame() !=null) {
-                    spareListFrameController.getFrame().getFrame().dispose();
+                    spareListFrameController.getFrame().dispose();
                 }
             }
         });

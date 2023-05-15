@@ -1,16 +1,5 @@
 version: '3.8'
 services:
-  client:
-    build: ./client
-    image: image-client
-    container_name: client-container
-    ports:
-      - "8080:8080"
-    depends_on:
-      - server
-    environment:
-      - NEWNRG_SERVER_URL=http://server:9090
-
   server:
     build: ./server
     image: image-server

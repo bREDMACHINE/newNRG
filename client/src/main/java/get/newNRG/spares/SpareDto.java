@@ -1,13 +1,13 @@
 package get.newNRG.spares;
 
-import lombok.Builder;
-import lombok.Getter;
+import get.newNRG.general.WithOpenCard;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Builder
-@Getter
-public class SpareDto {
+@Data
+@EqualsAndHashCode(callSuper=true)
+public class SpareDto extends WithOpenCard {
 
-    private Long spareId;
     private String spareName;
     private String spareDescription;
     private String spareCode;

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ListFrame extends JFrame {
+public class ListFrameWithFile extends JFrame {
     private JFrame frame;
     private List<JButton> openFileButtons = new ArrayList<>();
     private List<JButton> deleteButtons = new ArrayList<>();
@@ -21,7 +21,7 @@ public class ListFrame extends JFrame {
     private JButton buttonNext;
     private JPanel panelButtons;
 
-    public ListFrame(List<?> list, List<String> labels, int page, int pages) {
+    public ListFrameWithFile(List<?> list, List<String> labels, int page, int pages) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         frame.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -58,10 +58,10 @@ public class ListFrame extends JFrame {
                     e.printStackTrace();
                 }
             }
-            JButton deleteEventButton = new JButton("Удалить");
-            deleteEventButton.setActionCommand(String.valueOf(i));
-            deleteButtons.add(deleteEventButton);
-            panel.add(deleteEventButton);
+            JButton deleteButton = new JButton("Удалить");
+            deleteButton.setActionCommand(String.valueOf(i));
+            deleteButtons.add(deleteButton);
+            panel.add(deleteButton);
         }
         buttonPrevious = new JButton("< Предыдущая");
         buttonNext = new JButton("Следующая >");
