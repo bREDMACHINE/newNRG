@@ -14,6 +14,7 @@ public class TypeFrame extends JFrame {
     private JButton buttonSpecifications;
     private JButton buttonDocuments;
     private JButton buttonSpares;
+    private JButton buttonDelete;
     private JButton buttonOk;
     private JButton buttonCancel;
 
@@ -25,6 +26,7 @@ public class TypeFrame extends JFrame {
         buttonSpecifications = new JButton("Просмотреть характеристики типа");
         buttonDocuments = new JButton("Просмотреть документы типа");
         buttonSpares = new JButton("Просмотреть запчасти");
+        buttonDelete = new JButton("Удалить тип");
         panelSpecifications.add(new JLabel("Полный тип"));
         panelSpecifications.add(new JLabel(type.getTypeName()));
         panelSpecifications.add(new JLabel("Завод изготовитель"));
@@ -35,6 +37,7 @@ public class TypeFrame extends JFrame {
         panelSpecifications.add(buttonDocuments);
         panelSpecifications.add(new JLabel("Детали для ремонта"));
         panelSpecifications.add(buttonSpares);
+        panelSpecifications.add(buttonDelete);
         frame.getContentPane().add(BorderLayout.NORTH, panelSpecifications);
 
         buttonOk = new JButton("Ок");

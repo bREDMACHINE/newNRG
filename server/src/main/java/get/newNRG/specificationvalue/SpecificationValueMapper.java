@@ -1,7 +1,6 @@
 package get.newNRG.specificationvalue;
 
 import get.newNRG.specifications.Specification;
-import get.newNRG.types.Type;
 
 public class SpecificationValueMapper {
 
@@ -17,11 +16,10 @@ public class SpecificationValueMapper {
     }
 
     public static SpecificationValue toSpecificationValue(SpecificationValueDto specificationValueDto,
-                                                          Specification specification, Type type) {
+                                                          Specification specification) {
         SpecificationValue specificationValue = new SpecificationValue();
         specificationValue.setSpecification(specification);
         specificationValue.setSpecificationValueId(specificationValueDto.getSpecificationValueId());
-        specificationValue.setType(type);
         return specificationValue;
     }
 }

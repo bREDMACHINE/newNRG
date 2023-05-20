@@ -4,14 +4,14 @@ import get.newNRG.factories.FactoryClient;
 import get.newNRG.factories.FactoryDto;
 import get.newNRG.specification.SpecificationDto;
 import get.newNRG.specification.SpecificationFrameController;
+import get.newNRG.specificationvalue.SpecificationValueClient;
+import get.newNRG.specificationvalue.SpecificationValueMapper;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -25,6 +25,7 @@ public class AddTypeFrameController {
     private final TypeClient typeClient;
     private final SpecificationFrameController specificationFrameController;
     private final FactoryClient factoryClient;
+    private final SpecificationValueClient specificationValueClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddTypeFrame frame;
 
@@ -49,37 +50,32 @@ public class AddTypeFrameController {
         frame.getButtonOk().addActionListener(e -> {
             String typeName = frame.getTextTypeName().getText();
             String factoryString = frame.getFactoryMenu().getSelectedItem().toString();
-            String specificationString = frame.getSpecificationMenu().getSelectedItem().toString();
             Long factoryId = null;
             for (FactoryDto factory : factories) {
                 if (factory.getFactoryName().equalsIgnoreCase(factoryString)) {
                     factoryId = factory.getFactoryId();
                 }
             }
-            Long specificationId = null;
+
+            String specificationString1 = frame.getSpecificationMenu1().getSelectedItem().toString();
+            Long specificationId1 = null;
             for (SpecificationDto specification : specifications) {
-                if (specification.getSpecificationName().equalsIgnoreCase(specificationString)) {
-                    specificationId = specification.getSpecificationId();
+                if (specification.getSpecificationName().equalsIgnoreCase(specificationString1)) {
+                    specificationId1 = specification.getSpecificationId();
                 }
             }
+            String specificationValueId1 = frame.getTextSpecificationValue1().getText();
+            Long value1 = specificationValueClient.addSpecificationValue(
+                    frame,
+                    SpecificationValueMapper.toSpecificationValueDto(Long.parseLong(specificationValueId1), specificationId1),
+                    authorizationFrameController.getUser().getUserId()
+            ).getSpecificationValueId();
 
-            ResponseEntity<Object> addTypeResponse = typeClient.addType(
-                    TypeMapper.toTypeShortDto(typeName, factoryId, List.of(specificationId)),
+            typeClient.addType(
+                    frame,
+                    TypeMapper.toTypeShortDto(typeName, factoryId, List.of(value1)),
                     authorizationFrameController.getUser().getUserId()
             );
-            if (addTypeResponse.getStatusCode().is2xxSuccessful() && addTypeResponse.getBody() != null) {
-                TypeShortDto type = TypeMapper.toTypeShortDto(addTypeResponse.getBody());
-                frame.getFrame().dispose();
-                JOptionPane.showMessageDialog(frame.getFrame(),
-                        "Тип " + type.getTypeName() + " успешно добавлен");
-            } else {
-                JOptionPane.showMessageDialog(
-                        frame.getFrame(),
-                        addTypeResponse.getStatusCode().toString(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());

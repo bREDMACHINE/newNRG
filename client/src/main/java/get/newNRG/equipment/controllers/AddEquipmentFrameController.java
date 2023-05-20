@@ -4,7 +4,7 @@ import get.newNRG.equipment.EquipmentClient;
 import get.newNRG.equipment.EquipmentMapper;
 import get.newNRG.equipment.frames.AddEquipmentFrame;
 import get.newNRG.type.AddTypeFrameController;
-import get.newNRG.type.TypeFrameController;
+import get.newNRG.type.TypeClient;
 import get.newNRG.type.TypeShortDto;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -23,14 +23,17 @@ import java.util.stream.Collectors;
 public class AddEquipmentFrameController {
 
     private final EquipmentClient equipmentClient;
-    private final TypeFrameController typeFrameController;
+    private final TypeClient typeClient;
     private final AddTypeFrameController addTypeFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
 
     public void initAddEquipmentFrameController() {
 
-        List<TypeShortDto> types = typeFrameController.findAllTypes();
+        List<TypeShortDto> types = typeClient.findAllTypes(
+                frame,
+                authorizationFrameController.getUser().getUserId()
+        );;
 
         frame = new AddEquipmentFrame(types.stream().map(TypeShortDto::getTypeName).collect(Collectors.toList()));
 

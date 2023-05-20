@@ -1,5 +1,6 @@
 package get.newNRG.type;
 
+import com.google.gson.JsonParser;
 import get.newNRG.httpclients.BaseClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,44 +11,95 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.StringReader;
+import java.util.List;
+
 @Component
 @Slf4j
 public class TypeClient extends BaseClient {
-
-    private static final String API_PREFIX = "";
 
     @Autowired
     public TypeClient(@Value("${newnrg-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
     }
 
-    public ResponseEntity<Object> addType(TypeShortDto type, String userId) {
+    public void addType(Frame frame, TypeShortDto type, String userId) {
         log.info("Add type {}",  type);
-        return post("/moderator/equipment/type", userId, type);
+        Object object = response(post("/moderator/equipment/type", userId, type), frame);
+        if (object != null) {
+            TypeShortDto typeResponse = TypeMapper.toTypeShortDto(object);
+            JOptionPane.showMessageDialog(frame,
+                    "Тип " + typeResponse.getTypeName() + " успешно добавлен");
+        }
     }
 
-    public ResponseEntity<Object> updateType(TypeDto type, String userId) {
+    public void updateType(Frame frame, TypeDto type, String userId) {
         log.info("Update type {}",  type);
-        return patch("/moderator/equipment/type", userId, type);
+        Object object = response(patch("/moderator/equipment/type", userId, type), frame);
+        if (object != null) {
+            TypeDto typeResponse = TypeMapper.toTypeDto(object);
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,
+                    "Тип " + typeResponse.getTypeName() + " успешно обновлен");
+        }
     }
 
-    public ResponseEntity<Object> deleteType(Long typeId, String userId) {
+    public void deleteType(Frame frame, Long typeId, String userId) {
         log.info("Delete type {}",  typeId);
-        return delete("/moderator/equipment/type/" + typeId, userId);
+        Object object = response(delete("/moderator/equipment/type/" + typeId, userId), frame);
+        if (object != null) {
+            String name = JsonParser.parseReader(new StringReader(object.toString()))
+                    .getAsJsonObject().get("name").getAsString();
+            frame.dispose();
+            JOptionPane.showMessageDialog(frame,"Тип " + name + " удален");
+        }
     }
 
-    public ResponseEntity<Object> getType(Long typeId, String userId) {
+    public TypeDto getType(Frame frame, Long typeId, String userId) {
         log.info("Get type {}",  typeId);
-        return get("/user/equipment/type/" + typeId, userId);
+        Object object = response(
+                get("/user/equipment/type/" + typeId, userId),
+                frame
+        );
+        if (object != null) {
+            return TypeMapper.toTypeDto(object);
+        }
+        return null;
     }
 
-    public ResponseEntity<Object> findAllTypes(String userId) {
+    public List<TypeShortDto> findAllTypes(Frame frame, String userId) {
         log.info("Find all types");
-        return get("/user/equipment/types", userId);
+        Object object = response(
+                get("/user/equipment/types", userId),
+                frame
+        );
+        if (object != null) {
+            return TypeMapper.toTypeShortDtos(object);
+        }
+        return null;
+    }
+
+    private <T> T response(ResponseEntity<T> response, Frame frame) {
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            log.info("Result {}",  response.getBody().toString());
+            return response.getBody();
+        } else {
+            if (frame != null) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        response.getStatusCode().toString(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        return null;
     }
 }
