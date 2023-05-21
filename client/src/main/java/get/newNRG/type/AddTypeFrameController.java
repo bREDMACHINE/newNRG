@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +29,11 @@ public class AddTypeFrameController {
     private final SpecificationValueClient specificationValueClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddTypeFrame frame;
+    private List<SpecificationDto> specifications;
 
     public void initAddTypeFrameController() {
 
-        List<SpecificationDto> specifications = specificationFrameController.findAllSpecifications();
+        specifications = specificationFrameController.findAllSpecifications();
         List<FactoryDto> factories = factoryClient.findAllFactories(
                 frame,
                 authorizationFrameController.getUser().getUserId());
@@ -56,28 +58,36 @@ public class AddTypeFrameController {
                     factoryId = factory.getFactoryId();
                 }
             }
-
-            String specificationString1 = frame.getSpecificationMenu1().getSelectedItem().toString();
-            Long specificationId1 = null;
-            for (SpecificationDto specification : specifications) {
-                if (specification.getSpecificationName().equalsIgnoreCase(specificationString1)) {
-                    specificationId1 = specification.getSpecificationId();
-                }
-            }
-            String specificationValueId1 = frame.getTextSpecificationValue1().getText();
-            Long value1 = specificationValueClient.addSpecificationValue(
-                    frame,
-                    SpecificationValueMapper.toSpecificationValueDto(Long.parseLong(specificationValueId1), specificationId1),
-                    authorizationFrameController.getUser().getUserId()
-            ).getSpecificationValueId();
-
+            List<Long> ids = new ArrayList<>();
+            ids.add(getId(frame.getSpecificationMenu1().getSelectedItem().toString(), frame.getTextSpecificationValue1().getText()));
+            ids.add(getId(frame.getSpecificationMenu2().getSelectedItem().toString(), frame.getTextSpecificationValue2().getText()));
+            ids.add(getId(frame.getSpecificationMenu3().getSelectedItem().toString(), frame.getTextSpecificationValue3().getText()));
+            ids.add(getId(frame.getSpecificationMenu4().getSelectedItem().toString(), frame.getTextSpecificationValue4().getText()));
+            ids.add(getId(frame.getSpecificationMenu5().getSelectedItem().toString(), frame.getTextSpecificationValue5().getText()));
             typeClient.addType(
                     frame,
-                    TypeMapper.toTypeShortDto(typeName, factoryId, List.of(value1)),
+                    TypeMapper.toTypeShortDto(typeName, factoryId, ids),
                     authorizationFrameController.getUser().getUserId()
             );
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+    }
+
+    private Long getId(String specificationString, String valueString) {
+        Long specificationId = null;
+        for (SpecificationDto specification : specifications) {
+            if (specification.getSpecificationName().equalsIgnoreCase(specificationString)) {
+                specificationId = specification.getSpecificationId();
+            }
+        }
+        if (specificationId != null) {
+            return specificationValueClient.addSpecificationValue(
+                    frame,
+                    SpecificationValueMapper.toSpecificationValueDto(Long.parseLong(valueString), specificationId),
+                    authorizationFrameController.getUser().getUserId()
+            ).getSpecificationValueId();
+        }
+        return null;
     }
 }
