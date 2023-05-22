@@ -17,6 +17,8 @@ public class AddTypeFrame extends JFrame {
     private JFrame frame;
     private JTextField textTypeName;
     private JComboBox<String> factoryMenu;
+    private JButton buttonAddFactory;
+    private JButton buttonAddSpecification;
     private JComboBox<String> specificationMenu1;
     private JComboBox<String> specificationMenu2;
     private JComboBox<String> specificationMenu3;
@@ -44,6 +46,8 @@ public class AddTypeFrame extends JFrame {
         textTypeName = new JTextField(15);
         JLabel labelFactory = new JLabel("Завод изготовитель");
         factoryMenu = new JComboBox<>(factories.toArray(new String[factories.size()]));
+        buttonAddFactory = new JButton("Добавить завод");
+        buttonAddSpecification = new JButton("Добавить характеристику");
         String[] specificationsArray = specifications.toArray(new String[specifications.size()]);
         specificationMenu1 = new JComboBox<>(specificationsArray);
         specificationMenu2 = new JComboBox<>(specificationsArray);
@@ -74,11 +78,13 @@ public class AddTypeFrame extends JFrame {
                 .addGroup(layout.createParallelGroup(TRAILING, false)
                         .addComponent(textTypeName)
                         .addComponent(factoryMenu)
+                        .addComponent(buttonAddFactory)
                         .addComponent(textSpecificationValue1)
                         .addComponent(textSpecificationValue2)
                         .addComponent(textSpecificationValue3)
                         .addComponent(textSpecificationValue4)
                         .addComponent(textSpecificationValue5)
+                        .addComponent(buttonAddSpecification)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(buttonOk)
                                 .addComponent(buttonCancel)))
@@ -92,6 +98,8 @@ public class AddTypeFrame extends JFrame {
                         .addGap(10)
                         .addComponent(labelFactory)
                         .addComponent(factoryMenu))
+                .addGap(10)
+                .addComponent(buttonAddFactory)
                 .addGroup(layout.createParallelGroup(BASELINE)
                         .addGap(10)
                         .addComponent(specificationMenu1)
@@ -112,7 +120,10 @@ public class AddTypeFrame extends JFrame {
                         .addGap(10)
                         .addComponent(specificationMenu5)
                         .addComponent(textSpecificationValue5))
+                .addGap(10)
+                .addComponent(buttonAddSpecification)
                 .addGroup(layout.createParallelGroup(BASELINE)
+                        .addGap(10)
                         .addComponent(buttonOk)
                         .addComponent(buttonCancel))
         );

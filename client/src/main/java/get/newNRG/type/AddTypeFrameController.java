@@ -1,7 +1,10 @@
 package get.newNRG.type;
 
+import get.newNRG.factories.AddFactoryFrameController;
 import get.newNRG.factories.FactoryClient;
 import get.newNRG.factories.FactoryDto;
+import get.newNRG.general.FrameStarterController;
+import get.newNRG.specification.AddSpecificationFrameController;
 import get.newNRG.specification.SpecificationDto;
 import get.newNRG.specification.SpecificationFrameController;
 import get.newNRG.specificationvalue.SpecificationValueClient;
@@ -21,10 +24,12 @@ import java.util.stream.Collectors;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddTypeFrameController {
+public class AddTypeFrameController extends FrameStarterController {
 
     private final TypeClient typeClient;
     private final SpecificationFrameController specificationFrameController;
+    private final AddFactoryFrameController addFactoryFrameController;
+    private final AddSpecificationFrameController addSpecificationFrameController;
     private final FactoryClient factoryClient;
     private final SpecificationValueClient specificationValueClient;
     private final UserAuthorizationFrameController authorizationFrameController;
@@ -72,6 +77,14 @@ public class AddTypeFrameController {
         });
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
+
+        frame.getButtonAddFactory().addActionListener(e ->
+            starter(addFactoryFrameController.getFrame().getFrame(), addFactoryFrameController)
+        );
+
+        frame.getButtonAddSpecification().addActionListener(e ->
+            starter(addSpecificationFrameController.getFrame().getFrame(), addSpecificationFrameController)
+        );
     }
 
     private Long getId(String specificationString, String valueString) {
