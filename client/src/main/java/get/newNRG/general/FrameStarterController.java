@@ -4,9 +4,18 @@ import java.awt.*;
 
 public class FrameStarterController {
 
-    protected void starter(Frame frame, ControllerInitiator controllerInitiator) {
+    protected void startFrame(Frame frame, AddCardFrameController controller) {
         if (frame == null) {
-            controllerInitiator.initiate();
+            controller.initAddCardFrameController();
+        } else {
+            frame.toFront();
+            frame.requestFocus();
+        }
+    }
+
+    protected void startFrame(Frame frame, CardFrameController controller, Long id) {
+        if (frame == null) {
+            controller.initCardFrameController(id);
         } else {
             frame.toFront();
             frame.requestFocus();

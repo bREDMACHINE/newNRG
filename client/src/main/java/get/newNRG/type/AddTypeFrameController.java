@@ -79,11 +79,11 @@ public class AddTypeFrameController extends FrameStarterController {
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
         frame.getButtonAddFactory().addActionListener(e ->
-            starter(addFactoryFrameController.getFrame().getFrame(), addFactoryFrameController)
+            startFrame(addFactoryFrameController.getFrame().getFrame(), addFactoryFrameController)
         );
 
         frame.getButtonAddSpecification().addActionListener(e ->
-            starter(addSpecificationFrameController.getFrame().getFrame(), addSpecificationFrameController)
+            startFrame(addSpecificationFrameController.getFrame().getFrame(), addSpecificationFrameController)
         );
     }
 
