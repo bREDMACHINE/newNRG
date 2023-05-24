@@ -5,6 +5,7 @@ import get.newNRG.equipment.EquipmentDto;
 import get.newNRG.equipment.frames.EquipmentFrame;
 import get.newNRG.events.controllers.AddEventFrameController;
 import get.newNRG.events.controllers.EventListFrameController;
+import get.newNRG.general.FrameStarterController;
 import get.newNRG.projectdocumentations.AddProjectDocumentationFrameController;
 import get.newNRG.projectdocumentations.ProjectDocumentationListFrameController;
 import get.newNRG.type.TypeFrameController;
@@ -20,7 +21,7 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class EquipmentFrameController {
+public class EquipmentFrameController extends FrameStarterController {
 
     private EquipmentFrame frame;
     private final EquipmentClient equipmentClient;
@@ -43,14 +44,11 @@ public class EquipmentFrameController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
-        frame.getButtonType().addActionListener(e -> {
-            if (typeFrameController.getFrame() == null) {
-                typeFrameController.initTypeFrameController(equipment.getType().getTypeId());
-            } else {
-                typeFrameController.getFrame().getFrame().toFront();
-                typeFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonType().addActionListener(e -> startFrame(
+                typeFrameController.getFrame().getFrame(),
+                typeFrameController,
+                equipment.getType().getTypeId()
+        ));
 
         frame.getButtonAddEvent().addActionListener(e -> {
             if (addEventFrameController.getFrame() == null) {

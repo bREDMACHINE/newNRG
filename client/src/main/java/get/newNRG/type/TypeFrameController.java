@@ -1,6 +1,7 @@
 package get.newNRG.type;
 
 import get.newNRG.factorydocumentations.FactoryDocumentationListFrameController;
+import get.newNRG.general.CardFrameController;
 import get.newNRG.spares.SpareListFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class TypeFrameController {
+public class TypeFrameController implements CardFrameController {
 
     private TypeFrame frame;
     private final TypeClient typeClient;
@@ -22,7 +23,8 @@ public class TypeFrameController {
     private final SpareListFrameController spareListFrameController;
     private final FactoryDocumentationListFrameController factoryDocumentationListFrameController;
 
-    public void initTypeFrameController(Long typeId) {
+    @Override
+    public void initCardFrameController(Long typeId) {
         TypeDto type = typeClient.getType(
                 frame,
                 typeId,
