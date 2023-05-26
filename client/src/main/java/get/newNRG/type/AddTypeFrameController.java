@@ -3,7 +3,8 @@ package get.newNRG.type;
 import get.newNRG.factories.AddFactoryFrameController;
 import get.newNRG.factories.FactoryClient;
 import get.newNRG.factories.FactoryDto;
-import get.newNRG.general.FrameStarterController;
+import get.newNRG.general.AddCardFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.specification.AddSpecificationFrameController;
 import get.newNRG.specification.SpecificationDto;
 import get.newNRG.specification.SpecificationFrameController;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddTypeFrameController extends FrameStarterController {
+public class AddTypeFrameController implements AddCardFrameController {
 
     private final TypeClient typeClient;
     private final SpecificationFrameController specificationFrameController;
@@ -36,7 +37,7 @@ public class AddTypeFrameController extends FrameStarterController {
     private AddTypeFrame frame;
     private List<SpecificationDto> specifications;
 
-    public void initAddTypeFrameController() {
+    public void initAddCardFrameController() {
 
         specifications = specificationFrameController.findAllSpecifications();
         List<FactoryDto> factories = factoryClient.findAllFactories(
@@ -78,13 +79,9 @@ public class AddTypeFrameController extends FrameStarterController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
-        frame.getButtonAddFactory().addActionListener(e ->
-            startFrame(addFactoryFrameController.getFrame().getFrame(), addFactoryFrameController)
-        );
+        frame.getButtonAddFactory().addActionListener(e -> ControllerUtil.start(addFactoryFrameController));
 
-        frame.getButtonAddSpecification().addActionListener(e ->
-            startFrame(addSpecificationFrameController.getFrame().getFrame(), addSpecificationFrameController)
-        );
+        frame.getButtonAddSpecification().addActionListener(e -> ControllerUtil.start(addSpecificationFrameController));
     }
 
     private Long getId(String specificationString, String valueString) {

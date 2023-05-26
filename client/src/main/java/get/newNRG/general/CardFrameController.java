@@ -1,9 +1,5 @@
 package get.newNRG.general;
 
-import java.awt.*;
-
-public interface CardFrameController {
-
-    Frame getFrame();
+public interface CardFrameController extends FrameController {
     void initCardFrameController(Long id);
 }

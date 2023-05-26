@@ -7,6 +7,7 @@ import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileMapper;
 import get.newNRG.events.frames.AddEventFrame;
+import get.newNRG.general.AddCardFromCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import java.io.File;
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddEventFrameController {
+public class AddEventFrameController implements AddCardFromCardFrameController {
 
     private AddEventFrame frame;
     private final EventClient eventClient;
@@ -30,7 +31,8 @@ public class AddEventFrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
-    public void initAddEventFrameController(Long equipmentId) {
+    @Override
+    public void initAddCardFromCardFrameController(Long equipmentId) {
         frame = new AddEventFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {

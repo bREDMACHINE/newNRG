@@ -4,6 +4,7 @@ import get.newNRG.equipment.EquipmentClient;
 import get.newNRG.equipment.EquipmentDto;
 import get.newNRG.equipment.controllers.AddEquipmentFrameController;
 import get.newNRG.equipment.controllers.EquipmentFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.general.frames.UserMainFrame;
 import get.newNRG.users.controllers.UserAccountFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
@@ -39,59 +40,31 @@ public class MainFrameController {
 
         frame.getButtonProfile().addActionListener(e -> {
             if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
-                if (userManagerFrameController.getFrame() == null) {
-                    userManagerFrameController.initUserManagerFrameController();
-                } else {
-                    userManagerFrameController.getFrame().getFrame().toFront();
-                    userManagerFrameController.getFrame().getFrame().requestFocus();
-                }
+                ControllerUtil.start(userManagerFrameController);
             } else {
-                if (accountFrameController.getFrame() == null) {
-                    accountFrameController.initUserAccountFrameController(authorizationFrameController.getUser());
-                } else {
-                    accountFrameController.getFrame().getFrame().toFront();
-                    accountFrameController.getFrame().getFrame().requestFocus();
-                }
+                ControllerUtil.start(accountFrameController);
             }
         });
 
         frame.getButtonFind().addActionListener(e -> {
-            if (equipmentFrameController.getFrame() == null) {
-                EquipmentDto equipment = equipmentClient.getEquipment(
-                        frame,
-                        frame.getTextField().getText(),
-                        authorizationFrameController.getUser().getUserId()
-                );
-                equipmentFrameController.initEquipmentFrameController(equipment);
-            } else {
-                equipmentFrameController.getFrame().getFrame().toFront();
-                equipmentFrameController.getFrame().getFrame().requestFocus();
-            }
+            EquipmentDto equipment = equipmentClient.getEquipment(
+                    frame,
+                    frame.getTextField().getText(),
+                    authorizationFrameController.getUser().getUserId()
+            );
+            ControllerUtil.start(equipmentFrameController, equipment.getEquipmentId());
         });
 
-        frame.getButtonAddEquipment().addActionListener(e -> {
-            if (addEquipmentFrameController.getFrame() == null) {
-                addEquipmentFrameController.initAddEquipmentFrameController();
-            } else {
-                addEquipmentFrameController.getFrame().getFrame().toFront();
-                addEquipmentFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddEquipment().addActionListener(e ->
+            ControllerUtil.start(addEquipmentFrameController)
+        );
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                if (accountFrameController.getFrame() !=null) {
-                    accountFrameController.getFrame().getFrame().dispose();
-                }
-                if (equipmentFrameController.getFrame() !=null) {
-                    equipmentFrameController.getFrame().getFrame().dispose();
-                }
-                if (addEquipmentFrameController.getFrame() !=null) {
-                    addEquipmentFrameController.getFrame().getFrame().dispose();
-                }
-                if (userManagerFrameController.getFrame() != null) {
-                    userManagerFrameController.getFrame().getFrame().dispose();
-                }
+                ControllerUtil.stop(accountFrameController);
+                ControllerUtil.stop(equipmentFrameController);
+                ControllerUtil.stop(addEquipmentFrameController);
+                ControllerUtil.stop(userManagerFrameController);
             }
         });
     }

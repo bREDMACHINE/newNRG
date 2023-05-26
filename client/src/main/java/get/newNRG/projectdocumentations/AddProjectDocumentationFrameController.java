@@ -3,6 +3,7 @@ package get.newNRG.projectdocumentations;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileMapper;
+import get.newNRG.general.AddCardFromCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddProjectDocumentationFrameController {
+public class AddProjectDocumentationFrameController implements AddCardFromCardFrameController {
 
     private AddProjectDocumentationFrame frame;
     private final ProjectDocumentationClient projectDocumentationClient;
@@ -27,7 +28,8 @@ public class AddProjectDocumentationFrameController {
     private final DataFileClient dataFileClient;
     private File file = null;
 
-    public void initAddProjectDocumentationFrameController(Long equipmentId) {
+    @Override
+    public void initAddCardFromCardFrameController(Long equipmentId) {
         frame = new AddProjectDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {

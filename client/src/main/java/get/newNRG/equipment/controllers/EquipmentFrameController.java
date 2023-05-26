@@ -5,7 +5,8 @@ import get.newNRG.equipment.EquipmentDto;
 import get.newNRG.equipment.frames.EquipmentFrame;
 import get.newNRG.events.controllers.AddEventFrameController;
 import get.newNRG.events.controllers.EventListFrameController;
-import get.newNRG.general.FrameStarterController;
+import get.newNRG.general.CardFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.projectdocumentations.AddProjectDocumentationFrameController;
 import get.newNRG.projectdocumentations.ProjectDocumentationListFrameController;
 import get.newNRG.type.TypeFrameController;
@@ -21,7 +22,7 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class EquipmentFrameController extends FrameStarterController {
+public class EquipmentFrameController implements CardFrameController {
 
     private EquipmentFrame frame;
     private final EquipmentClient equipmentClient;
@@ -32,7 +33,13 @@ public class EquipmentFrameController extends FrameStarterController {
     private final ProjectDocumentationListFrameController projectDocumentationListFrameController;
     private final AddProjectDocumentationFrameController addProjectDocumentationFrameController;
 
-    public void initEquipmentFrameController(EquipmentDto equipment) {
+    public void initCardFrameController(Long equipmentId) {
+        EquipmentDto equipment = equipmentClient.getEquipment(
+                frame,
+                equipmentId,
+                authorizationFrameController.getUser().getUserId()
+        );
+
         frame = new EquipmentFrame(equipment);
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -44,60 +51,39 @@ public class EquipmentFrameController extends FrameStarterController {
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
 
-        frame.getButtonType().addActionListener(e -> startFrame(
-                typeFrameController.getFrame().getFrame(),
+        frame.getButtonType().addActionListener(e -> ControllerUtil.start(
                 typeFrameController,
                 equipment.getType().getTypeId()
         ));
 
-        frame.getButtonAddEvent().addActionListener(e -> {
-            if (addEventFrameController.getFrame() == null) {
-                addEventFrameController.initAddEventFrameController(equipment.getEquipmentId());
-            } else {
-                addEventFrameController.getFrame().getFrame().toFront();
-                addEventFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddEvent().addActionListener(e -> ControllerUtil.start(
+                addEventFrameController,
+                equipment.getEquipmentId()
+        ));
 
-        frame.getButtonAddProject().addActionListener(e -> {
-            if (addProjectDocumentationFrameController.getFrame() == null) {
-                addProjectDocumentationFrameController.initAddProjectDocumentationFrameController(equipment.getEquipmentId());
-            } else {
-                addProjectDocumentationFrameController.getFrame().getFrame().toFront();
-                addProjectDocumentationFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddProject().addActionListener(e -> ControllerUtil.start(
+                addProjectDocumentationFrameController,
+                equipment.getEquipmentId()
+        ));
 
-        frame.getButtonOk().addActionListener(e -> {
+        frame.getButtonOk().addActionListener(e ->
             equipmentClient.updateEquipment(
                     frame,
                     equipment,
                     authorizationFrameController.getUser().getUserId()
-            );
-        });
+            )
+        );
 
-        frame.getButtonProjects().addActionListener(e -> {
-            if (projectDocumentationListFrameController.getFrame() == null) {
-                projectDocumentationListFrameController.initProjectDocumentationListFrameController(
-                        equipment.getEvents().size(),
-                        equipment.getEquipmentId()
-                );
-            } else {
-                projectDocumentationListFrameController.getFrame().toFront();
-                projectDocumentationListFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonProjects().addActionListener(e -> ControllerUtil.start(
+                projectDocumentationListFrameController,
+                equipment.getEvents().size(),
+                equipment.getEquipmentId()
+        ));
 
-        frame.getButtonEvents().addActionListener(e -> {
-            if (eventListFrameController.getFrame() == null) {
-                eventListFrameController.initEventListFrameController(
-                        equipment.getEvents().size(),
-                        equipment.getEquipmentId()
-                );
-            } else {
-                eventListFrameController.getFrame().toFront();
-                eventListFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonEvents().addActionListener(e -> ControllerUtil.start(
+                eventListFrameController,
+                equipment.getEvents().size(),
+                equipment.getEquipmentId()
+        ));
     }
 }

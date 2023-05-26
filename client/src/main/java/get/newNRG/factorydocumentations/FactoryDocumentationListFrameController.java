@@ -17,7 +17,7 @@ public class FactoryDocumentationListFrameController {
 
     public void initFactoryDocumentationListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Наименование документа", "Шифр документа", "Файлы", "Удалить документ");
-        controller.initListFrameController(client, maxSize, labels, parentObjectId);
+        controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId);
     }
 
     public Frame getFrame() {

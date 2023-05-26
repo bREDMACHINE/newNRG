@@ -37,7 +37,7 @@ public class ListFrameControllerWithFile {
     private List<? extends WithFile> list;
     private List<String> labels;
 
-    public void initListFrameController(ClientForListWithFile client, int maxSize, List<String> labels, Long parentObjectId) {
+    public void initListFrameControllerWithFile(ClientForListWithFile client, int maxSize, List<String> labels, Long parentObjectId) {
         this.client = client;
         this.maxSize = maxSize;
         this.labels = labels;
