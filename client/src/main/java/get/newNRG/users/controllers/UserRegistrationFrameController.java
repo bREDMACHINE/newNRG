@@ -1,5 +1,6 @@
 package get.newNRG.users.controllers;
 
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.UserClient;
 import get.newNRG.users.dtos.UserDto;
 import get.newNRG.users.frames.UserRegistrationFrame;
@@ -14,12 +15,13 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserRegistrationFrameController {
+public class UserRegistrationFrameController implements AddCardFrameController {
 
     private final UserClient userClient;
     private UserRegistrationFrame frame;
 
-    public void initUserRegistrationController() {
+    @Override
+    public void initAddCardFrameController() {
         frame = new UserRegistrationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {

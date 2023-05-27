@@ -42,7 +42,7 @@ public class MainFrameController {
             if (authorizationFrameController.getUser().getRole().equals(Role.ADMIN.name())) {
                 ControllerUtil.start(userManagerFrameController);
             } else {
-                ControllerUtil.start(accountFrameController);
+                ControllerUtil.start(accountFrameController, authorizationFrameController.getUser().getEmail());
             }
         });
 
@@ -55,9 +55,7 @@ public class MainFrameController {
             ControllerUtil.start(equipmentFrameController, equipment.getEquipmentId());
         });
 
-        frame.getButtonAddEquipment().addActionListener(e ->
-            ControllerUtil.start(addEquipmentFrameController)
-        );
+        frame.getButtonAddEquipment().addActionListener(e -> ControllerUtil.start(addEquipmentFrameController));
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {

@@ -1,7 +1,10 @@
 package get.newNRG.type;
 
-import get.newNRG.factorydocumentations.FactoryDocumentationListFrameController;
+import get.newNRG.factorydocumentations.controllers.AddFactoryDocumentationFrameController;
+import get.newNRG.factorydocumentations.controllers.FactoryDocumentationListFrameController;
 import get.newNRG.general.CardFrameController;
+import get.newNRG.general.ControllerUtil;
+import get.newNRG.spares.AddSpareFrameController;
 import get.newNRG.spares.SpareListFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -22,6 +25,8 @@ public class TypeFrameController implements CardFrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private final SpareListFrameController spareListFrameController;
     private final FactoryDocumentationListFrameController factoryDocumentationListFrameController;
+    private final AddFactoryDocumentationFrameController addFactoryDocumentationFrameController;
+    private final AddSpareFrameController addSpareFrameController;
 
     @Override
     public void initCardFrameController(Long typeId) {
@@ -33,28 +38,22 @@ public class TypeFrameController implements CardFrameController {
 
         frame = new TypeFrame(type);
 
-        frame.getButtonDocuments().addActionListener(e -> {
-            if (factoryDocumentationListFrameController.getFrame() == null) {
-                factoryDocumentationListFrameController.initFactoryDocumentationListFrameController(
-                        type.getFactoryDocuments().size(),
-                        type.getTypeId()
-                );
-            } else {
-                factoryDocumentationListFrameController.getFrame().toFront();
-                factoryDocumentationListFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonDocuments().addActionListener(e -> ControllerUtil.start(
+                factoryDocumentationListFrameController,
+                type.getFactoryDocuments().size(),
+                type.getTypeId()
+        ));
 
-        frame.getButtonSpares().addActionListener(e -> {
-            if (spareListFrameController.getFrame() == null) {
-                spareListFrameController.initSpareListFrameController(
-                        type.getSpares().size(),
-                        type.getTypeId());
-            } else {
-                spareListFrameController.getFrame().toFront();
-                spareListFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddDocuments().addActionListener(e -> ControllerUtil.start(
+                addFactoryDocumentationFrameController, type.getTypeId()
+        ));
+
+        frame.getButtonSpares().addActionListener(e -> ControllerUtil.start(
+                spareListFrameController,type.getSpares().size(),
+                type.getTypeId()
+        ));
+
+        frame.getButtonAddSpares().addActionListener(e -> ControllerUtil.start(addSpareFrameController));
 
         frame.getButtonOk().addActionListener(e ->
             typeClient.updateType(
@@ -76,9 +75,10 @@ public class TypeFrameController implements CardFrameController {
             @Override
             public void windowClosed(WindowEvent e) {
                 frame = null;
-                if (spareListFrameController.getFrame() !=null) {
-                    spareListFrameController.getFrame().dispose();
-                }
+                ControllerUtil.stop(factoryDocumentationListFrameController);
+                ControllerUtil.stop(addFactoryDocumentationFrameController);
+                ControllerUtil.stop(spareListFrameController);
+                ControllerUtil.stop(addSpareFrameController);
             }
         });
     }

@@ -6,8 +6,9 @@ import get.newNRG.files.DataFileCreatorFrameController;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileMapper;
-import get.newNRG.events.frames.AddEventFrame;
+import get.newNRG.events.AddEventFrame;
 import get.newNRG.general.AddCardFromCardFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -53,14 +54,7 @@ public class AddEventFrameController implements AddCardFromCardFrameController {
             }
         });
 
-        frame.getButtonFileCreator().addActionListener(e -> {
-            if (dataFileCreatorFrameController.getFrame() == null) {
-                dataFileCreatorFrameController.initDataFileCreatorFrameController();
-            } else {
-                dataFileCreatorFrameController.getFrame().toFront();
-                dataFileCreatorFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonFileCreator().addActionListener(e -> ControllerUtil.start(dataFileCreatorFrameController));
 
         frame.getButtonOk().addActionListener(e -> {
             String dateEvent = frame.getTextEventDate().getText();
@@ -70,13 +64,14 @@ public class AddEventFrameController implements AddCardFromCardFrameController {
             if (file != null) {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
-
-            Long fileId = dataFileClient.addFile(frame,
-                    dataFile,
-                    authorizationFrameController.getUser().getUserId()).getFileId();
-            eventClient.addEvent(frame,
-                    EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, fileId),
-                    authorizationFrameController.getUser().getUserId());
+            DataFileDto dataFileDto = dataFileClient.addFile(
+                    frame, dataFile, authorizationFrameController.getUser().getUserId()
+            );
+            eventClient.addEvent(
+                    frame,
+                    EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, dataFileDto.getFileId()),
+                    authorizationFrameController.getUser().getUserId()
+            );
         });
     }
 }

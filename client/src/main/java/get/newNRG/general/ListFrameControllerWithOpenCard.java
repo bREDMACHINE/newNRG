@@ -107,26 +107,13 @@ public class ListFrameControllerWithOpenCard {
             }
         });
 
-        frame.getButtonAddCard().addActionListener(e -> {
-            if (addCardController.getFrame() == null) {
-                addCardController.initAddCardFrameController();
-            } else {
-                addCardController.getFrame().toFront();
-                addCardController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddCard().addActionListener(e -> ControllerUtil.start(addCardController));
 
         for (JButton button : frame.getOpenCardButtons()) {
-            button.addActionListener(e -> {
-                if (cardController.getFrame() == null) {
-                    cardController.initCardFrameController(
-                            list.get(Integer.parseInt(button.getActionCommand())).getId()
-                    );
-                } else {
-                    cardController.getFrame().toFront();
-                    cardController.getFrame().requestFocus();
-                }
-            });
+            button.addActionListener(e -> ControllerUtil.start(
+                    cardController, list.get(Integer.parseInt(button.getActionCommand())).getId()
+            ));
+
         }
     }
 }

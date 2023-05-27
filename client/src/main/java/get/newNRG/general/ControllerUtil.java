@@ -31,6 +31,15 @@ public class ControllerUtil {
         }
     }
 
+    public static void start(UserCardFrameController controller, String email) {
+        Frame frame = controller.getFrame();
+        if (frame == null) {
+            controller.initUserCardFrameController(email);
+        } else {
+            focus(frame);
+        }
+    }
+
     public static void start(CardFrameController controller, Long id) {
         Frame frame = controller.getFrame();
         if (frame == null) {
@@ -55,5 +64,8 @@ public class ControllerUtil {
     }
 
     public static void stop(FrameController controller) {
+        if (controller.getFrame() != null) {
+            controller.getFrame().dispose();
+        }
     }
 }

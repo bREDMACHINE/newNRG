@@ -42,7 +42,8 @@ public class AddTypeFrameController implements AddCardFrameController {
         specifications = specificationFrameController.findAllSpecifications();
         List<FactoryDto> factories = factoryClient.findAllFactories(
                 frame,
-                authorizationFrameController.getUser().getUserId());
+                authorizationFrameController.getUser().getUserId()
+        );
 
         frame = new AddTypeFrame(
                 specifications.stream().map(SpecificationDto::getSpecificationName).collect(Collectors.toList()),

@@ -1,6 +1,6 @@
 package get.newNRG.users.controllers;
 
-import get.newNRG.general.ManagerFrameController;
+import get.newNRG.general.UserCardFrameController;
 import get.newNRG.users.UserClient;
 import get.newNRG.users.UserMapper;
 import get.newNRG.users.models.User;
@@ -17,17 +17,16 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserAccountFrameController implements ManagerFrameController {
+public class UserAccountFrameController implements UserCardFrameController {
 
     private UserAccountFrame frame;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final UserClient userClient;
 
     @Override
-    public void initManagerFrameController() {
+    public void initUserCardFrameController(String email) {
 
-        User user = authorizationFrameController.getUser();
-        String email = user.getEmail();
+        User user = userClient.getUser(frame, email, authorizationFrameController.getUser().getUserId());
         String userId = user.getUserId();
 
         frame = new UserAccountFrame(user);

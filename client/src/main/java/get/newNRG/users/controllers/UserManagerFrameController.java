@@ -1,5 +1,6 @@
 package get.newNRG.users.controllers;
 
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.general.ManagerFrameController;
 import get.newNRG.users.UserClient;
 import get.newNRG.users.frames.UserManagerFrame;
@@ -45,19 +46,9 @@ public class UserManagerFrameController implements ManagerFrameController {
             }
         });
 
-        frame.getButtonFind().addActionListener(e -> {
-            String userName = frame.getTextFieldFinder().getText();
-            if (accountFrameController.getFrame() == null) {
-                accountFrameController.initUserAccountFrameController(userClient.getUser(
-                        frame,
-                        userName,
-                        authorizationFrameController.getUser().getUserId()
-                ));
-            } else {
-                accountFrameController.getFrame().getFrame().toFront();
-                accountFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonFind().addActionListener(e -> ControllerUtil.start(
+                accountFrameController, frame.getTextFieldFinder().getText()
+        ));
 
         frame.getButtonAllUsers().addActionListener(e -> {
             if (frame.getRoleMenu().getSelectedItem() != null && frame.getStatusMenu().getSelectedItem() != null) {

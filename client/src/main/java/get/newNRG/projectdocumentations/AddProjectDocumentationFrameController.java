@@ -55,12 +55,14 @@ public class AddProjectDocumentationFrameController implements AddCardFromCardFr
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
+            DataFileDto dataFileDto = dataFileClient.addFile(
+                    frame, dataFile, authorizationFrameController.getUser().getUserId()
+            );
             List<Long> equipment = new ArrayList<>();
             equipment.add(equipmentId);
             projectDocumentationClient.addProject(
                     frame,
-                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, fileId),
+                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, dataFileDto.getFileId()),
                     authorizationFrameController.getUser().getUserId()
             );
         });

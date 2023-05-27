@@ -1,5 +1,7 @@
-package get.newNRG.factorydocumentations;
+package get.newNRG.factorydocumentations.controllers;
 
+import get.newNRG.factorydocumentations.FactoryDocumentationClient;
+import get.newNRG.general.ListFrameController;
 import get.newNRG.general.ListFrameControllerWithFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class FactoryDocumentationListFrameController {
+public class FactoryDocumentationListFrameController implements ListFrameController {
 
     private final ListFrameControllerWithFile controller;
     private final FactoryDocumentationClient client;
 
-    public void initFactoryDocumentationListFrameController(int maxSize, Long parentObjectId) {
+    @Override
+    public void initListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Наименование документа", "Шифр документа", "Файлы", "Удалить документ");
         controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId);
     }
