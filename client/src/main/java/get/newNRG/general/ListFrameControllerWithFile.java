@@ -136,9 +136,11 @@ public class ListFrameControllerWithFile {
                 if (frame.getFrame() != null) {
                     frame.getFrame().dispose();
                 }
-                client.delete(frame,
+                client.delete(
+                        frame,
                         list.get(Integer.parseInt(button.getActionCommand())).getId(),
-                        authorizationFrameController.getUser().getUserId());
+                        authorizationFrameController.getUser().getUserId()
+                );
                 openPage();
             });
         }

@@ -14,7 +14,6 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -50,19 +49,20 @@ public class AddProjectDocumentationFrameController implements AddCardFromCardFr
         frame.getButtonOk().addActionListener(e -> {
             String projectName = frame.getTextNameProject().getText();
             String projectCode = frame.getTextCodeProject().getText();
-            DataFileDto dataFile = null;
+            DataFileDto dataFileDto = null;
             if (file != null) {
-                dataFile = DataFileMapper.toDataFileDto(file);
+                dataFileDto = dataFileClient.addFile(
+                        frame,
+                        DataFileMapper.toDataFileDto(file),
+                        authorizationFrameController.getUser().getUserId()
+                );
             }
-
-            DataFileDto dataFileDto = dataFileClient.addFile(
-                    frame, dataFile, authorizationFrameController.getUser().getUserId()
-            );
-            List<Long> equipment = new ArrayList<>();
-            equipment.add(equipmentId);
             projectDocumentationClient.addProject(
                     frame,
-                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, dataFileDto.getFileId()),
+                    ProjectDocumentationMapper.toProjectDto(projectName,
+                            projectCode,
+                            List.of(equipmentId),
+                            dataFileDto != null ? dataFileDto.getFileId() : null),
                     authorizationFrameController.getUser().getUserId()
             );
         });

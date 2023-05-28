@@ -67,10 +67,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentDto getEquipment(String text) {
+    public EquipmentDto getEquipmentByName(String text) {
         return EquipmentMapper.toEquipmentDto(equipmentRepository.findByOperationalName(text)
                 .orElseThrow(() -> new NotFoundException("Указанное оперативное наименование не существует")));
     }
 
-
+    @Override
+    public EquipmentDto getEquipmentById(Long id) {
+        return EquipmentMapper.toEquipmentDto(equipmentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Указанный equipmentId не существует")));
+    }
 }

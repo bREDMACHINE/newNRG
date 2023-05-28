@@ -60,16 +60,21 @@ public class AddEventFrameController implements AddCardFromCardFrameController {
             String dateEvent = frame.getTextEventDate().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
-            DataFileDto dataFile = null;
+            DataFileDto dataFileDto = null;
             if (file != null) {
-                dataFile = DataFileMapper.toDataFileDto(file);
+                dataFileDto = dataFileClient.addFile(
+                        frame,
+                        DataFileMapper.toDataFileDto(file),
+                        authorizationFrameController.getUser().getUserId()
+                );
             }
-            DataFileDto dataFileDto = dataFileClient.addFile(
-                    frame, dataFile, authorizationFrameController.getUser().getUserId()
-            );
             eventClient.addEvent(
                     frame,
-                    EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, dataFileDto.getFileId()),
+                    EventMapper.toEventDto(equipmentId,
+                            dateEvent,
+                            nameEvent,
+                            descriptionEvent,
+                            dataFileDto != null ? dataFileDto.getFileId() : null),
                     authorizationFrameController.getUser().getUserId()
             );
         });

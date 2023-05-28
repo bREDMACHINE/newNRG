@@ -24,12 +24,11 @@ public class DataFileServiceImpl implements DataFileService {
     @Override
     public DataFileDto addFile(DataFileDto dataFile) {
         Optional<DataFile> fileOptional = dataFileRepository.findByName(dataFile.getName());
-        DataFile newFile = DataFileMapper.toDataFile(dataFile);
         if (fileOptional.isPresent()) {
-            if (fileOptional.get().equals(newFile)) {
+            if (fileOptional.get().getName().equals(dataFile.getName())) {
                 return DataFileMapper.toDataFileDto(fileOptional.get());
             }
         }
-        return DataFileMapper.toDataFileDto(dataFileRepository.save(newFile));
+        return DataFileMapper.toDataFileDto(dataFileRepository.save(DataFileMapper.toDataFile(dataFile)));
     }
 }

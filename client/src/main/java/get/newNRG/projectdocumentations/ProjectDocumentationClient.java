@@ -36,9 +36,9 @@ public class ProjectDocumentationClient extends BaseClient implements ClientForL
         Object object = response(post("/moderator/equipment/project", userId, project), frame);
         if (object != null) {
             ProjectDocumentationDto projectResponse = ProjectDocumentationMapper.toProjectDto(object);
-            frame.dispose();
             JOptionPane.showMessageDialog(frame,
                     "Проект " + projectResponse.getNameProjectDocumentation() + " успешно добавлен");
+            frame.dispose();
         }
     }
 
