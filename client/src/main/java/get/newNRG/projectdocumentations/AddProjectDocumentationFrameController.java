@@ -3,7 +3,7 @@ package get.newNRG.projectdocumentations;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileMapper;
-import get.newNRG.general.AddCardFromCardFrameController;
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.List;
 
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddProjectDocumentationFrameController implements AddCardFromCardFrameController {
+public class AddProjectDocumentationFrameController implements AddCardFrameController {
 
     private AddProjectDocumentationFrame frame;
     private final ProjectDocumentationClient projectDocumentationClient;
@@ -28,7 +27,7 @@ public class AddProjectDocumentationFrameController implements AddCardFromCardFr
     private File file = null;
 
     @Override
-    public void initAddCardFromCardFrameController(Long equipmentId) {
+    public void initAddCardFrameController() {
         frame = new AddProjectDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -57,11 +56,12 @@ public class AddProjectDocumentationFrameController implements AddCardFromCardFr
                         authorizationFrameController.getUser().getUserId()
                 );
             }
+
             projectDocumentationClient.addProject(
                     frame,
                     ProjectDocumentationMapper.toProjectDto(projectName,
                             projectCode,
-                            List.of(equipmentId),
+                            null,
                             dataFileDto != null ? dataFileDto.getFileId() : null),
                     authorizationFrameController.getUser().getUserId()
             );

@@ -16,6 +16,7 @@ public class ListFrameWithFile extends JFrame {
     private JFrame frame;
     private List<JButton> openFileButtons = new ArrayList<>();
     private List<JButton> deleteButtons = new ArrayList<>();
+    private JButton buttonAddCard;
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
@@ -63,12 +64,14 @@ public class ListFrameWithFile extends JFrame {
             deleteButtons.add(deleteButton);
             panel.add(deleteButton);
         }
-        buttonPrevious = new JButton("< Предыдущая");
-        buttonNext = new JButton("Следующая >");
+        buttonAddCard = new JButton("Добавить");
+        panel.add(buttonAddCard);
         panel.add(new JLabel());
         panel.add(new JLabel());
         frame.getContentPane().add(BorderLayout.NORTH, panel);
 
+        buttonPrevious = new JButton("< Предыдущая");
+        buttonNext = new JButton("Следующая >");
         labelPage = new JLabel("Страница " + page + " из " + pages);
         panelButtons = new JPanel();
         panelButtons.add(labelPage);

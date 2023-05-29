@@ -27,6 +27,7 @@ public class ListFrameControllerWithFile {
     private ClientForListWithFile client;
     private final UserAuthorizationFrameController authorizationFrameController;
     private final DataFileClient dataFileClient;
+    private AddCardFrameController addCardController;
     private int size;
     private int maxSize;
     private int from;
@@ -37,11 +38,16 @@ public class ListFrameControllerWithFile {
     private List<? extends WithFile> list;
     private List<String> labels;
 
-    public void initListFrameControllerWithFile(ClientForListWithFile client, int maxSize, List<String> labels, Long parentObjectId) {
+    public void initListFrameControllerWithFile(ClientForListWithFile client,
+                                                int maxSize,
+                                                List<String> labels,
+                                                Long parentObjectId,
+                                                AddCardFrameController addCardController) {
         this.client = client;
         this.maxSize = maxSize;
         this.labels = labels;
         this.parentObjectId = parentObjectId;
+        this.addCardController = addCardController;
         size = 15;
         pages = maxSize / size + 1;
         maxShow = pages * size - 15;
@@ -144,5 +150,7 @@ public class ListFrameControllerWithFile {
                 openPage();
             });
         }
+
+        frame.getButtonAddCard().addActionListener(e -> ControllerUtil.start(addCardController));
     }
 }

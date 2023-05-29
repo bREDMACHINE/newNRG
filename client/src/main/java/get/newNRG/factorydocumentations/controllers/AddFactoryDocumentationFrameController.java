@@ -6,7 +6,7 @@ import get.newNRG.factorydocumentations.FactoryDocumentationMapper;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileMapper;
-import get.newNRG.general.AddCardFromCardFrameController;
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddFactoryDocumentationFrameController implements AddCardFromCardFrameController {
+public class AddFactoryDocumentationFrameController implements AddCardFrameController {
 
     private AddFactoryDocumentationFrame frame;
     private final FactoryDocumentationClient factoryDocumentationClient;
@@ -32,7 +30,7 @@ public class AddFactoryDocumentationFrameController implements AddCardFromCardFr
     private File file = null;
 
     @Override
-    public void initAddCardFromCardFrameController(Long typeId) {
+    public void initAddCardFrameController() {
         frame = new AddFactoryDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -63,10 +61,9 @@ public class AddFactoryDocumentationFrameController implements AddCardFromCardFr
             DataFileDto dataFileDto = dataFileClient.addFile(
                     frame, dataFile, authorizationFrameController.getUser().getUserId()
             );
-            List<Long> types = Collections.singletonList(typeId);
             factoryDocumentationClient.addDocument(
                     frame,
-                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, types, dataFileDto.getFileId()),
+                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, null, dataFileDto.getFileId()),
                     authorizationFrameController.getUser().getUserId()
             );
         });

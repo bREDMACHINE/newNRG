@@ -16,11 +16,14 @@ public class FactoryDocumentationListFrameController implements ListFrameControl
 
     private final ListFrameControllerWithFile controller;
     private final FactoryDocumentationClient client;
+    private final AddFactoryDocumentationFrameController addFactoryDocumentationFrameController;
 
     @Override
     public void initListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Наименование документа", "Шифр документа", "Файлы", "Удалить документ");
-        controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId);
+        controller.initListFrameControllerWithFile(
+                client, maxSize, labels, parentObjectId, addFactoryDocumentationFrameController
+        );
     }
 
     public Frame getFrame() {

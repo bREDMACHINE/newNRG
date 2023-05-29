@@ -15,12 +15,15 @@ public class ProjectDocumentationListFrameController implements ListFrameControl
 
     private final ListFrameControllerWithFile controller;
     private final ProjectDocumentationClient client;
+    private final AddProjectDocumentationFrameController addProjectDocumentationFrameController;
 
 
     @Override
     public void initListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Наименование проекта", "Шифр проекта", "Файлы", "Удалить проект");
-        controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId);
+        controller.initListFrameControllerWithFile(
+                client, maxSize, labels, parentObjectId, addProjectDocumentationFrameController
+        );
     }
 
     @Override

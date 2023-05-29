@@ -16,11 +16,12 @@ public class EventListFrameController implements ListFrameController {
 
     private final ListFrameControllerWithFile controller;
     private final EventClient client;
+    private final AddEventFrameController addEventFrameController;
 
     @Override
     public void initListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Дата события", "Событие", "Описание", "Документы", "Удалить событие");
-        controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId);
+        controller.initListFrameControllerWithFile(client, maxSize, labels, parentObjectId, addEventFrameController);
     }
 
     @Override
