@@ -56,15 +56,6 @@ public class EquipmentFrameController implements CardFrameController {
                 equipment.getType().getTypeId()
         ));
 
-        frame.getButtonCreateAndAddEvent().addActionListener(e -> ControllerUtil.start(
-                addEventFrameController,
-                equipment.getEquipmentId()
-        ));
-
-        frame.getButtonCreateAndAddProject().addActionListener(e -> ControllerUtil.start(
-                addProjectDocumentationFrameController
-        ));
-
         frame.getButtonOk().addActionListener(e -> {
 
 

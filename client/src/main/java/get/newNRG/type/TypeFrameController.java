@@ -45,7 +45,7 @@ public class TypeFrameController implements CardFrameController {
         ));
 
         frame.getButtonAddDocuments().addActionListener(e -> ControllerUtil.start(
-                addFactoryDocumentationFrameController, type.getTypeId()
+                addFactoryDocumentationFrameController
         ));
 
         frame.getButtonSpares().addActionListener(e -> ControllerUtil.start(
