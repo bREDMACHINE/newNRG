@@ -1,5 +1,6 @@
 package get.newNRG.factories;
 
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +13,14 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddFactoryFrameController {
+public class AddFactoryFrameController implements AddCardFrameController {
 
     private final UserAuthorizationFrameController authorizationFrameController;
     private final FactoryClient factoryClient;
     private AddFactoryFrame frame;
 
-    public void initAddFactoryFrameController() {
+    @Override
+    public void initAddCardFrameController() {
 
         frame = new AddFactoryFrame();
 

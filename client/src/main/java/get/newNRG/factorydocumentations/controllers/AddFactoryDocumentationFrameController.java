@@ -1,8 +1,12 @@
-package get.newNRG.factorydocumentations;
+package get.newNRG.factorydocumentations.controllers;
 
+import get.newNRG.factorydocumentations.AddFactoryDocumentationFrame;
+import get.newNRG.factorydocumentations.FactoryDocumentationClient;
+import get.newNRG.factorydocumentations.FactoryDocumentationMapper;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileMapper;
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +17,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddFactoryDocumentationFrameController {
+public class AddFactoryDocumentationFrameController implements AddCardFrameController {
 
     private AddFactoryDocumentationFrame frame;
     private final FactoryDocumentationClient factoryDocumentationClient;
@@ -27,7 +29,8 @@ public class AddFactoryDocumentationFrameController {
     private final DataFileClient dataFileClient;
     private File file = null;
 
-    public void initAddFactoryDocumentationFrameController(Long typeId) {
+    @Override
+    public void initAddCardFrameController() {
         frame = new AddFactoryDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -55,11 +58,14 @@ public class AddFactoryDocumentationFrameController {
                 dataFile = DataFileMapper.toDataFileDto(file);
             }
 
-            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
-            List<Long> types = Collections.singletonList(typeId);
-            factoryDocumentationClient.addDocument(frame,
-                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, types, fileId),
-                    authorizationFrameController.getUser().getUserId());
+            DataFileDto dataFileDto = dataFileClient.addFile(
+                    frame, dataFile, authorizationFrameController.getUser().getUserId()
+            );
+            factoryDocumentationClient.addDocument(
+                    frame,
+                    FactoryDocumentationMapper.toDocumentDto(documentName, documentCode, null, dataFileDto.getFileId()),
+                    authorizationFrameController.getUser().getUserId()
+            );
         });
     }
 }

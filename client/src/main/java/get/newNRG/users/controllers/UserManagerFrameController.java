@@ -1,5 +1,7 @@
 package get.newNRG.users.controllers;
 
+import get.newNRG.general.ControllerUtil;
+import get.newNRG.general.ManagerFrameController;
 import get.newNRG.users.UserClient;
 import get.newNRG.users.frames.UserManagerFrame;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class UserManagerFrameController {
+public class UserManagerFrameController implements ManagerFrameController {
 
     private UserManagerFrame frame;
     private final UserClient userClient;
@@ -22,7 +24,8 @@ public class UserManagerFrameController {
     private final UserListFrameController listFrameController;
     private int size;
 
-    public void initUserManagerFrameController() {
+    @Override
+    public void initManagerFrameController() {
         size = userClient.findAllUsers(frame,
                 "Roles",
                 "Requested",
@@ -43,19 +46,9 @@ public class UserManagerFrameController {
             }
         });
 
-        frame.getButtonFind().addActionListener(e -> {
-            String userName = frame.getTextFieldFinder().getText();
-            if (accountFrameController.getFrame() == null) {
-                accountFrameController.initUserAccountFrameController(userClient.getUser(
-                        frame,
-                        userName,
-                        authorizationFrameController.getUser().getUserId()
-                ));
-            } else {
-                accountFrameController.getFrame().getFrame().toFront();
-                accountFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonFind().addActionListener(e -> ControllerUtil.start(
+                accountFrameController, frame.getTextFieldFinder().getText()
+        ));
 
         frame.getButtonAllUsers().addActionListener(e -> {
             if (frame.getRoleMenu().getSelectedItem() != null && frame.getStatusMenu().getSelectedItem() != null) {

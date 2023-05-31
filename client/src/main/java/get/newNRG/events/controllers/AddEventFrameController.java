@@ -6,7 +6,9 @@ import get.newNRG.files.DataFileCreatorFrameController;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileMapper;
-import get.newNRG.events.frames.AddEventFrame;
+import get.newNRG.events.AddEventFrame;
+import get.newNRG.general.AddCardFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ import java.io.File;
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddEventFrameController {
+public class AddEventFrameController implements AddCardFrameController {
 
     private AddEventFrame frame;
     private final EventClient eventClient;
@@ -30,7 +32,8 @@ public class AddEventFrameController {
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
-    public void initAddEventFrameController(Long equipmentId) {
+    @Override
+    public void initAddCardFrameController() {
         frame = new AddEventFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -51,30 +54,29 @@ public class AddEventFrameController {
             }
         });
 
-        frame.getButtonFileCreator().addActionListener(e -> {
-            if (dataFileCreatorFrameController.getFrame() == null) {
-                dataFileCreatorFrameController.initDataFileCreatorFrameController();
-            } else {
-                dataFileCreatorFrameController.getFrame().toFront();
-                dataFileCreatorFrameController.getFrame().requestFocus();
-            }
-        });
+        frame.getButtonFileCreator().addActionListener(e -> ControllerUtil.start(dataFileCreatorFrameController));
 
         frame.getButtonOk().addActionListener(e -> {
             String dateEvent = frame.getTextEventDate().getText();
             String nameEvent = frame.getTextEventName().getText();
             String descriptionEvent = frame.getTextDescription().getText();
-            DataFileDto dataFile = null;
+            DataFileDto dataFileDto = null;
             if (file != null) {
-                dataFile = DataFileMapper.toDataFileDto(file);
+                dataFileDto = dataFileClient.addFile(
+                        frame,
+                        DataFileMapper.toDataFileDto(file),
+                        authorizationFrameController.getUser().getUserId()
+                );
             }
-
-            Long fileId = dataFileClient.addFile(frame,
-                    dataFile,
-                    authorizationFrameController.getUser().getUserId()).getFileId();
-            eventClient.addEvent(frame,
-                    EventMapper.toEventDto(equipmentId, dateEvent, nameEvent, descriptionEvent, fileId),
-                    authorizationFrameController.getUser().getUserId());
+            eventClient.addEvent(
+                    frame,
+                    EventMapper.toEventDto(null,
+                            dateEvent,
+                            nameEvent,
+                            descriptionEvent,
+                            dataFileDto != null ? dataFileDto.getFileId() : null),
+                    authorizationFrameController.getUser().getUserId()
+            );
         });
     }
 }

@@ -1,5 +1,6 @@
 package get.newNRG.projectdocumentations;
 
+import get.newNRG.general.ListFrameController;
 import get.newNRG.general.ListFrameControllerWithFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,22 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class ProjectDocumentationListFrameController {
+public class ProjectDocumentationListFrameController implements ListFrameController {
 
     private final ListFrameControllerWithFile controller;
     private final ProjectDocumentationClient client;
+    private final AddProjectDocumentationFrameController addProjectDocumentationFrameController;
 
 
-    public void initProjectDocumentationListFrameController(int maxSize, Long parentObjectId) {
+    @Override
+    public void initListFrameController(int maxSize, Long parentObjectId) {
         List<String> labels = List.of("Наименование проекта", "Шифр проекта", "Файлы", "Удалить проект");
-        controller.initListFrameController(client, maxSize, labels, parentObjectId);
+        controller.initListFrameControllerWithFile(
+                client, maxSize, labels, parentObjectId, addProjectDocumentationFrameController
+        );
     }
 
+    @Override
     public Frame getFrame() {
         return controller.getFrame();
     }

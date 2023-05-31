@@ -3,8 +3,10 @@ package get.newNRG.equipment.controllers;
 import get.newNRG.equipment.EquipmentClient;
 import get.newNRG.equipment.EquipmentMapper;
 import get.newNRG.equipment.frames.AddEquipmentFrame;
+import get.newNRG.general.AddCardFrameController;
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.type.AddTypeFrameController;
-import get.newNRG.type.TypeFrameController;
+import get.newNRG.type.TypeClient;
 import get.newNRG.type.TypeShortDto;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
@@ -20,17 +22,20 @@ import java.util.stream.Collectors;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddEquipmentFrameController {
+public class AddEquipmentFrameController implements AddCardFrameController {
 
     private final EquipmentClient equipmentClient;
-    private final TypeFrameController typeFrameController;
+    private final TypeClient typeClient;
     private final AddTypeFrameController addTypeFrameController;
     private final UserAuthorizationFrameController authorizationFrameController;
     private AddEquipmentFrame frame;
 
-    public void initAddEquipmentFrameController() {
+    public void initAddCardFrameController() {
 
-        List<TypeShortDto> types = typeFrameController.findAllTypes();
+        List<TypeShortDto> types = typeClient.findAllTypes(
+                frame,
+                authorizationFrameController.getUser().getUserId()
+        );;
 
         frame = new AddEquipmentFrame(types.stream().map(TypeShortDto::getTypeName).collect(Collectors.toList()));
 
@@ -40,14 +45,7 @@ public class AddEquipmentFrameController {
             }
         });
 
-        frame.getButtonAddType().addActionListener(e -> {
-            if (addTypeFrameController.getFrame() == null) {
-                addTypeFrameController.initAddTypeFrameController();
-            } else {
-                addTypeFrameController.getFrame().getFrame().toFront();
-                addTypeFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonAddType().addActionListener(e -> ControllerUtil.start(addTypeFrameController));
 
         frame.getButtonOk().addActionListener(e -> {
             String operationalName = frame.getTextOperationalName().getText();

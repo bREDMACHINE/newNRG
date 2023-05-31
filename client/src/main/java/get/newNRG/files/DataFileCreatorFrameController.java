@@ -1,5 +1,6 @@
 package get.newNRG.files;
 
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,15 @@ import java.io.IOException;
 @Getter
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class DataFileCreatorFrameController {
+public class DataFileCreatorFrameController implements AddCardFrameController {
 
     private DataFileCreatorFrame frame;
     private final DataFileClient dataFileClient;
     private final UserAuthorizationFrameController authorizationFrameController;
     private File file = null;
 
-    public void initDataFileCreatorFrameController() {
+    @Override
+    public void initAddCardFrameController() {
         frame = new DataFileCreatorFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {

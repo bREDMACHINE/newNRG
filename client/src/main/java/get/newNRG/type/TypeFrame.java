@@ -13,7 +13,10 @@ public class TypeFrame extends JFrame {
     private JFrame frame;
     private JButton buttonSpecifications;
     private JButton buttonDocuments;
+    private JButton buttonAddDocuments;
     private JButton buttonSpares;
+    private JButton buttonAddSpares;
+    private JButton buttonDelete;
     private JButton buttonOk;
     private JButton buttonCancel;
 
@@ -21,10 +24,13 @@ public class TypeFrame extends JFrame {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        JPanel panelSpecifications = new JPanel(new GridLayout(5, 2, 5, 0));
+        JPanel panelSpecifications = new JPanel(new GridLayout(8, 2, 5, 0));
         buttonSpecifications = new JButton("Просмотреть характеристики типа");
         buttonDocuments = new JButton("Просмотреть документы типа");
+        buttonAddDocuments = new JButton("Прикрепить документы");
         buttonSpares = new JButton("Просмотреть запчасти");
+        buttonAddSpares = new JButton("Прикрепить запчасти");
+        buttonDelete = new JButton("Удалить тип");
         panelSpecifications.add(new JLabel("Полный тип"));
         panelSpecifications.add(new JLabel(type.getTypeName()));
         panelSpecifications.add(new JLabel("Завод изготовитель"));
@@ -33,8 +39,13 @@ public class TypeFrame extends JFrame {
         panelSpecifications.add(buttonSpecifications);
         panelSpecifications.add(new JLabel("Заводские документы"));
         panelSpecifications.add(buttonDocuments);
+        panelSpecifications.add(new JLabel("Заводские документы"));
+        panelSpecifications.add(buttonAddDocuments);
         panelSpecifications.add(new JLabel("Детали для ремонта"));
         panelSpecifications.add(buttonSpares);
+        panelSpecifications.add(new JLabel("Детали для ремонта"));
+        panelSpecifications.add(buttonAddSpares);
+        panelSpecifications.add(buttonDelete);
         frame.getContentPane().add(BorderLayout.NORTH, panelSpecifications);
 
         buttonOk = new JButton("Ок");

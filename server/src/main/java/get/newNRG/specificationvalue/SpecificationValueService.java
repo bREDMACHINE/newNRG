@@ -1,11 +1,13 @@
 package get.newNRG.specificationvalue;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 public interface SpecificationValueService {
 
     SpecificationValueDto addSpecificationValue(SpecificationValueDto specificationValueDto);
-    void deleteSpecificationValue(Long id);
+    ResponseEntity<?> deleteSpecificationValue(Long id);
     SpecificationValueDto getSpecificationValue(Long id);
-    List<SpecificationValueDto> findAllSpecificationValues(Long id, int from, int size);
+    List<SpecificationValueDto> findAllSpecificationValues(Long id);
 }

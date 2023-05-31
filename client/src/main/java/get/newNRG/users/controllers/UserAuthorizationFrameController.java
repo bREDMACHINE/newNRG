@@ -1,5 +1,6 @@
 package get.newNRG.users.controllers;
 
+import get.newNRG.general.ControllerUtil;
 import get.newNRG.users.UserClient;
 import get.newNRG.users.models.User;
 import get.newNRG.users.dtos.UserDto;
@@ -27,9 +28,7 @@ public class UserAuthorizationFrameController {
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                if (registrationFrameController.getFrame() !=null) {
-                    registrationFrameController.getFrame().getFrame().dispose();
-                }
+                ControllerUtil.stop(registrationFrameController);
             }
         });
 
@@ -42,14 +41,7 @@ public class UserAuthorizationFrameController {
             }
         });
 
-        frame.getButtonRegistration().addActionListener(e -> {
-            if (registrationFrameController.getFrame() == null) {
-                registrationFrameController.initUserRegistrationController();
-            } else {
-                registrationFrameController.getFrame().getFrame().toFront();
-                registrationFrameController.getFrame().getFrame().requestFocus();
-            }
-        });
+        frame.getButtonRegistration().addActionListener(e -> ControllerUtil.start(registrationFrameController));
 
         frame.getButtonCancel().addActionListener(e -> frame.getFrame().dispose());
     }

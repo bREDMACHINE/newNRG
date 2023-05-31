@@ -12,10 +12,14 @@ import get.newNRG.specificationvalue.SpecificationValue;
 import get.newNRG.specificationvalue.SpecificationValueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,10 +62,14 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public void deleteType(Long id) {
+    public ResponseEntity<?> deleteType(Long id) {
         Type type = typeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Указанный typeId не существует"));
+        String name = type.getTypeName();
         typeRepository.delete(type);
+        Map<String, String> response = new HashMap<>();
+        response.put("name", name);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override

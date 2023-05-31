@@ -72,6 +72,15 @@ public class EquipmentClient extends BaseClient {
         return null;
     }
 
+    public EquipmentDto getEquipment(Frame frame, Long equipmentId, String userId) {
+        log.info("Get equipment {}",  equipmentId);
+        Object object = response(get("/user/equipment/" + equipmentId, userId), frame);
+        if (object != null) {
+            return EquipmentMapper.toEquipmentDto(object);
+        }
+        return null;
+    }
+
     public List<EquipmentShortDto> findAllEquipment(Frame frame, Long equipmentId, int from, int size, String userId) {
         log.info("Find all projects for equipment {}, from {}", equipmentId, from);
         Object object = response(

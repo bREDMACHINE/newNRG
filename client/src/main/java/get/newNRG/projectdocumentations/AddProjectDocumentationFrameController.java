@@ -3,6 +3,7 @@ package get.newNRG.projectdocumentations;
 import get.newNRG.files.DataFileClient;
 import get.newNRG.files.DataFileDto;
 import get.newNRG.files.DataFileMapper;
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +14,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddProjectDocumentationFrameController {
+public class AddProjectDocumentationFrameController implements AddCardFrameController {
 
     private AddProjectDocumentationFrame frame;
     private final ProjectDocumentationClient projectDocumentationClient;
@@ -27,7 +26,8 @@ public class AddProjectDocumentationFrameController {
     private final DataFileClient dataFileClient;
     private File file = null;
 
-    public void initAddProjectDocumentationFrameController(Long equipmentId) {
+    @Override
+    public void initAddCardFrameController() {
         frame = new AddProjectDocumentationFrame();
 
         frame.getFrame().addWindowListener(new WindowAdapter() {
@@ -48,17 +48,21 @@ public class AddProjectDocumentationFrameController {
         frame.getButtonOk().addActionListener(e -> {
             String projectName = frame.getTextNameProject().getText();
             String projectCode = frame.getTextCodeProject().getText();
-            DataFileDto dataFile = null;
+            DataFileDto dataFileDto = null;
             if (file != null) {
-                dataFile = DataFileMapper.toDataFileDto(file);
+                dataFileDto = dataFileClient.addFile(
+                        frame,
+                        DataFileMapper.toDataFileDto(file),
+                        authorizationFrameController.getUser().getUserId()
+                );
             }
 
-            Long fileId = dataFileClient.addFile(frame, dataFile, authorizationFrameController.getUser().getUserId()).getFileId();
-            List<Long> equipment = new ArrayList<>();
-            equipment.add(equipmentId);
             projectDocumentationClient.addProject(
                     frame,
-                    ProjectDocumentationMapper.toProjectDto(projectName, projectCode, equipment, fileId),
+                    ProjectDocumentationMapper.toProjectDto(projectName,
+                            projectCode,
+                            null,
+                            dataFileDto != null ? dataFileDto.getFileId() : null),
                     authorizationFrameController.getUser().getUserId()
             );
         });

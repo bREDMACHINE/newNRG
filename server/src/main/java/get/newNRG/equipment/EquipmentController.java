@@ -38,9 +38,17 @@ public class EquipmentController {
     }
 
     @GetMapping("/user/equipment")
-    public EquipmentDto getEquipment(@RequestParam String text) {
+    public EquipmentDto getEquipmentByName(@RequestParam String text) {
         log.info("Получен Get запрос к эндпоинту /user/equipment text={}", text);
-        EquipmentDto equipment = equipmentService.getEquipment(text);
+        EquipmentDto equipment = equipmentService.getEquipmentByName(text);
+        log.info("Результат запроса {}", equipment);
+        return equipment;
+    }
+
+    @GetMapping("/user/equipment/{id}")
+    public EquipmentDto getEquipmentById(@PathVariable Long id) {
+        log.info("Получен Get запрос к эндпоинту /user/equipment/{}", id);
+        EquipmentDto equipment = equipmentService.getEquipmentById(id);
         log.info("Результат запроса {}", equipment);
         return equipment;
     }

@@ -14,9 +14,7 @@ public class EquipmentFrame extends JFrame {
     private JFrame frame;
     private JButton buttonType;
     private JButton buttonProjects;
-    private JButton buttonAddProject;
     private JButton buttonEvents;
-    private JButton buttonAddEvent;
     private JButton buttonOk;
     private JButton buttonCancel;
 
@@ -26,9 +24,7 @@ public class EquipmentFrame extends JFrame {
 
         buttonType = new JButton(equipment.getType().getTypeName());
         buttonProjects = new JButton("Показать проекты");
-        buttonAddProject = new JButton("Добавить проект");
         buttonEvents = new JButton("Показать события");
-        buttonAddEvent = new JButton("Добавить событие");
         JPanel panelSpecifications = new JPanel(new GridLayout(7, 2, 5, 0));
         panelSpecifications.add(new JLabel("Оперативное наименование"));
         panelSpecifications.add(new JLabel(equipment.getOperationalName()));
@@ -37,9 +33,7 @@ public class EquipmentFrame extends JFrame {
         panelSpecifications.add(new JLabel("Тип"));
         panelSpecifications.add(buttonType);
         panelSpecifications.add(buttonProjects);
-        panelSpecifications.add(buttonAddProject);
         panelSpecifications.add(buttonEvents);
-        panelSpecifications.add(buttonAddEvent);
         frame.getContentPane().add(BorderLayout.NORTH, panelSpecifications);
 
 

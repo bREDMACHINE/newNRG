@@ -1,5 +1,6 @@
 package get.newNRG.specification;
 
+import get.newNRG.general.AddCardFrameController;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,14 @@ import java.awt.event.WindowEvent;
 @Component
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class AddSpecificationFrameController {
+public class AddSpecificationFrameController implements AddCardFrameController {
 
     private final UserAuthorizationFrameController authorizationFrameController;
     private final SpecificationClient specificationClient;
     private AddSpecificationFrame frame;
 
-    public void initAddSpecificationFrameController() {
+    @Override
+    public void initAddCardFrameController() {
 
         frame = new AddSpecificationFrame();
 

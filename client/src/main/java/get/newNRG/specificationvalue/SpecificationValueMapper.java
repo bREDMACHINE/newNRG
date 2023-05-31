@@ -16,8 +16,11 @@ public class SpecificationValueMapper {
                 .build();
     }
 
+    public static SpecificationValueDto toSpecificationValueDto(Object object) {
+        return new Gson().fromJson(object.toString(), SpecificationValueDto.class);
+    }
+
     public static List<SpecificationValueDto> toSpecificationValueDtos(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), new TypeToken<List<SpecificationValueDto>>(){}.getType());
+        return new Gson().fromJson(object.toString(), new TypeToken<List<SpecificationValueDto>>(){}.getType());
     }
 }

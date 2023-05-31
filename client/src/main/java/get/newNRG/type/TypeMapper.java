@@ -8,20 +8,18 @@ import java.util.List;
 public class TypeMapper {
 
     public static List<TypeShortDto> toTypeShortDtos(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), new TypeToken<List<TypeShortDto>>(){}.getType());
+        return new Gson().fromJson(object.toString(), new TypeToken<List<TypeShortDto>>(){}.getType());
     }
 
     public static TypeDto toTypeDto(Object object) {
-        Gson gson = new Gson();
-        return gson.fromJson(object.toString(), TypeDto.class);
+        return new Gson().fromJson(object.toString(), TypeDto.class);
     }
 
-    public static TypeShortDto toTypeShortDto(String typeName, Long factoryId, List<Long> specifications) {
+    public static TypeShortDto toTypeShortDto(String typeName, Long factoryId, List<Long> specificationsValues) {
         return TypeShortDto.builder()
                 .typeName(typeName)
                 .factoryId(factoryId)
-                .specifications(specifications)
+                .specifications(specificationsValues)
                 .build();
     }
 
