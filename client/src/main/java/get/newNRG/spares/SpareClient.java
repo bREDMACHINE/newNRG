@@ -54,10 +54,23 @@ public class SpareClient extends BaseClient implements ClientWithOpenCard {
     }
 
     @Override
-    public SpareDto get(Frame frame, Long spareId, String userId) {
+    public SpareDto getById(Frame frame, Long spareId, String userId) {
         log.info("Get spare {}", spareId);
         Object object = response(
                 get("/moderator/equipment/type/spare/" + spareId,  userId),
+                frame
+        );
+        if (object != null) {
+            return SpareMapper.toSpareDto(object);
+        }
+        return null;
+    }
+
+    @Override
+    public SpareDto getByName(Frame frame, String name, String userId) {
+        log.info("Get spare {}", name);
+        Object object = response(
+                get("/moderator/equipment/type/spare?name=" + name,  userId),
                 frame
         );
         if (object != null) {

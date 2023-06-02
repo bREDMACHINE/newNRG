@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static javax.swing.GroupLayout.Alignment.TRAILING;
+
 @Getter
 @Setter
 public class ListFrameWithOpenCard extends JFrame {
     private JFrame frame;
+    private JTextField textFieldFinder;
+    private JButton buttonFind;
     private List<JButton> openCardButtons = new ArrayList<>();
-    private JButton buttonAddCard;
+    private JButton buttonCreateCard;
     private JButton buttonPrevious;
     private JLabel labelPage;
     private JButton buttonNext;
@@ -28,9 +32,15 @@ public class ListFrameWithOpenCard extends JFrame {
         frame.getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         frame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(0, labels.size(), 12, 5));
+        JPanel panelFinder = new JPanel();
+        textFieldFinder = new JTextField(30);
+        buttonFind = new JButton("Найти");
+        panelFinder.add(textFieldFinder);
+        panelFinder.add(buttonFind);
+
+        JPanel panelList = new JPanel(new GridLayout(0, labels.size(), 12, 5));
         for (String label : labels) {
-            panel.add(new JLabel(label));
+            panelList.add(new JLabel(label));
         }
         Class<?> clazz = list.get(0).getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -43,7 +53,7 @@ public class ListFrameWithOpenCard extends JFrame {
                 try {
                     field.setAccessible(true);
                     if (field.getType().equals(String.class)) {
-                        panel.add(new JLabel(field.get(object).toString()));
+                        panelList.add(new JLabel(field.get(object).toString()));
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -52,13 +62,10 @@ public class ListFrameWithOpenCard extends JFrame {
             JButton openCardButton = new JButton("Открыть карточку");
             openCardButton.setActionCommand(String.valueOf(i));
             openCardButtons.add(openCardButton);
-            panel.add(openCardButton);
+            panelList.add(openCardButton);
         }
-        buttonAddCard = new JButton("Добавить");
-        panel.add(buttonAddCard);
-        panel.add(new JLabel());
-        panel.add(new JLabel());
-        frame.getContentPane().add(BorderLayout.NORTH, panel);
+
+        buttonCreateCard = new JButton("Создать");
 
         buttonPrevious = new JButton("< Предыдущая");
         buttonNext = new JButton("Следующая >");
@@ -66,6 +73,29 @@ public class ListFrameWithOpenCard extends JFrame {
         panelButtons = new JPanel();
         panelButtons.add(labelPage);
         frame.getContentPane().add(BorderLayout.SOUTH, panelButtons);
+
+        JPanel panel = new JPanel();
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createParallelGroup(TRAILING, false)
+                .addComponent(panelFinder)
+                .addComponent(panelList)
+                .addComponent(buttonCreateCard)
+                .addComponent(panelButtons)
+        );
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(panelFinder)
+                .addGap(100)
+                .addComponent(panelList)
+                .addGap(20)
+                .addComponent(buttonCreateCard)
+                .addGap(80)
+                .addComponent(panelButtons)
+        );
+        frame.getContentPane().add(panel);
         frame.pack();
         frame.setVisible(true);
     }
