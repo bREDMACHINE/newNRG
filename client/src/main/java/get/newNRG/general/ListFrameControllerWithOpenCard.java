@@ -1,5 +1,6 @@
 package get.newNRG.general;
 
+import get.newNRG.equipment.EquipmentDto;
 import get.newNRG.users.controllers.UserAuthorizationFrameController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -107,7 +108,16 @@ public class ListFrameControllerWithOpenCard {
             }
         });
 
-        frame.getButtonAddCard().addActionListener(e -> ControllerUtil.start(addCardController));
+        frame.getButtonCreateCard().addActionListener(e -> ControllerUtil.start(addCardController));
+
+        frame.getButtonFind().addActionListener(e -> {
+            Object object = client.getByName(
+                    frame,
+                    frame.getTextFieldFinder().getText(),
+                    authorizationFrameController.getUser().getUserId()
+            );
+            ControllerUtil.start(cardController, parentObjectId);
+        });
 
         for (JButton button : frame.getOpenCardButtons()) {
             button.addActionListener(e -> ControllerUtil.start(
